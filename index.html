@@ -22,7 +22,13 @@
     body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;overscroll-behavior:none}
     .shell{display:flex;flex-direction:column;height:100vh;height:100dvh}
     .shell-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px calc(10px);border-bottom:1px solid var(--line);background:var(--panel)}
-    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;padding:0;color:inherit;text-align:left;font:inherit;cursor:pointer}
+    .home-panel .pyr{margin:18px auto 0;display:block;max-width:280px;width:100%}
+    .home-panel .pyr [data-go]{cursor:pointer;transition:transform .18s ease,filter .18s ease}
+    .home-panel .pyr [data-go]:hover,.home-panel .pyr [data-go]:focus-visible{transform:translateY(-3px);filter:brightness(1.08);outline:none}
+    .home-panel .pyr text{font-family:inherit;font-weight:800;letter-spacing:.14em;fill:#141008;pointer-events:none}
+    .home-panel .pyr .detail{stroke:rgba(18,13,4,.5);stroke-width:1.4;fill:none;stroke-linecap:round;pointer-events:none}
+    .home-panel .home-hint{margin-top:14px}
     .brand-mark{color:var(--gold);font-size:20px}
     .brand-copy strong{display:block;font-size:14px;letter-spacing:.14em}
     .brand-copy small{display:block;color:var(--muted);font-size:10px}
@@ -73,10 +79,10 @@
 <body>
 <main class="shell">
   <header class="shell-bar">
-    <div class="brand" aria-label="STONE">
+    <button class="brand" id="brandHomeButton" type="button" aria-label="Accueil STONE">
       <span class="brand-mark" aria-hidden="true">◈</span>
       <span class="brand-copy"><strong>STONE</strong><small id="universeTagline">Environnement unifié</small></span>
-    </div>
+    </button>
     <div class="shell-actions">
       <span class="connection-pill" id="connectionPill"><span aria-hidden="true"></span><b id="connectionLabel" style="font-weight:600">…</b></span>
       <button class="quiet-button" id="installButton" type="button" hidden>Installer STONE</button>
@@ -346,9 +352,69 @@
     }
   }
 
+  /* ---- Accueil : la pyramide STONE complète, chaque tranche ouvre son univers
+     (Money la base, Invest l'étage, Estate la pointe — couleurs du registre). ---- */
+  var homeEl = null;
+  function pyramidSlice(u, path, detail, labelX, labelY, labelSize) {
+    if (!u) return "";
+    return '<g role="button" tabindex="0" data-go="' + u.key + '" aria-label="Ouvrir STONE ' + u.label + '">' +
+      '<path d="' + path + '" fill="' + u.accent + '"/>' + (detail || "") +
+      '<text x="' + labelX + '" y="' + labelY + '" text-anchor="middle" font-size="' + labelSize + '">' + u.label.toUpperCase() + "</text></g>";
+  }
+  function showHome() {
+    if (!homeEl) {
+      var byKey = {};
+      UNIVERSES.forEach(function (u) { byKey[u.key] = u; });
+      var others = UNIVERSES.filter(function (u) {
+        return u.enabled && u.key !== "money" && u.key !== "invest" && u.key !== "estate";
+      });
+      homeEl = document.createElement("div");
+      homeEl.className = "stage-panel home-panel";
+      homeEl.dataset.kind = "home";
+      homeEl.innerHTML =
+        '<section><div class="mark" aria-hidden="true">◈</div>' +
+        '<p class="eyebrow">L’environnement STONE</p>' +
+        "<h1>Ta pyramide patrimoniale</h1>" +
+        '<svg class="pyr" viewBox="0 0 260 200" role="group" aria-label="Pyramide STONE : Money la base, Invest l’étage, Estate la pointe">' +
+        pyramidSlice(byKey.estate, "M130 10 L162 62 H98 Z",
+          '<path class="detail" d="M124 62 V51 H136 V62"/>', 130, 44, 9) +
+        pyramidSlice(byKey.invest, "M93 70 H167 L199 122 H61 Z",
+          '<path class="detail" d="M86 109 L112 95 L132 102 L156 89"/><circle class="detail" cx="156" cy="89" r="2" fill="rgba(18,13,4,.5)" stroke="none"/>', 130, 104, 12) +
+        pyramidSlice(byKey.money, "M56 130 H204 L236 182 H24 Z",
+          '<path class="detail" d="M60 166 H200"/>', 130, 160, 13) +
+        "</svg>" +
+        '<p class="home-hint">Touche une tranche : Money soutient tout, Invest fait grandir, Estate couronne.</p>' +
+        (others.length
+          ? '<p style="margin-top:16px">' + others.map(function (u) {
+              return '<button class="quiet-button" type="button" data-go="' + u.key + '">' + u.glyph + " " + u.label + "</button>";
+            }).join(" ") + "</p>"
+          : "") +
+        "</section>";
+      stage.appendChild(homeEl);
+      homeEl.addEventListener("click", function (event) {
+        var go = event.target.closest && event.target.closest("[data-go]");
+        if (go) activate(go.dataset.go, true);
+      });
+      homeEl.addEventListener("keydown", function (event) {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        var go = event.target.closest && event.target.closest("[data-go]");
+        if (go) { event.preventDefault(); activate(go.dataset.go, true); }
+      });
+    }
+    activeKey = "";
+    tagline.textContent = "Chaque tranche porte la suivante";
+    Array.prototype.forEach.call(nav.querySelectorAll("button[data-universe]"), function (btn) {
+      btn.classList.remove("active");
+      btn.setAttribute("aria-current", "false");
+    });
+    syncVisibility();
+    homeEl.classList.add("is-visible");
+  }
+
   function activate(key, fromUser) {
     var u = universe(key);
     if (!u) return;
+    if (homeEl) homeEl.classList.remove("is-visible");
     activeKey = key;
     tagline.textContent = u.label + " · " + u.tagline;
     Array.prototype.forEach.call(nav.querySelectorAll("button[data-universe]"), function (btn) {
@@ -515,12 +581,13 @@
     }).catch(function (error) { console.warn("[STONE PWA] Service worker indisponible", error); });
   }
 
-  /* ---- Démarrage : ?u=... > dernier univers > premier actif ---- */
+  /* ---- Démarrage : ?u=... > dernier univers > page d'accueil pyramide ---- */
+  document.getElementById("brandHomeButton").addEventListener("click", function () { showHome(); });
   var requested = "";
   try { requested = new URL(window.location.href).searchParams.get("u") || ""; } catch (e) {}
   if (!requested) { try { requested = localStorage.getItem(STORAGE_KEY) || ""; } catch (e) {} }
-  if (!universe(requested)) requested = (UNIVERSES.filter(function (u) { return u.enabled; })[0] || UNIVERSES[0] || {}).key || "";
-  if (requested) activate(requested, false);
+  if (universe(requested)) activate(requested, false);
+  else showHome();
 })();
 </script>
 </body>
