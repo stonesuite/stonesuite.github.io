@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#08090c">
+  <title>STONE</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/stone-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/stone-192.png">
+  <style>
+    /* STONE — coque PWA unifiée · design "Quiet Capital" */
+    :root{
+      --bg:#08090c;--panel:#101218;--panel2:#161922;--line:#22262f;
+      --text:#eef0f4;--muted:#888d9a;--gold:#c9a567;--gold-dim:rgba(201,165,103,.14);
+      --green:#3ecf8e;--red:#ff6b6b;
+      --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box}
+    [hidden]{display:none!important}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;overscroll-behavior:none}
+    .shell{display:flex;flex-direction:column;height:100vh;height:100dvh}
+    .shell-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px calc(10px);border-bottom:1px solid var(--line);background:var(--panel)}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .brand-mark{color:var(--gold);font-size:20px}
+    .brand-copy strong{display:block;font-size:14px;letter-spacing:.14em}
+    .brand-copy small{display:block;color:var(--muted);font-size:10px}
+    .shell-actions{display:flex;align-items:center;gap:8px}
+    .connection-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--muted);font-size:10px;white-space:nowrap}
+    .connection-pill span{width:7px;height:7px;border-radius:50%;background:var(--red)}
+    .connection-pill.is-online span{background:var(--green)}
+    .quiet-button{border:1px solid var(--line);border-radius:10px;padding:7px 12px;background:var(--panel2);color:var(--text);font-size:11px;font-weight:700;cursor:pointer}
+    .quiet-button:hover{border-color:var(--gold)}
+    .notice{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 14px;border-bottom:1px solid var(--line);background:var(--gold-dim);font-size:12px}
+    .notice button{border:1px solid var(--gold);border-radius:8px;padding:5px 10px;background:transparent;color:var(--gold);font-size:11px;font-weight:700;cursor:pointer}
+    .universe-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:6px 8px calc(6px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--panel)}
+    .universe-nav button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px;border:1px solid transparent;border-radius:12px;padding:6px 4px;background:transparent;color:var(--muted);font-family:inherit;font-size:10.5px;font-weight:700;cursor:pointer}
+    .universe-nav button .glyph{font-size:16px;line-height:1.2}
+    .universe-nav button.active{border-color:var(--line);background:var(--panel2);color:var(--text)}
+    .universe-nav button.active .glyph{color:var(--u-accent,var(--gold))}
+    .universe-nav button:disabled{opacity:.45;cursor:default}
+    .stage{position:relative;flex:1;min-height:0;background:var(--bg)}
+    .stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .18s}
+    .stage iframe.is-visible{opacity:1;pointer-events:auto}
+    .stage-panel{position:absolute;inset:0;display:none;place-items:center;padding:24px;text-align:center;background:var(--bg)}
+    .stage-panel.is-visible{display:grid}
+    .stage-panel .mark{font-size:40px;color:var(--u-accent,var(--gold))}
+    .stage-panel .eyebrow{margin:12px 0 0;color:var(--u-accent,var(--gold));font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+    .stage-panel h1{margin:8px 0 0;font-size:20px;letter-spacing:-.02em}
+    .stage-panel p{max-width:420px;margin:10px auto 0;color:var(--muted);font-size:12px;line-height:1.6}
+    .loading-line{width:180px;height:2px;margin:20px auto 0;border-radius:2px;background:var(--line);overflow:hidden}
+    .loading-line span{display:block;width:40%;height:100%;background:var(--u-accent,var(--gold));animation:slide 1.4s ease-in-out infinite}
+    @keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(350%)}}
+    .primary-button{margin-top:18px;border:1px solid var(--gold);border-radius:10px;padding:9px 18px;background:var(--gold);color:#171109;font-size:12px;font-weight:800;cursor:pointer}
+    .settings-sheet{position:fixed;inset:auto 0 0 0;z-index:40;max-height:85vh;overflow:auto;border:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));background:var(--panel);box-shadow:0 -20px 60px rgba(0,0,0,.6);transform:translateY(105%);transition:transform .22s}
+    .settings-sheet.is-open{transform:none}
+    .settings-sheet h2{margin:0 0 4px;font-size:16px}
+    .settings-sheet .sheet-sub{margin:0 0 14px;color:var(--muted);font-size:11px;line-height:1.5}
+    .settings-field{margin-bottom:12px}
+    .settings-field label{display:block;margin-bottom:6px;color:var(--muted);font-size:11px;font-weight:700}
+    .settings-field input{width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:var(--panel2);color:var(--text);font-size:12px}
+    .settings-actions{display:flex;gap:8px;margin-top:16px}
+    .settings-actions button{flex:1;min-height:46px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer}
+    .settings-save{border:1px solid var(--gold);background:var(--gold);color:#171109}
+    .settings-cancel{border:1px solid var(--line);background:var(--panel2);color:var(--text)}
+    .sheet-backdrop{position:fixed;inset:0;z-index:39;background:rgba(4,5,8,.6);opacity:0;pointer-events:none;transition:opacity .2s}
+    .sheet-backdrop.is-open{opacity:1;pointer-events:auto}
+    @media(min-width:760px){.settings-sheet{inset:auto 0 0 auto;right:16px;bottom:16px;width:420px;border-radius:18px}}
+    @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  </style>
+</head>
+<body>
+<main class="shell">
+  <header class="shell-bar">
+    <div class="brand" aria-label="STONE">
+      <span class="brand-mark" aria-hidden="true">◈</span>
+      <span class="brand-copy"><strong>STONE</strong><small id="universeTagline">Environnement unifié</small></span>
+    </div>
+    <div class="shell-actions">
+      <span class="connection-pill" id="connectionPill"><span aria-hidden="true"></span><b id="connectionLabel" style="font-weight:600">…</b></span>
+      <button class="quiet-button" id="installButton" type="button" hidden>Installer STONE</button>
+      <button class="quiet-button" id="settingsButton" type="button" aria-label="Réglages des univers">⚙</button>
+    </div>
+  </header>
+
+  <section class="notice" id="updateNotice" role="status" aria-live="polite" hidden>
+    <span>Une nouvelle version de STONE est disponible.</span>
+    <button type="button" id="updateButton">Mettre à jour</button>
+  </section>
+  <section class="notice" id="appleNotice" role="dialog" aria-label="Installer sur iPhone ou iPad" hidden>
+    <span><strong>Sur iPhone/iPad :</strong> Partager → Ajouter à l’écran d’accueil.</span>
+    <button type="button" id="appleNoticeClose" aria-label="Fermer">×</button>
+  </section>
+
+  <section class="stage" id="stage" aria-live="polite"></section>
+
+  <nav class="universe-nav" id="universeNav" aria-label="Univers STONE"></nav>
+</main>
+
+<div class="sheet-backdrop" id="sheetBackdrop"></div>
+<section class="settings-sheet" id="settingsSheet" role="dialog" aria-label="Réglages des univers" aria-modal="true">
+  <h2>Réglages des univers</h2>
+  <p class="sheet-sub">Ces adresses restent uniquement sur cet appareil, jamais publiées. Laisse vide pour garder la valeur par défaut.</p>
+  <div id="settingsFields"></div>
+  <div class="settings-actions">
+    <button type="button" class="settings-cancel" id="settingsCancel">Annuler</button>
+    <button type="button" class="settings-save" id="settingsSave">Enregistrer</button>
+  </div>
+</section>
+
+<script src="config.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  /* ---- Constantes du contrat PWA (identiques côté moteurs) ---- */
+  var FRAME_READY_TIMEOUT_MS = 45000;
+  var ENGINE_ORIGIN_RE = /^https:\/\/(?:[a-z0-9-]+-)?script\.googleusercontent\.com$/i;
+  var STORAGE_KEY = "STONE_PWA_LAST_UNIVERSE::" + String(window.STONE_PWA_INSTANCE || "default");
+
+  /* Instances (bêta / perso) publiées sur la même origine : chaque instance a
+     son propre espace de stockage local pour éviter toute collision. */
+  var INSTANCE = String(window.STONE_PWA_INSTANCE || "default");
+  var OVERRIDES_KEY = "STONE_PWA_URL_OVERRIDES::" + INSTANCE;
+
+  /* Surcharges d'URL par appareil (localStorage) : permettent une coque
+     publiée sans aucune adresse personnelle dans son code (config vide),
+     chaque appareil renseignant ses moteurs une seule fois. */
+  function readOverrides() {
+    try { return JSON.parse(localStorage.getItem(OVERRIDES_KEY) || "{}") || {}; }
+    catch (e) { return {}; }
+  }
+  function effectiveUrl(u) {
+    var override = String(readOverrides()[u.key] || "").trim();
+    if (/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec/.test(override)) return override;
+    return u.url;
+  }
+
+  var UNIVERSES = Array.isArray(window.STONE_PWA_UNIVERSES) ? window.STONE_PWA_UNIVERSES : [];
+  var stage = document.getElementById("stage");
+  var nav = document.getElementById("universeNav");
+  var tagline = document.getElementById("universeTagline");
+
+  /* Etat par univers : iframe vivant, nonce, source de confiance, timers.
+     Les iframes ne sont jamais détruits au changement d'univers : on passe
+     de l'un à l'autre sans recharger (exigence "environnement STONE"). */
+  var frames = {};
+  var activeKey = "";
+
+  function universe(key) {
+    for (var i = 0; i < UNIVERSES.length; i++) if (UNIVERSES[i].key === key) return UNIVERSES[i];
+    return null;
+  }
+
+  function makeNonce() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID().replace(/-/g, "");
+    var out = "";
+    for (var i = 0; i < 32; i++) out += "abcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random() * 36)];
+    return out;
+  }
+
+  function framedUrl(u, nonce) {
+    var url = new URL(effectiveUrl(u));
+    if (u.query) Object.keys(u.query).forEach(function (k) { url.searchParams.set(k, u.query[k]); });
+    url.searchParams.set("pwa", "1");
+    url.searchParams.set("pwa_origin", window.location.origin);
+    url.searchParams.set("pwa_nonce", nonce);
+    return url.toString();
+  }
+
+  /* ---- Panneaux d'état (chargement / erreur / univers non raccordé) ---- */
+  function panel(u, kind) {
+    var el = document.createElement("div");
+    el.className = "stage-panel";
+    el.style.setProperty("--u-accent", u.accent);
+    el.dataset.universe = u.key;
+    el.dataset.kind = kind;
+    if (kind === "loading") {
+      el.setAttribute("role", "status");
+      el.innerHTML =
+        '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
+        '<p class="eyebrow">Connexion sécurisée</p>' +
+        "<h1>Ouverture de STONE " + u.label + "</h1>" +
+        "<p>Connexion à ton espace " + u.label + "…</p>" +
+        '<div class="loading-line" aria-hidden="true"><span></span></div></section>';
+    } else if (kind === "error") {
+      el.setAttribute("role", "alert");
+      el.innerHTML =
+        '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
+        "<h1>STONE " + u.label + " n’a pas pu s’ouvrir</h1>" +
+        "<p>Première visite ? Google demande une autorisation qui ne peut pas s’afficher ici : " +
+        "ouvrez " + u.label + " une fois dans le navigateur, acceptez, puis revenez réessayer.</p>" +
+        '<button class="primary-button" type="button" data-authorize="' + u.key + '">Autoriser dans le navigateur</button>' +
+        '<div style="height:10px"></div>' +
+        '<button class="quiet-button" type="button" data-retry="' + u.key + '">Réessayer ici</button></section>';
+    } else if (kind === "disabled") {
+      el.innerHTML =
+        '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
+        '<p class="eyebrow">Bientôt</p>' +
+        "<h1>STONE " + u.label + "</h1>" +
+        "<p>Cet univers arrive bientôt dans STONE.</p></section>";
+    } else if (kind === "configure") {
+      el.innerHTML =
+        '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
+        '<p class="eyebrow">Configuration requise</p>' +
+        "<h1>STONE " + u.label + "</h1>" +
+        "<p>Renseignez l’adresse du moteur " + u.label + " dans les réglages. Elle restera uniquement sur cet appareil.</p>" +
+        '<button class="primary-button" type="button" data-open-settings="1">Ouvrir les réglages</button></section>';
+    } else {
+      el.setAttribute("role", "status");
+      el.innerHTML =
+        '<section><div class="mark" aria-hidden="true">◈</div>' +
+        "<h1>Connexion indisponible</h1>" +
+        "<p>STONE nécessite une connexion pour afficher vos univers. Aucune donnée financière n’est servie depuis le cache.</p>" +
+        '<button class="primary-button" type="button" data-retry="__reload__">Réessayer</button></section>';
+    }
+    stage.appendChild(el);
+    return el;
+  }
+
+  function setPanelVisible(state, kind) {
+    ["loadingPanel", "errorPanel", "disabledPanel"].forEach(function (name) {
+      if (state[name]) state[name].classList.toggle("is-visible", name === kind);
+    });
+  }
+
+  /* ---- Cycle de vie d'un univers ---- */
+  function mountUniverse(u) {
+    var state = {
+      universe: u,
+      nonce: "",
+      loaded: false,
+      trustedSource: null,
+      trustedOrigin: "",
+      timeoutId: null,
+      startedAt: 0,
+      iframe: null,
+      loadingPanel: panel(u, "loading"),
+      errorPanel: panel(u, "error"),
+      disabledPanel: null
+    };
+    frames[u.key] = state;
+    startFrame(state);
+    return state;
+  }
+
+  function startFrame(state) {
+    var u = state.universe;
+    state.nonce = makeNonce();
+    state.loaded = false;
+    state.trustedSource = null;
+    state.trustedOrigin = "";
+    state.startedAt = performance.now();
+    if (state.timeoutId) clearTimeout(state.timeoutId);
+    state.timeoutId = setTimeout(function () {
+      if (state.loaded) return;
+      setPanelVisible(state, "errorPanel");
+    }, FRAME_READY_TIMEOUT_MS);
+
+    if (state.iframe) { stage.removeChild(state.iframe); state.iframe = null; }
+    var iframe = document.createElement("iframe");
+    iframe.title = "STONE " + u.label;
+    iframe.referrerPolicy = "origin";
+    iframe.setAttribute("allow", "clipboard-write");
+    iframe.dataset.universe = u.key;
+    iframe.src = framedUrl(u, state.nonce);
+    state.iframe = iframe;
+    stage.appendChild(iframe);
+    setPanelVisible(state, "loadingPanel");
+    syncVisibility();
+  }
+
+  function mountDisabled(u) {
+    var state = { universe: u, disabledPanel: panel(u, "disabled"), loadingPanel: null, errorPanel: null, iframe: null, loaded: false };
+    frames[u.key] = state;
+    setPanelVisible(state, "disabledPanel");
+    return state;
+  }
+
+  function mountConfigure(u) {
+    var state = { universe: u, disabledPanel: panel(u, "configure"), loadingPanel: null, errorPanel: null, iframe: null, loaded: false };
+    frames[u.key] = state;
+    setPanelVisible(state, "disabledPanel");
+    return state;
+  }
+
+  /* Après un changement de réglages : détruire les états pour re-monter
+     les univers avec leurs nouvelles adresses. */
+  function remountAll() {
+    for (var key in frames) {
+      var state = frames[key];
+      if (state.timeoutId) clearTimeout(state.timeoutId);
+      if (state.iframe) stage.removeChild(state.iframe);
+      ["loadingPanel", "errorPanel", "disabledPanel"].forEach(function (name) {
+        if (state[name]) stage.removeChild(state[name]);
+      });
+    }
+    frames = {};
+    if (activeKey) activate(activeKey, false);
+  }
+
+  /* ---- Handshake : CHALLENGE (moteur) → ACK (coque) → READY (moteur) ---- */
+  window.addEventListener("message", function (event) {
+    if (!ENGINE_ORIGIN_RE.test(event.origin)) return;
+    var data = event.data || {};
+    if (!event.source || typeof data.type !== "string") return;
+    for (var key in frames) {
+      var state = frames[key];
+      if (!state || !state.nonce || data.nonce !== state.nonce) continue;
+      var prefix = state.universe.msgPrefix;
+      if (data.type === prefix + "_CHALLENGE") {
+        state.trustedSource = event.source;
+        state.trustedOrigin = event.origin;
+        state.trustedSource.postMessage({ type: prefix + "_ACK", nonce: state.nonce }, event.origin);
+        return;
+      }
+      if (data.type === prefix + "_READY") {
+        if (event.source !== state.trustedSource || event.origin !== state.trustedOrigin) return;
+        if (state.timeoutId) { clearTimeout(state.timeoutId); state.timeoutId = null; }
+        state.loaded = true;
+        setPanelVisible(state, "");
+        if (state.iframe) state.iframe.classList.add("is-visible");
+        document.documentElement.dataset.shellReady = "true";
+        document.documentElement.dataset.shellLoadMs = String(Math.round(performance.now() - state.startedAt));
+        syncVisibility();
+        return;
+      }
+    }
+  });
+
+  /* ---- Navigation entre univers ---- */
+  function syncVisibility() {
+    for (var key in frames) {
+      var state = frames[key];
+      var isActive = key === activeKey;
+      if (state.iframe) state.iframe.classList.toggle("is-visible", isActive && state.loaded);
+      ["loadingPanel", "errorPanel", "disabledPanel"].forEach(function (name) {
+        if (state[name] && !isActive) state[name].classList.remove("is-visible");
+      });
+      if (isActive && !state.loaded) {
+        if (state.disabledPanel) setPanelVisible(state, "disabledPanel");
+        else if (state.errorPanel && state.errorPanel.dataset.shown === "1") setPanelVisible(state, "errorPanel");
+        else if (state.loadingPanel) setPanelVisible(state, "loadingPanel");
+      }
+    }
+  }
+
+  function activate(key, fromUser) {
+    var u = universe(key);
+    if (!u) return;
+    activeKey = key;
+    tagline.textContent = u.label + " · " + u.tagline;
+    Array.prototype.forEach.call(nav.querySelectorAll("button[data-universe]"), function (btn) {
+      var on = btn.dataset.universe === key;
+      btn.classList.toggle("active", on);
+      btn.setAttribute("aria-current", on ? "page" : "false");
+      btn.style.setProperty("--u-accent", universe(btn.dataset.universe).accent);
+    });
+    if (!frames[key]) {
+      if (!u.enabled) mountDisabled(u);
+      else if (effectiveUrl(u)) mountUniverse(u);
+      else mountConfigure(u);
+    }
+    syncVisibility();
+    if (fromUser) {
+      try { localStorage.setItem(STORAGE_KEY, key); } catch (e) {}
+      try {
+        var qs = new URL(window.location.href);
+        qs.searchParams.set("u", key);
+        history.replaceState(null, "", qs.toString());
+      } catch (e) {}
+    }
+  }
+
+  UNIVERSES.forEach(function (u) {
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.dataset.universe = u.key;
+    btn.innerHTML = '<span class="glyph" aria-hidden="true">' + u.glyph + "</span><span>" + u.label + "</span>";
+    btn.addEventListener("click", function () { activate(u.key, true); });
+    nav.appendChild(btn);
+  });
+
+  stage.addEventListener("click", function (event) {
+    if (event.target.closest && event.target.closest("[data-open-settings]")) { openSettings(); return; }
+    var authorize = event.target.closest && event.target.closest("[data-authorize]");
+    if (authorize) {
+      /* Consentement Google impossible en iframe : ouvrir le moteur en direct
+         (sans paramètres pwa), l'utilisateur accepte, puis réessaie ici. */
+      var au = universe(authorize.dataset.authorize);
+      if (au) {
+        var direct = new URL(effectiveUrl(au));
+        if (au.query) Object.keys(au.query).forEach(function (k) { direct.searchParams.set(k, au.query[k]); });
+        window.open(direct.toString(), "_blank", "noopener");
+      }
+      return;
+    }
+    var retry = event.target.closest && event.target.closest("[data-retry]");
+    if (!retry) return;
+    if (retry.dataset.retry === "__reload__") { window.location.reload(); return; }
+    var state = frames[retry.dataset.retry];
+    if (state) { if (state.errorPanel) state.errorPanel.dataset.shown = "0"; startFrame(state); }
+  });
+
+  /* ---- Réglages des univers (bottom-sheet, stockage local uniquement) ---- */
+  var settingsSheet = document.getElementById("settingsSheet");
+  var sheetBackdrop = document.getElementById("sheetBackdrop");
+  var settingsFields = document.getElementById("settingsFields");
+  function openSettings() {
+    var overrides = readOverrides();
+    settingsFields.innerHTML = "";
+    UNIVERSES.forEach(function (u) {
+      if (!u.enabled) return;
+      var field = document.createElement("div");
+      field.className = "settings-field";
+      var label = document.createElement("label");
+      label.textContent = "Moteur " + u.label + (u.url ? "" : " (requis)");
+      label.htmlFor = "setting-" + u.key;
+      var input = document.createElement("input");
+      input.type = "url";
+      input.id = "setting-" + u.key;
+      input.dataset.universe = u.key;
+      input.placeholder = u.url ? "Par défaut : coque" : "https://script.google.com/macros/s/…/exec";
+      input.value = overrides[u.key] || "";
+      input.setAttribute("autocomplete", "off");
+      input.setAttribute("spellcheck", "false");
+      field.appendChild(label);
+      field.appendChild(input);
+      settingsFields.appendChild(field);
+    });
+    settingsSheet.classList.add("is-open");
+    sheetBackdrop.classList.add("is-open");
+  }
+  function closeSettings() {
+    settingsSheet.classList.remove("is-open");
+    sheetBackdrop.classList.remove("is-open");
+  }
+  document.getElementById("settingsButton").addEventListener("click", openSettings);
+  document.getElementById("settingsCancel").addEventListener("click", closeSettings);
+  sheetBackdrop.addEventListener("click", closeSettings);
+  document.getElementById("settingsSave").addEventListener("click", function () {
+    var overrides = {};
+    Array.prototype.forEach.call(settingsFields.querySelectorAll("input[data-universe]"), function (input) {
+      var value = String(input.value || "").trim().replace(/\?.*$/, "");
+      if (/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(value)) {
+        overrides[input.dataset.universe] = value;
+      }
+    });
+    try { localStorage.setItem(OVERRIDES_KEY, JSON.stringify(overrides)); } catch (e) {}
+    closeSettings();
+    remountAll();
+  });
+
+  /* ---- Connexion ---- */
+  var pill = document.getElementById("connectionPill");
+  var pillLabel = document.getElementById("connectionLabel");
+  function syncOnline() {
+    var online = navigator.onLine;
+    pill.classList.toggle("is-online", online);
+    pillLabel.textContent = online ? "Connecté" : "Hors connexion";
+  }
+  window.addEventListener("online", syncOnline);
+  window.addEventListener("offline", syncOnline);
+  syncOnline();
+
+  /* ---- Installation ---- */
+  var installButton = document.getElementById("installButton");
+  var appleNotice = document.getElementById("appleNotice");
+  var deferredPrompt = null;
+  function isStandalone() {
+    return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  }
+  function isAppleMobile() { return /iphone|ipad|ipod/i.test(navigator.userAgent); }
+  window.addEventListener("beforeinstallprompt", function (event) {
+    event.preventDefault();
+    deferredPrompt = event;
+    if (!isStandalone()) installButton.hidden = false;
+  });
+  window.addEventListener("appinstalled", function () {
+    deferredPrompt = null;
+    installButton.hidden = true;
+    appleNotice.hidden = true;
+  });
+  if (isAppleMobile() && !isStandalone()) installButton.hidden = false;
+  installButton.addEventListener("click", function () {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function () { deferredPrompt = null; });
+    } else if (isAppleMobile()) {
+      appleNotice.hidden = false;
+    }
+  });
+  document.getElementById("appleNoticeClose").addEventListener("click", function () { appleNotice.hidden = true; });
+
+  /* ---- Service worker + mise à jour contrôlée ---- */
+  var updateNotice = document.getElementById("updateNotice");
+  var updateButton = document.getElementById("updateButton");
+  var waitingWorker = null;
+  function offerUpdate(worker) { waitingWorker = worker; updateNotice.hidden = false; }
+  updateButton.addEventListener("click", function () {
+    if (waitingWorker) waitingWorker.postMessage({ type: "SKIP_WAITING" });
+  });
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then(function (registration) {
+      if (registration.waiting) offerUpdate(registration.waiting);
+      registration.addEventListener("updatefound", function () {
+        var candidate = registration.installing;
+        if (!candidate) return;
+        candidate.addEventListener("statechange", function () {
+          if (candidate.state === "installed" && navigator.serviceWorker.controller) offerUpdate(candidate);
+        });
+      });
+      navigator.serviceWorker.addEventListener("controllerchange", function () { window.location.reload(); });
+    }).catch(function (error) { console.warn("[STONE PWA] Service worker indisponible", error); });
+  }
+
+  /* ---- Démarrage : ?u=... > dernier univers > premier actif ---- */
+  var requested = "";
+  try { requested = new URL(window.location.href).searchParams.get("u") || ""; } catch (e) {}
+  if (!requested) { try { requested = localStorage.getItem(STORAGE_KEY) || ""; } catch (e) {} }
+  if (!universe(requested)) requested = (UNIVERSES.filter(function (u) { return u.enabled; })[0] || UNIVERSES[0] || {}).key || "";
+  if (requested) activate(requested, false);
+})();
+</script>
+</body>
+</html>
