@@ -2,7 +2,7 @@
   "id": "./",
   "name": "STONE",
   "short_name": "STONE",
-  "description": "L'environnement STONE (bêta) : Invest, Money et Estate dans une application installable.",
+  "description": "La suite STONE (bêta) : Invest, Money et Estate dans une application installable.",
   "lang": "fr",
   "start_url": "./?source=pwa",
   "scope": "./",

@@ -2,7 +2,7 @@
   "id": "./",
   "name": "STONE Personnel",
   "short_name": "STONE",
-  "description": "L'environnement STONE personnel — Ledge, Invest, Money et Trade.",
+  "description": "La suite STONE personnelle — Ledge, Invest, Money et Trade.",
   "lang": "fr",
   "start_url": "./?source=pwa",
   "scope": "./",

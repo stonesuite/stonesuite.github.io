@@ -29,6 +29,15 @@
     .home-panel .pyr text{font-family:inherit;font-weight:800;letter-spacing:.14em;fill:#141008;pointer-events:none}
     .home-panel .pyr .detail{stroke:rgba(18,13,4,.5);stroke-width:1.4;fill:none;stroke-linecap:round;pointer-events:none}
     .home-panel .home-hint{margin-top:14px}
+    /* Apparition douce de la pyramide juste après la coque (aucun saut de mise
+       en page : le panneau est en position absolue au-dessus de la scène).
+       Animation CSS pure et JAMAIS d'état invisible par défaut : une bascule
+       pilotée en JS (requestAnimationFrame) laisserait l'accueil à opacity:0
+       si l'onglet démarre en arrière-plan (rAF ne s'y déclenche pas). */
+    /* fill-mode volontairement absent : hors animation l'accueil est opaque,
+       donc jamais bloqué à 0 (onglet démarré caché, animation suspendue). */
+    .home-panel.is-visible{animation:home-in .34s ease}
+    @keyframes home-in{from{opacity:0}to{opacity:1}}
     .brand-mark{color:var(--gold);font-size:20px}
     .brand-copy strong{display:block;font-size:14px;letter-spacing:.14em}
     .brand-copy small{display:block;color:var(--muted);font-size:10px}
@@ -81,7 +90,7 @@
   <header class="shell-bar">
     <button class="brand" id="brandHomeButton" type="button" aria-label="Accueil STONE">
       <span class="brand-mark" aria-hidden="true">◈</span>
-      <span class="brand-copy"><strong>STONE</strong><small id="universeTagline">Environnement unifié</small></span>
+      <span class="brand-copy"><strong>STONE</strong><small id="universeTagline">La suite STONE</small></span>
     </button>
     <div class="shell-actions">
       <span class="connection-pill" id="connectionPill"><span aria-hidden="true"></span><b id="connectionLabel" style="font-weight:600">…</b></span>
@@ -123,7 +132,6 @@
   /* ---- Constantes du contrat PWA (identiques côté moteurs) ---- */
   var FRAME_READY_TIMEOUT_MS = 45000;
   var ENGINE_ORIGIN_RE = /^https:\/\/(?:[a-z0-9-]+-)?script\.googleusercontent\.com$/i;
-  var STORAGE_KEY = "STONE_PWA_LAST_UNIVERSE::" + String(window.STONE_PWA_INSTANCE || "default");
 
   /* Instances (bêta / perso) publiées sur la même origine : chaque instance a
      son propre espace de stockage local pour éviter toute collision. */
@@ -150,7 +158,7 @@
 
   /* Etat par univers : iframe vivant, nonce, source de confiance, timers.
      Les iframes ne sont jamais détruits au changement d'univers : on passe
-     de l'un à l'autre sans recharger (exigence "environnement STONE"). */
+     de l'un à l'autre sans recharger (exigence "suite STONE"). */
   var frames = {};
   var activeKey = "";
 
@@ -373,11 +381,12 @@
       homeEl.dataset.kind = "home";
       homeEl.innerHTML =
         '<section><div class="mark" aria-hidden="true">◈</div>' +
-        '<p class="eyebrow">L’environnement STONE</p>' +
+        '<p class="eyebrow">La suite STONE</p>' +
         "<h1>Ta pyramide patrimoniale</h1>" +
         '<svg class="pyr" viewBox="0 0 260 200" role="group" aria-label="Pyramide STONE : Money la base, Invest l’étage, Estate la pointe">' +
         pyramidSlice(byKey.estate, "M130 10 L162 62 H98 Z",
-          '<path class="detail" d="M124 62 V51 H136 V62"/>', 130, 44, 9) +
+          /* libellé descendu et réduit : à y=44 en 9px il débordait de la pointe */
+          '<path class="detail" d="M124 62 V51 H136 V62"/>', 130, 48, 7) +
         pyramidSlice(byKey.invest, "M93 70 H167 L199 122 H61 Z",
           '<path class="detail" d="M86 109 L112 95 L132 102 L156 89"/><circle class="detail" cx="156" cy="89" r="2" fill="rgba(18,13,4,.5)" stroke="none"/>', 130, 104, 12) +
         pyramidSlice(byKey.money, "M56 130 H204 L236 182 H24 Z",
@@ -409,6 +418,18 @@
     });
     syncVisibility();
     homeEl.classList.add("is-visible");
+    /* L'URL redevient celle du hall d'entrée : un rechargement ou un partage
+       depuis l'accueil ne renvoie pas dans le dernier univers visité. */
+    try {
+      var home = new URL(window.location.href);
+      if (home.searchParams.has("u")) {
+        home.searchParams.delete("u");
+        history.replaceState(null, "", home.toString());
+      }
+    } catch (e) {}
+    /* Le fondu d'entrée est porté par le CSS (@keyframes home-in sur
+       .home-panel.is-visible) : aucune bascule JS, donc aucun risque de rester
+       invisible ; prefers-reduced-motion coupe l'animation plus bas. */
   }
 
   function activate(key, fromUser) {
@@ -430,7 +451,9 @@
     }
     syncVisibility();
     if (fromUser) {
-      try { localStorage.setItem(STORAGE_KEY, key); } catch (e) {}
+      /* Pas de mémorisation persistante du dernier univers (v9) : seul l'URL
+         courante porte l'univers actif, pour que le rechargement d'un lien
+         profond reste fidèle et que le lancement retombe sur la pyramide. */
       try {
         var qs = new URL(window.location.href);
         qs.searchParams.set("u", key);
@@ -581,11 +604,24 @@
     }).catch(function (error) { console.warn("[STONE PWA] Service worker indisponible", error); });
   }
 
-  /* ---- Démarrage : ?u=... > dernier univers > page d'accueil pyramide ---- */
+  /* ---- Démarrage (v9, décision Stan 02/09/2026) ------------------------------
+     « Ta pyramide patrimoniale » est l'écran de lancement de STONE : elle
+     s'affiche après la coque, à chaque ouverture, et c'est de là qu'on part vers
+     Money, Invest ou Estate. Seule exception : le lien profond `?u=<key>`
+     (recette, partage, raccourci) ouvre l'univers demandé sans passer par le
+     hall. La reprise automatique du « dernier univers » (son ancienne clé
+     localStorage et son écriture) est retirée : elle privait Stan de la pyramide
+     dès la 2e ouverture. En session, l'univers actif reste porté par l'URL
+     (history.replaceState) et les iframes restent vivants ; `showHome()` nettoie
+     `?u=` pour que le retour par le logo ◈ STONE soit un vrai retour au hall. */
+  function bootTarget(href) {
+    try { return new URL(href).searchParams.get("u") || ""; } catch (e) { return ""; }
+  }
+  /* Purge unique de l'ancienne clé v8 : les coques déjà installées ne doivent
+     pas garder de résidu orphelin sur l'appareil. */
+  try { localStorage.removeItem("STONE_PWA_LAST_UNIVERSE::" + INSTANCE); } catch (e) {}
   document.getElementById("brandHomeButton").addEventListener("click", function () { showHome(); });
-  var requested = "";
-  try { requested = new URL(window.location.href).searchParams.get("u") || ""; } catch (e) {}
-  if (!requested) { try { requested = localStorage.getItem(STORAGE_KEY) || ""; } catch (e) {} }
+  var requested = bootTarget(window.location.href);
   if (universe(requested)) activate(requested, false);
   else showHome();
 })();
