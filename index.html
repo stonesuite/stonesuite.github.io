@@ -23,7 +23,45 @@
     .shell{display:flex;flex-direction:column;height:100vh;height:100dvh}
     .shell-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px calc(10px);border-bottom:1px solid var(--line);background:var(--panel)}
     .brand{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;padding:0;color:inherit;text-align:left;font:inherit;cursor:pointer}
-    .home-panel .pyr{margin:18px auto 0;display:block;max-width:280px;width:100%}
+    .home-panel .pyr{margin:14px auto 0;display:block;max-width:280px;width:100%}
+    /* Cinematique : la pyramide s'assemble, base d'abord, la pointe couronne.
+       Chaque tranche part de sa position d'arrivee (pas de fill-mode qui pourrait
+       la laisser invisible si l'animation ne demarre jamais : voir AGENTS.md). */
+    @keyframes stone-rise{from{opacity:0;transform:translateY(46px) scaleY(.6)}60%{opacity:1}}
+    @keyframes stone-crown{from{opacity:0;transform:translateY(-64px) rotate(-6deg)}70%{transform:translateY(3px) rotate(0)}}
+    @keyframes stone-label{from{opacity:0}}
+    @keyframes stone-sheen{0%{opacity:0;transform:translateX(-140%) skewX(-18deg)}12%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translateX(260%) skewX(-18deg)}}
+    @keyframes stone-row{from{opacity:0;transform:translateY(14px)}}
+    .home-panel .pyr [data-go]{transform-box:fill-box;transform-origin:50% 100%}
+    .home-panel .pyr .s-money{animation:stone-rise .72s cubic-bezier(.22,1,.36,1) .05s}
+    .home-panel .pyr .s-invest{animation:stone-rise .72s cubic-bezier(.22,1,.36,1) .34s}
+    .home-panel .pyr .s-estate{animation:stone-crown .78s cubic-bezier(.3,1.35,.5,1) .62s}
+    .home-panel .pyr text,.home-panel .pyr .detail{animation:stone-label .5s ease 1s}
+    .pyr-wrap{position:relative;overflow:hidden;max-width:280px;margin:0 auto}
+    .pyr-wrap::after{content:"";position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(90deg,transparent,rgba(255,244,214,.32),transparent);
+      width:38%;opacity:0;animation:stone-sheen 1.15s ease-in-out 1.15s}
+    .home-rows{display:grid;gap:8px;max-width:340px;margin:18px auto 0;width:100%}
+    .home-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;
+      min-height:56px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;
+      background:var(--panel2);color:var(--text);font:inherit;text-align:left;cursor:pointer;
+      animation:stone-row .5s ease both}
+    .home-row:nth-child(1){animation-delay:1.15s}
+    .home-row:nth-child(2){animation-delay:1.28s}
+    .home-row:nth-child(3){animation-delay:1.41s}
+    .home-row:hover,.home-row:focus-visible{border-color:var(--u-accent,var(--gold));outline:none;transform:translateX(2px)}
+    .home-row .r-mark{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+      background:var(--panel);color:var(--u-accent,var(--gold))}
+    .home-row .r-copy{min-width:0}
+    .home-row .r-name{display:block;font-size:13px;font-weight:800;letter-spacing:.02em}
+    .home-row .r-sub{display:block;color:var(--muted);font-size:11px;line-height:1.4}
+    .home-row .r-go{color:var(--muted);font-size:15px}
+    .home-trust{margin-top:16px;color:var(--muted);font-size:10.5px;letter-spacing:.02em}
+    @media(prefers-reduced-motion:reduce){
+      .home-panel .pyr [data-go],.home-panel .pyr text,.home-panel .pyr .detail,
+      .pyr-wrap::after,.home-row{animation:none}
+      .pyr-wrap::after{display:none}
+    }
     .home-panel .pyr [data-go]{cursor:pointer;transition:transform .18s ease,filter .18s ease}
     .home-panel .pyr [data-go]:hover,.home-panel .pyr [data-go]:focus-visible{transform:translateY(-3px);filter:brightness(1.08);outline:none}
     .home-panel .pyr text{font-family:inherit;font-weight:800;letter-spacing:.14em;fill:#141008;pointer-events:none}
@@ -365,7 +403,7 @@
   var homeEl = null;
   function pyramidSlice(u, path, detail, labelX, labelY, labelSize) {
     if (!u) return "";
-    return '<g role="button" tabindex="0" data-go="' + u.key + '" aria-label="Ouvrir STONE ' + u.label + '">' +
+    return '<g class="s-' + u.key + '" role="button" tabindex="0" data-go="' + u.key + '" aria-label="Ouvrir STONE ' + u.label + '">' +
       '<path d="' + path + '" fill="' + u.accent + '"/>' + (detail || "") +
       '<text x="' + labelX + '" y="' + labelY + '" text-anchor="middle" font-size="' + labelSize + '">' + u.label.toUpperCase() + "</text></g>";
   }
@@ -383,7 +421,7 @@
         '<section><div class="mark" aria-hidden="true">◈</div>' +
         '<p class="eyebrow">La suite STONE</p>' +
         "<h1>Ta pyramide patrimoniale</h1>" +
-        '<svg class="pyr" viewBox="0 0 260 200" role="group" aria-label="Pyramide STONE : Money la base, Invest l’étage, Estate la pointe">' +
+        '<div class="pyr-wrap"><svg class="pyr" viewBox="0 0 260 200" role="group" aria-label="Pyramide STONE : Money la base, Invest l’étage, Estate la pointe">' +
         pyramidSlice(byKey.estate, "M130 10 L162 62 H98 Z",
           /* libellé descendu et réduit : à y=44 en 9px il débordait de la pointe */
           '<path class="detail" d="M124 62 V51 H136 V62"/>', 130, 48, 7) +
@@ -391,8 +429,18 @@
           '<path class="detail" d="M86 109 L112 95 L132 102 L156 89"/><circle class="detail" cx="156" cy="89" r="2" fill="rgba(18,13,4,.5)" stroke="none"/>', 130, 104, 12) +
         pyramidSlice(byKey.money, "M56 130 H204 L236 182 H24 Z",
           '<path class="detail" d="M60 166 H200"/>', 130, 160, 13) +
-        "</svg>" +
-        '<p class="home-hint">Touche une tranche : Money soutient tout, Invest fait grandir, Estate couronne.</p>' +
+        "</svg></div>" +
+        '<p class="home-hint">Money soutient tout, Invest fait grandir, Estate couronne.</p>' +
+        '<div class="home-rows">' + ["money", "invest", "estate"].map(function (key) {
+          var u = byKey[key];
+          if (!u) return "";
+          return '<button class="home-row" type="button" data-go="' + u.key + '" style="--u-accent:' + u.accent + '">' +
+            '<span class="r-mark" aria-hidden="true">' + u.glyph + "</span>" +
+            '<span class="r-copy"><span class="r-name">' + u.label + '</span>' +
+            '<span class="r-sub">' + u.tagline + "</span></span>" +
+            '<span class="r-go" aria-hidden="true">→</span></button>';
+        }).join("") + "</div>" +
+        '<p class="home-trust">Tes chiffres restent dans ton espace privé. STONE ne les conserve jamais.</p>' +
         (others.length
           ? '<p style="margin-top:16px">' + others.map(function (u) {
               return '<button class="quiet-button" type="button" data-go="' + u.key + '">' + u.glyph + " " + u.label + "</button>";
