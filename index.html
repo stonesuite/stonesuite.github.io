@@ -27,28 +27,37 @@
     /* Cinematique : la pyramide s'assemble, base d'abord, la pointe couronne.
        Chaque tranche part de sa position d'arrivee (pas de fill-mode qui pourrait
        la laisser invisible si l'animation ne demarre jamais : voir AGENTS.md). */
-    @keyframes stone-rise{from{opacity:0;transform:translateY(46px) scaleY(.6)}60%{opacity:1}}
-    @keyframes stone-crown{from{opacity:0;transform:translateY(-64px) rotate(-6deg)}70%{transform:translateY(3px) rotate(0)}}
-    @keyframes stone-label{from{opacity:0}}
-    @keyframes stone-sheen{0%{opacity:0;transform:translateX(-140%) skewX(-18deg)}12%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translateX(260%) skewX(-18deg)}}
-    @keyframes stone-row{from{opacity:0;transform:translateY(14px)}}
+    @keyframes stone-rise{from{opacity:0;transform:translateY(46px) scaleY(.62)}55%{opacity:1}72%{transform:translateY(-3px) scaleY(1.02)}}
+    @keyframes stone-crown{from{opacity:0;transform:translateY(-70px) rotate(-7deg)}62%{opacity:1}78%{transform:translateY(4px) rotate(.5deg)}}
+    /* Les libelles se resserrent en apparaissant : detail de gravure. */
+    @keyframes stone-label{from{opacity:0;letter-spacing:.7em}60%{opacity:1}}
+    @keyframes stone-detail{from{opacity:0}}
+    /* Le reflet est decoupe sur la silhouette : de la lumiere sur la pierre,
+       pas une bande posee sur la boite. */
+    @keyframes stone-sheen{0%{opacity:0;transform:translateX(-70px)}18%{opacity:1}82%{opacity:1}100%{opacity:0;transform:translateX(330px)}}
+    @keyframes stone-glow{from{opacity:0;transform:scale(.72)}70%{opacity:1}to{opacity:.85;transform:scale(1)}}
+    @keyframes stone-plinth{from{opacity:0;transform:scaleX(.15)}to{opacity:1;transform:scaleX(1)}}
+    @keyframes stone-gem{0%{transform:scale(1)}45%{transform:scale(1.16)}100%{transform:scale(1)}}
+    @keyframes stone-row{from{opacity:0;transform:translateY(16px) scale(.985)}}
     .home-panel .pyr [data-go]{transform-box:fill-box;transform-origin:50% 100%}
     .home-panel .pyr .s-money{animation:stone-rise .72s cubic-bezier(.22,1,.36,1) .05s}
     .home-panel .pyr .s-invest{animation:stone-rise .72s cubic-bezier(.22,1,.36,1) .34s}
     .home-panel .pyr .s-estate{animation:stone-crown .78s cubic-bezier(.3,1.35,.5,1) .62s}
-    .home-panel .pyr text,.home-panel .pyr .detail{animation:stone-label .5s ease 1s}
-    .pyr-wrap{position:relative;overflow:hidden;max-width:280px;margin:0 auto}
-    .pyr-wrap::after{content:"";position:absolute;inset:0;pointer-events:none;
-      background:linear-gradient(90deg,transparent,rgba(255,244,214,.32),transparent);
-      width:38%;opacity:0;animation:stone-sheen 1.15s ease-in-out 1.15s}
+    .home-panel .pyr text{animation:stone-label .62s cubic-bezier(.2,.7,.3,1) 1s}
+    .home-panel .pyr .detail{animation:stone-detail .5s ease 1.05s}
+    .home-panel .pyr .pyr-glow{transform-box:view-box;transform-origin:50% 62%;opacity:.85;animation:stone-glow 1.5s ease-out}
+    .home-panel .pyr .pyr-plinth{transform-box:view-box;transform-origin:50% 50%;animation:stone-plinth .7s cubic-bezier(.22,1,.36,1) .95s}
+    .home-panel .pyr .pyr-sheen{transform-box:view-box;opacity:0;animation:stone-sheen 1.25s ease-in-out 1.2s}
+    .home-panel .mark{animation:stone-gem .9s ease 1.5s}
+    .pyr-wrap{position:relative;max-width:280px;margin:0 auto}
     .home-rows{display:grid;gap:8px;max-width:340px;margin:18px auto 0;width:100%}
     .home-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;
       min-height:56px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;
       background:var(--panel2);color:var(--text);font:inherit;text-align:left;cursor:pointer;
       animation:stone-row .5s ease both}
-    .home-row:nth-child(1){animation-delay:1.15s}
-    .home-row:nth-child(2){animation-delay:1.28s}
-    .home-row:nth-child(3){animation-delay:1.41s}
+    .home-row:nth-child(1){animation-delay:1.5s}
+    .home-row:nth-child(2){animation-delay:1.63s}
+    .home-row:nth-child(3){animation-delay:1.76s}
     .home-row:hover,.home-row:focus-visible{border-color:var(--u-accent,var(--gold));outline:none;transform:translateX(2px)}
     .home-row .r-mark{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
       background:var(--panel);color:var(--u-accent,var(--gold))}
@@ -59,8 +68,9 @@
     .home-trust{margin-top:16px;color:var(--muted);font-size:10.5px;letter-spacing:.02em}
     @media(prefers-reduced-motion:reduce){
       .home-panel .pyr [data-go],.home-panel .pyr text,.home-panel .pyr .detail,
-      .pyr-wrap::after,.home-row{animation:none}
-      .pyr-wrap::after{display:none}
+      .home-panel .pyr .pyr-glow,.home-panel .pyr .pyr-plinth,
+      .home-panel .mark,.home-row{animation:none}
+      .home-panel .pyr .pyr-sheen{display:none}
     }
     .home-panel .pyr [data-go]{cursor:pointer;transition:transform .18s ease,filter .18s ease}
     .home-panel .pyr [data-go]:hover,.home-panel .pyr [data-go]:focus-visible{transform:translateY(-3px);filter:brightness(1.08);outline:none}
@@ -422,6 +432,19 @@
         '<p class="eyebrow">La suite STONE</p>' +
         "<h1>Ta pyramide patrimoniale</h1>" +
         '<div class="pyr-wrap"><svg class="pyr" viewBox="0 0 260 200" role="group" aria-label="Pyramide STONE : Money la base, Invest l’étage, Estate la pointe">' +
+        '<defs>' +
+          '<radialGradient id="stoneGlowGrad" cx="50%" cy="62%" r="52%">' +
+            '<stop offset="0%" stop-color="#c9a567" stop-opacity=".30"/>' +
+            '<stop offset="100%" stop-color="#c9a567" stop-opacity="0"/></radialGradient>' +
+          '<linearGradient id="stoneSheenGrad" x1="0" y1="0" x2="1" y2="0">' +
+            '<stop offset="0%" stop-color="#fff6de" stop-opacity="0"/>' +
+            '<stop offset="50%" stop-color="#fff6de" stop-opacity=".62"/>' +
+            '<stop offset="100%" stop-color="#fff6de" stop-opacity="0"/></linearGradient>' +
+          '<clipPath id="stonePyrClip">' +
+            '<path d="M130 10 L162 62 H98 Z"/><path d="M93 70 H167 L199 122 H61 Z"/><path d="M56 130 H204 L236 182 H24 Z"/>' +
+          '</clipPath>' +
+        '</defs>' +
+        '<ellipse class="pyr-glow" cx="130" cy="124" rx="126" ry="92" fill="url(#stoneGlowGrad)"/>' +
         pyramidSlice(byKey.estate, "M130 10 L162 62 H98 Z",
           /* libellé descendu et réduit : à y=44 en 9px il débordait de la pointe */
           '<path class="detail" d="M124 62 V51 H136 V62"/>', 130, 48, 7) +
@@ -429,6 +452,8 @@
           '<path class="detail" d="M86 109 L112 95 L132 102 L156 89"/><circle class="detail" cx="156" cy="89" r="2" fill="rgba(18,13,4,.5)" stroke="none"/>', 130, 104, 12) +
         pyramidSlice(byKey.money, "M56 130 H204 L236 182 H24 Z",
           '<path class="detail" d="M60 166 H200"/>', 130, 160, 13) +
+        '<path class="pyr-plinth" d="M22 188 H238" stroke="#c9a567" stroke-opacity=".55" stroke-width="1.6" stroke-linecap="round" fill="none"/>' +
+        '<g clip-path="url(#stonePyrClip)" aria-hidden="true"><rect class="pyr-sheen" x="-56" y="0" width="52" height="200" fill="url(#stoneSheenGrad)"/></g>' +
         "</svg></div>" +
         '<p class="home-hint">Money soutient tout, Invest fait grandir, Estate couronne.</p>' +
         '<div class="home-rows">' + ["money", "invest", "estate"].map(function (key) {

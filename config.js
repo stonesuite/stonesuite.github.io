@@ -20,7 +20,7 @@ window.STONE_PWA_UNIVERSES = [
   {
     key: "invest",
     label: "Invest",
-    tagline: "Mon premier portefeuille",
+    tagline: "De l’épargne au capital",
     /* Tranche médiane de la pyramide STONE : les placements, traversés d'une courbe qui monte. */
     glyph: "<svg width='1.15em' height='1.15em' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round' style='vertical-align:-0.15em'><path d='M7.75 11.5 H16.25 L18.5 16 H5.5 Z'/><path d='M8.8 14.3 L11.3 12.9 L13.1 13.6 L15.4 12.4'/><circle cx='15.4' cy='12.4' r='0.85' fill='currentColor' stroke='none'/></svg>",
     accent: "#c9a567",
@@ -31,7 +31,7 @@ window.STONE_PWA_UNIVERSES = [
   {
     key: "estate",
     label: "Estate",
-    tagline: "Immobilier et foncier",
+    tagline: "Du capital à la pierre",
     /* Pointe de la pyramide STONE : le toit, avec sa porte en clef de voûte. */
     glyph: "<svg width='1.15em' height='1.15em' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round' style='vertical-align:-0.15em'><path d='M12 3 L15.5 10 H8.5 Z'/><path d='M10.9 10 V7.9 H13.1 V10'/></svg>",
     accent: "#a88347",
