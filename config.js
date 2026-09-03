@@ -9,7 +9,7 @@ window.STONE_PWA_UNIVERSES = [
   {
     key: "money",
     label: "Money",
-    tagline: "Du revenu au patrimoine",
+    tagline: "Du revenu à l’épargne",
     /* Base de la pyramide STONE : le revenu, socle large posé sur son assise. */
     glyph: "<svg width='1.15em' height='1.15em' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round' style='vertical-align:-0.15em'><path d='M4.75 17.5 H19.25 L21 21 H3 Z'/><path d='M6.4 19.3 H17.6'/></svg>",
     accent: "#e0c18a",

@@ -23,7 +23,10 @@
     .shell{display:flex;flex-direction:column;height:100vh;height:100dvh}
     .shell-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px calc(10px);border-bottom:1px solid var(--line);background:var(--panel)}
     .brand{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;padding:0;color:inherit;text-align:left;font:inherit;cursor:pointer}
-    .home-panel .pyr{margin:14px auto 0;display:block;max-width:280px;width:100%}
+    /* L'accueil peut dépasser la hauteur d'un petit écran (pyramide + trois
+       univers + guides) : il défile au lieu de passer sous la barre d'onglets. */
+    .home-panel{overflow-y:auto;align-content:safe center;padding-block:18px}
+    .home-panel .pyr{margin:12px auto 0;display:block;max-width:min(280px,64vh);width:100%}
     /* Cinematique : la pyramide s'assemble, base d'abord, la pointe couronne.
        Chaque tranche part de sa position d'arrivee (pas de fill-mode qui pourrait
        la laisser invisible si l'animation ne demarre jamais : voir AGENTS.md). */
@@ -65,11 +68,16 @@
     .home-row .r-name{display:block;font-size:13px;font-weight:800;letter-spacing:.02em}
     .home-row .r-sub{display:block;color:var(--muted);font-size:11px;line-height:1.4}
     .home-row .r-go{color:var(--muted);font-size:15px}
-    .home-trust{margin-top:16px;color:var(--muted);font-size:10.5px;letter-spacing:.02em}
+    .home-guides{margin-top:18px}
+    .home-guides a{display:inline-block;padding:9px 16px;border:1px solid var(--line);border-radius:999px;
+      background:var(--panel2);color:var(--text);font-size:11.5px;font-weight:700;text-decoration:none;
+      animation:stone-row .5s ease both;animation-delay:1.89s}
+    .home-guides a:hover,.home-guides a:focus-visible{border-color:var(--gold);color:var(--gold);outline:none}
+    .home-trust{margin-top:14px;color:var(--muted);font-size:10.5px;letter-spacing:.02em}
     @media(prefers-reduced-motion:reduce){
       .home-panel .pyr [data-go],.home-panel .pyr text,.home-panel .pyr .detail,
       .home-panel .pyr .pyr-glow,.home-panel .pyr .pyr-plinth,
-      .home-panel .mark,.home-row{animation:none}
+      .home-panel .mark,.home-row,.home-guides a{animation:none}
       .home-panel .pyr .pyr-sheen{display:none}
     }
     .home-panel .pyr [data-go]{cursor:pointer;transition:transform .18s ease,filter .18s ease}
@@ -465,6 +473,7 @@
             '<span class="r-sub">' + u.tagline + "</span></span>" +
             '<span class="r-go" aria-hidden="true">→</span></button>';
         }).join("") + "</div>" +
+        '<p class="home-guides"><a href="guides/">Découvrir la suite — les guides</a></p>' +
         '<p class="home-trust">Tes chiffres restent dans ton espace privé. STONE ne les conserve jamais.</p>' +
         (others.length
           ? '<p style="margin-top:16px">' + others.map(function (u) {

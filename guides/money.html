@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e1526">
+<link rel="icon" href="../icons/stone-192.png" type="image/png">
+<title>STONE Money</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#f3f0e8; --paper2:#eae5d9; --ink:#15181f; --ink2:#565f6e; --line:#dcd4c3;
+  --card:#fffdf7; --accent:#8a6526; --accent-soft:#e0c18a; --pos:#1c7a54; --neg:#a83a3a;
+  --p-bg:#0e1526; --p-card:#151f36; --p-line:#22304e; --p-ink:#e8edf6; --p-mut:#8b96ad; --p-gold:#e0c18a;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0b0f18; --paper2:#101623; --ink:#eef1f7; --ink2:#98a3b6; --line:#232d42;
+  --card:#121926; --accent:#e0c18a; --accent-soft:#c9a567; --pos:#4cc593; --neg:#ef7b7b;}}
+:root[data-theme="dark"]{
+  --paper:#0b0f18; --paper2:#101623; --ink:#eef1f7; --ink2:#98a3b6; --line:#232d42;
+  --card:#121926; --accent:#e0c18a; --accent-soft:#c9a567; --pos:#4cc593; --neg:#ef7b7b;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Nunito Sans",system-ui,sans-serif;font-size:17px;line-height:1.68}
+h1,h2,h3{font-family:"Sora",system-ui,sans-serif;line-height:1.12;text-wrap:balance;margin:0}
+p{margin:.55em 0 0;max-width:36em}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.num{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+
+/* famille */
+.family{background:var(--paper2);border-bottom:1px solid var(--line);font-size:12.5px}
+.family .wrap{display:flex;gap:18px;align-items:center;flex-wrap:wrap;padding-top:11px;padding-bottom:11px}
+.family b{font-family:"Sora";letter-spacing:.3em;font-size:11px;color:var(--accent)}
+.family a{color:var(--ink2);text-decoration:none;border-bottom:1px solid transparent}
+.family a:hover{color:var(--ink);border-color:var(--accent)}
+.family .here{color:var(--ink);font-weight:800}
+
+/* hero */
+.hero{padding:74px 0 52px;background:radial-gradient(1100px 460px at 78% -12%,color-mix(in srgb,var(--accent-soft) 26%,transparent),transparent 70%)}
+.hero .wrap{display:flex;gap:56px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.hero-txt{flex:1 1 400px;min-width:min(320px,100%)}
+.eyebrow{font-family:"Sora";font-weight:700;letter-spacing:.34em;font-size:11px;color:var(--accent);text-transform:uppercase}
+.hero h1{font-size:clamp(38px,6vw,62px);margin-top:16px;letter-spacing:-.02em}
+.hero .promise{font-size:21px;color:var(--ink2);margin-top:18px;max-width:20em}
+.hero .sub{margin-top:20px;font-size:16px}
+.badges{margin-top:26px;display:flex;gap:9px;flex-wrap:wrap}
+.badge{font-size:12.5px;font-weight:700;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink2)}
+
+/* téléphone */
+.phone{width:274px;flex:0 0 auto;background:#05080f;border-radius:44px;padding:11px;box-shadow:0 30px 70px -20px rgba(8,12,22,.5),0 0 0 1px rgba(255,255,255,.07) inset}
+.screen{position:relative;background:var(--p-bg);border-radius:34px;overflow:hidden;height:552px;color:var(--p-ink);font-size:12px;line-height:1.45;display:flex;flex-direction:column}
+.sb{display:flex;justify-content:space-between;padding:13px 20px 5px;font-size:10px;color:var(--p-mut);font-weight:700}
+.ab{display:flex;align-items:center;justify-content:space-between;padding:8px 15px 6px}
+.ab .t{font-family:"Sora";font-weight:700;letter-spacing:.28em;font-size:10.5px}
+.ab .s{color:var(--p-mut);font-size:9px}
+.ab .icons{color:var(--p-mut);font-size:12px;letter-spacing:.18em}
+.pbody{flex:1;overflow:hidden;padding:8px 14px 10px;display:flex;flex-direction:column;gap:9px}
+.kick{font-family:"Sora";letter-spacing:.3em;font-size:8.5px;color:var(--p-mut);font-weight:700}
+.pc{background:var(--p-card);border:1px solid var(--p-line);border-radius:14px;padding:11px 12px}
+.lab{font-size:9.5px;color:var(--p-mut)}
+.big{font-size:21px;font-weight:700}
+.gold{color:var(--p-gold)}.up{color:#5fd6a2}.down{color:#f08c8c}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.line{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #1b2740}
+.line:last-child{border-bottom:0}
+.tabs{display:flex;border-top:1px solid #1c2740;background:#0a0f1c;padding:7px 4px 11px}
+.tb{flex:1;text-align:center;color:var(--p-mut);font-size:9px;font-weight:700}
+.tb .g{display:block;font-size:12px;margin-bottom:2px}
+.tb.on{color:var(--p-gold)}
+
+/* sections */
+section{padding:0}
+.band{padding:64px 0;border-top:1px solid var(--line)}
+.band h2{font-size:clamp(26px,3.6vw,38px);letter-spacing:-.015em}
+.lede{font-size:19px;color:var(--ink2);margin-top:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:34px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+.c .ico{font-size:22px;color:var(--accent)}
+.c h3{font-size:17px;margin-top:12px}
+.c p{font-size:15.5px;color:var(--ink2)}
+
+.feat{display:flex;gap:60px;align-items:center;flex-wrap:wrap;justify-content:space-between;padding:56px 0;border-top:1px solid var(--line)}
+.feat.rev{flex-direction:row-reverse}
+.feat-txt{flex:1 1 420px;min-width:min(320px,100%)}
+.tag{display:inline-block;font-family:"Sora";font-weight:700;font-size:11px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase}
+.feat h3{font-size:clamp(22px,3vw,30px);margin-top:12px}
+.feat .what{margin-top:14px}
+.why{margin-top:18px;padding:14px 18px;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent-soft) 16%,var(--card));border-radius:0 14px 14px 0}
+.why b{color:var(--ink)}
+.why p{font-size:15.5px;color:var(--ink2);margin:0}
+
+.story{background:var(--paper2);padding:64px 0;border-top:1px solid var(--line)}
+.cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:32px}
+.case{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+.case .who{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.case h3{font-size:18px;margin-top:10px}
+.case p{font-size:15.5px;color:var(--ink2)}
+.case .out{margin-top:14px;font-size:15px;font-weight:700;color:var(--pos)}
+
+.steps{counter-reset:s;display:grid;gap:14px;margin-top:30px;max-width:44em}
+.step{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.step .n{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:"Sora";font-weight:700;font-size:14px}
+.step h3{font-size:16px}
+.step p{font-size:15px;color:var(--ink2);margin-top:3px}
+
+.cta{padding:66px 0 74px;border-top:1px solid var(--line);text-align:center}
+.cta h2{font-size:clamp(26px,3.6vw,36px)}
+.cta p{margin:14px auto 0}
+.btn{display:inline-block;margin-top:26px;background:var(--accent);color:var(--card);font-weight:800;padding:15px 30px;border-radius:14px;text-decoration:none;font-size:16px}
+.foot{padding:26px 0 40px;color:var(--ink2);font-size:13px;text-align:center}
+@media(max-width:760px){.feat{gap:34px;padding:44px 0}.phone{width:252px}.screen{height:512px}.hero{padding:52px 0 36px}}
+</style>
+</head>
+<body>
+
+<nav class="family"><div class="wrap">
+  <b>◈ LA SUITE STONE</b>
+  <a href="../" style="color:inherit;text-decoration:none;font-weight:800">&#8592; Ouvrir l&#8217;application</a>
+  <span class="here">Money</span>
+  <a href="invest.html">Invest</a>
+  <a href="estate.html">Estate</a>
+  <a href="index.html">La suite entière</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="hero-txt">
+    <p class="eyebrow">STONE Money</p>
+    <h1>Du revenu à l’épargne.</h1>
+    <p class="promise">Savoir enfin où va votre argent — et ce qu'il vous reste vraiment pour construire.</p>
+    <p class="sub">Money est la base de votre pyramide patrimoniale. Il ne compte pas vos dépenses
+      pour vous culpabiliser : il sépare ce qui part en fumée de ce qui construit, et vous rend
+      la partie de votre revenu que vous ne voyiez plus.</p>
+    <div class="badges">
+      <span class="badge">Votre mois en un écran</span>
+      <span class="badge">Dettes et investissements distingués</span>
+      <span class="badge">Vos données chez vous</span>
+    </div>
+  </div>
+  <div class="phone"><div class="screen">
+    <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
+    <div class="ab"><div><div class="t">STONE</div><div class="s">Money · Du revenu à l’épargne</div></div><span class="icons">☀☾△ 👁</span></div>
+    <div class="pbody">
+      <div class="kick">DÉCIDER AUJOURD'HUI</div>
+      <div style="font-family:Sora;font-weight:700;font-size:20px">Mon mois</div>
+      <div class="lab">septembre 2026</div>
+      <div class="pc" style="border-left:3px solid var(--p-gold)">
+        <div class="lab">Disponible sur mes comptes courants</div>
+        <div class="num big gold">263 000 XOF</div>
+        <div class="lab">Calculé à partir de vos comptes et mouvements réels</div>
+      </div>
+      <div class="pc">
+        <div class="line"><span class="lab">Flux net du mois</span><span class="num up">+263 000</span></div>
+        <div class="line"><span class="lab">Sorties totales</span><span class="num">432 000</span></div>
+        <div class="line"><span class="lab">Dernier mouvement</span><span class="lab">à l'instant</span></div>
+      </div>
+      <div class="row2">
+        <div class="pc"><div class="lab">Revenus</div><div class="num up" style="font-size:14px">695 000</div></div>
+        <div class="pc"><div class="lab">Dépenses de vie</div><div class="num down" style="font-size:14px">−365 000</div></div>
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="tb on"><span class="g">◉</span>Mois</div><div class="tb"><span class="g">↕</span>Mouvements</div>
+      <div class="tb"><span class="g">+</span>Ajouter</div><div class="tb"><span class="g">▤</span>Budget</div>
+      <div class="tb"><span class="g">•••</span>Plus</div>
+    </div>
+  </div></div>
+</div></header>
+
+<section class="band"><div class="wrap">
+  <h2>Le salaire arrive. Trois semaines plus tard, il a disparu.</h2>
+  <p class="lede">Vous ne savez pas exactement où. Vous avez une intuition — le loyer, l'école, les
+    soutiens, l'essence — mais aucune image nette. Et surtout : impossible de dire combien il vous
+    reste réellement pour investir, ni quand.</p>
+  <div class="cards">
+    <div class="c"><div class="ico">◔</div><h3>Le flou du milieu de mois</h3>
+      <p>Vous consultez votre solde bancaire, mais il ne dit rien : il mélange ce qui est déjà
+      engagé et ce qui est vraiment disponible.</p></div>
+    <div class="c"><div class="ico">⇄</div><h3>La dette confondue avec la dépense</h3>
+      <p>Un remboursement de crédit prélevé à la source ressemble à une dépense. C'en est
+      l'inverse : c'est du patrimoine que vous rachetez.</p></div>
+    <div class="c"><div class="ico">◷</div><h3>L'avenir invisible</h3>
+      <p>Quand ce prélèvement s'arrêtera-t-il ? Que se libérera-t-il ce mois-là ? Sans réponse,
+      impossible de planifier quoi que ce soit.</p></div>
+  </div>
+</div></section>
+
+<section class="feat"><div class="wrap" style="display:contents"></div></section>
+
+<div class="wrap">
+  <section class="feat">
+    <div class="feat-txt">
+      <span class="tag">Mon mois</span>
+      <h3>Un seul chiffre qui dit la vérité</h3>
+      <p class="what">L'écran d'accueil de Money affiche ce que vous avez réellement disponible
+        sur vos comptes courants, calculé depuis vos comptes et vos mouvements — pas un solde
+        bancaire brut. En dessous : revenus, dépenses de vie, sorties totales, flux net.</p>
+      <div class="why"><p><b>Ce que ça change :</b> vous arrêtez de faire le calcul de tête au
+        distributeur. Vous ouvrez l'application, vous voyez 263 000 XOF, et vous savez que c'est
+        vrai — parce que c'est vous qui avez saisi ce qu'il y a derrière.</p></div>
+    </div>
+    <div class="phone"><div class="screen">
+      <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Money · Mon mois</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="pbody">
+        <div class="pc" style="border-left:3px solid var(--p-gold)">
+          <div class="lab">Disponible</div><div class="num big gold">263 000 XOF</div></div>
+        <div class="kick">RÉPARTITION DU MOIS</div>
+        <div class="pc">
+          <div class="line"><span>Revenus</span><span class="num up">695 000</span></div>
+          <div class="line"><span>Charges fixes</span><span class="num">−95 000</span></div>
+          <div class="line"><span>Soutien familial</span><span class="num">−250 000</span></div>
+          <div class="line"><span>Dîme et dons</span><span class="num">−70 000</span></div>
+          <div class="line"><span>Remboursement crédit</span><span class="num gold">−67 000</span></div>
+        </div>
+        <div class="pc" style="border-left:3px solid #3dbd8b">
+          <div class="lab">Dont patrimoine racheté ce mois</div>
+          <div class="num up" style="font-size:15px">67 000 XOF</div></div>
+      </div>
+      <div class="tabs"><div class="tb on"><span class="g">◉</span>Mois</div><div class="tb"><span class="g">↕</span>Mouvements</div><div class="tb"><span class="g">+</span>Ajouter</div><div class="tb"><span class="g">▤</span>Budget</div><div class="tb"><span class="g">•••</span>Plus</div></div>
+    </div></div>
+  </section>
+
+  <section class="feat rev">
+    <div class="feat-txt">
+      <span class="tag">Mouvements</span>
+      <h3>Money sait qu'une dette n'est pas une dépense</h3>
+      <p class="what">Chaque mouvement porte sa nature : charge fixe, dépense variable, soutien
+        familial, dîme et dons, épargne, investissement, remboursement de crédit. Vous ajoutez,
+        modifiez et supprimez librement.</p>
+      <div class="why"><p><b>Ce que ça change :</b> le remboursement d'un crédit employeur à 0 %
+        utilisé pour acheter des actions cesse d'apparaître comme une dépense. Money le compte
+        pour ce qu'il est — une part de votre patrimoine que vous rachetez chaque mois.</p></div>
+    </div>
+    <div class="phone"><div class="screen">
+      <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Money · Ajouter</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="pbody">
+        <div style="font-family:Sora;font-weight:700;font-size:17px">Ajouter un mouvement</div>
+        <div class="pc"><div class="lab">Nature</div><div><b>Remboursement de crédit</b></div></div>
+        <div class="pc"><div class="lab">Libellé</div><div>Crédit employeur actions</div></div>
+        <div class="row2">
+          <div class="pc"><div class="lab">Date</div><div class="num">02/09/2026</div></div>
+          <div class="pc"><div class="lab">Montant</div><div class="num gold">67 000</div></div>
+        </div>
+        <div class="pc" style="border-left:3px solid #3dbd8b">
+          <div class="lab">Money comprend</div>
+          <div style="font-size:11px">Ce n'est pas une dépense de consommation : c'est du capital
+            que vous rachetez. Suivi à part, hors de vos dépenses de vie.</div></div>
+        <div style="background:var(--p-gold);color:#161206;font-weight:800;text-align:center;border-radius:11px;padding:9px;font-size:12px">Enregistrer</div>
+      </div>
+      <div class="tabs"><div class="tb"><span class="g">◉</span>Mois</div><div class="tb"><span class="g">↕</span>Mouvements</div><div class="tb on"><span class="g">+</span>Ajouter</div><div class="tb"><span class="g">▤</span>Budget</div><div class="tb"><span class="g">•••</span>Plus</div></div>
+    </div></div>
+  </section>
+
+  <section class="feat">
+    <div class="feat-txt">
+      <span class="tag">Crédits</span>
+      <h3>Voir la date où votre argent revient</h3>
+      <p class="what">Money suit chaque crédit : le capital restant, le nombre de mensualités
+        déjà payées, celles qui restent, et le taux. Un crédit employeur à 0 % sur douze mois
+        apparaît pour ce qu'il est.</p>
+      <div class="why"><p><b>Ce que ça change :</b> vous ne subissez plus le prélèvement, vous
+        l'attendez. Vous savez que dans dix mois, 67 000 XOF redeviennent disponibles chaque mois
+        — et vous pouvez décider dès aujourd'hui de ce qu'ils financeront.</p></div>
+    </div>
+    <div class="phone"><div class="screen">
+      <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Money · Crédits</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="pbody">
+        <div class="kick">MES CRÉDITS</div>
+        <div class="pc" style="border-left:3px solid var(--p-gold)">
+          <div><b>Crédit employeur — actions</b></div>
+          <div class="lab">Taux 0 % · prélevé à la source</div>
+          <div class="line" style="margin-top:6px"><span class="lab">Mensualité</span><span class="num">67 000</span></div>
+          <div class="line"><span class="lab">Déjà payé</span><span class="num">2 / 12</span></div>
+          <div class="line"><span class="lab">Restant dû</span><span class="num gold">670 000</span></div>
+        </div>
+        <div class="pc"><div class="lab">Libération prévue</div>
+          <div><b>Juillet 2027</b></div>
+          <div class="lab">67 000 XOF par mois redeviennent disponibles</div></div>
+        <div class="pc"><div class="lab">Progression</div>
+          <div style="height:8px;border-radius:5px;background:#22304e;overflow:hidden;margin-top:6px">
+            <div style="width:17%;height:100%;background:var(--p-gold)"></div></div></div>
+      </div>
+      <div class="tabs"><div class="tb"><span class="g">◉</span>Mois</div><div class="tb"><span class="g">↕</span>Mouvements</div><div class="tb"><span class="g">+</span>Ajouter</div><div class="tb"><span class="g">▤</span>Budget</div><div class="tb on"><span class="g">•••</span>Plus</div></div>
+    </div></div>
+  </section>
+
+  <section class="feat rev">
+    <div class="feat-txt">
+      <span class="tag">Budget · Objectifs · Tendances</span>
+      <h3>Comparer ce que vous aviez prévu à ce que vous avez fait</h3>
+      <p class="what">Un budget par catégorie, des objectifs du mois, une vue Tendances et un
+        Historique complet. Vos comptes sont listés à part, avec leur solde.</p>
+      <div class="why"><p><b>Ce que ça change :</b> le budget cesse d'être une bonne résolution
+        de janvier. Vous voyez, mois après mois, l'écart réel entre l'intention et la vie — et
+        c'est cet écart qui vous apprend quelque chose, pas le chiffre isolé.</p></div>
+    </div>
+    <div class="phone"><div class="screen">
+      <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Money · Budget</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="pbody">
+        <div style="font-family:Sora;font-weight:700;font-size:17px">Budget du mois</div>
+        <div class="pc">
+          <div class="line"><span>Charges fixes</span><span class="num">95 / 100 k</span></div>
+          <div style="height:6px;border-radius:4px;background:#22304e;overflow:hidden"><div style="width:95%;height:100%;background:#5fd6a2"></div></div>
+          <div class="line" style="margin-top:9px"><span>Soutien familial</span><span class="num">250 / 220 k</span></div>
+          <div style="height:6px;border-radius:4px;background:#22304e;overflow:hidden"><div style="width:100%;height:100%;background:#f08c8c"></div></div>
+          <div class="line" style="margin-top:9px"><span>Dîme et dons</span><span class="num">70 / 70 k</span></div>
+          <div style="height:6px;border-radius:4px;background:#22304e;overflow:hidden"><div style="width:100%;height:100%;background:var(--p-gold)"></div></div>
+        </div>
+        <div class="kick">TENDANCES</div>
+        <div class="pc"><svg viewBox="0 0 200 54" style="width:100%;height:auto"><polyline points="0,42 33,36 66,39 99,28 132,31 165,20 198,16" fill="none" stroke="#e0c18a" stroke-width="2.4" stroke-linecap="round"/><circle cx="198" cy="16" r="3" fill="#e0c18a"/></svg>
+          <div class="lab">Disponible en fin de mois · 6 derniers mois</div></div>
+      </div>
+      <div class="tabs"><div class="tb"><span class="g">◉</span>Mois</div><div class="tb"><span class="g">↕</span>Mouvements</div><div class="tb"><span class="g">+</span>Ajouter</div><div class="tb on"><span class="g">▤</span>Budget</div><div class="tb"><span class="g">•••</span>Plus</div></div>
+    </div></div>
+  </section>
+</div>
+
+<section class="story"><div class="wrap">
+  <p class="eyebrow">Cas d'usage réels</p>
+  <h2>Trois situations où Money change la décision</h2>
+  <div class="cases">
+    <div class="case"><div class="who">Le mois du salaire</div>
+      <h3>« Est-ce que je peux investir ce mois-ci ? »</h3>
+      <p>695 000 de salaire, 432 000 de sorties dont 67 000 de remboursement. Money affiche
+        263 000 disponibles — et rappelle que 67 000 d'entre eux étaient du patrimoine racheté.</p>
+      <div class="out">→ La réponse cesse d'être une intuition.</div></div>
+    <div class="case"><div class="who">Le soutien familial</div>
+      <h3>« Combien j'envoie vraiment, chaque mois ? »</h3>
+      <p>200 000 pour votre fille en France, 50 000 pour votre mère. Séparés des dépenses de vie,
+        ils apparaissent pour ce qu'ils sont : un engagement régulier, pas un imprévu.</p>
+      <div class="out">→ Vous le budgétez au lieu de le subir.</div></div>
+    <div class="case"><div class="who">La fin du crédit</div>
+      <h3>« Que ferai-je des 67 000 quand ils reviendront ? »</h3>
+      <p>Money connaît le nombre de mensualités restantes et la date de libération.</p>
+      <div class="out">→ Vous préparez la décision dix mois à l'avance.</div></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <p class="eyebrow">Commencer</p>
+  <h2>Une seule question pour démarrer</h2>
+  <p class="lede">Money ne vous demande pas de tout reconstituer. Il commence par une question,
+    puis vous entrez dans l'application.</p>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><div><h3>Ouvrez Money dans STONE</h3>
+      <p>Depuis la pyramide d'accueil, touchez la base — Money en est le socle.</p></div></div>
+    <div class="step"><div class="n">2</div><div><h3>Créez votre espace privé</h3>
+      <p>Money crée un classeur qui vous appartient, dans votre propre Drive. Personne d'autre n'y accède.</p></div></div>
+    <div class="step"><div class="n">3</div><div><h3>Répondez à la question d'ouverture</h3>
+      <p>De quoi disposez-vous aujourd'hui ? C'est le seul point de départ nécessaire.</p></div></div>
+    <div class="step"><div class="n">4</div><div><h3>Enregistrez vos mouvements du mois</h3>
+      <p>Salaire, charges, soutiens, remboursements. Mon mois se construit tout seul.</p></div></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2>Aller plus loin</h2>
+  <div class="cards">
+    <div class="c"><div class="ico">◈</div><h3>Ce que Money libère, Invest le fait grandir</h3>
+      <p>L'étage au-dessus de la pyramide : vos placements à la BRVM, leur performance réelle,
+      le marché. Money dit combien vous pouvez investir ; Invest dit ce que cela donne.</p></div>
+    <div class="c"><div class="ico">▲</div><h3>Et le capital devient pierre</h3>
+      <p>Estate couronne la pyramide : vos biens, leur coût réel, leur valeur, leurs papiers.</p></div>
+    <div class="c"><div class="ico">☀</div><h3>Trois apparences, un œil</h3>
+      <p>Jour, Nuit ou Sable selon la lumière. Et un œil qui masque tous vos montants d'un geste
+      quand quelqu'un regarde par-dessus votre épaule.</p></div>
+  </div>
+</div></section>
+
+<section class="cta"><div class="wrap">
+  <p class="eyebrow">Votre argent, chez vous</p>
+  <h2>Money ne conserve rien. Vous, si.</h2>
+  <p>Vos données vivent dans un classeur qui vous appartient, dans votre propre Drive. STONE ne
+    les stocke pas, ne les revend pas, ne les lit pas. L'application a besoin du réseau pour
+    parler à votre espace — jamais pour envoyer vos chiffres ailleurs.</p>
+  <a class="btn" href="https://stonesuite.github.io/?u=money">Ouvrir STONE Money</a>
+  <div class="foot">STONE Money · Du revenu à l’épargne · Guide utilisateur, septembre 2026</div>
+</div></section>
+
+</body>
+</html>

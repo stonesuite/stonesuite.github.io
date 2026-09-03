@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c1119">
+<link rel="icon" href="../icons/stone-192.png" type="image/png">
+<title>La suite STONE</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#f4f1e9; --paper2:#eae4d7; --ink:#13161d; --ink2:#525a68; --line:#dad2c0;
+  --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;
+  --pos:#1c7a54;
+  --p-bg:#0c1119; --p-card:#141c29; --p-line:#243147; --p-ink:#eef2f8; --p-mut:#8f9bb0;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
+  --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347; --pos:#4cc593;}}
+:root[data-theme="dark"]{
+  --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
+  --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347; --pos:#4cc593;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Nunito Sans",system-ui,sans-serif;font-size:17px;line-height:1.68}
+h1,h2,h3{font-family:"Sora",system-ui,sans-serif;line-height:1.1;text-wrap:balance;margin:0}
+p{margin:.6em 0 0;max-width:36em}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+a{color:var(--accent)}
+.num{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+.eyebrow{font-family:"Sora";font-weight:700;letter-spacing:.34em;font-size:11px;color:var(--accent);text-transform:uppercase}
+
+/* hero */
+.hero{padding:84px 0 44px;text-align:center;background:radial-gradient(900px 520px at 50% -8%,color-mix(in srgb,var(--money) 24%,transparent),transparent 68%)}
+.hero h1{font-size:clamp(40px,7vw,74px);margin-top:18px;letter-spacing:-.025em}
+.hero .promise{font-size:21px;color:var(--ink2);margin:20px auto 0;max-width:27em}
+.pyr{display:block;margin:38px auto 0;max-width:420px;width:100%}
+.pyr [data-go]{cursor:pointer}
+.pyr text{font-family:"Sora";font-weight:800;letter-spacing:.14em;fill:#171208}
+.pyr .detail{stroke:rgba(20,15,4,.45);stroke-width:1.5;fill:none;stroke-linecap:round}
+.hero .caption{margin-top:16px;color:var(--ink2);font-size:15px}
+
+.band{padding:70px 0;border-top:1px solid var(--line)}
+.band h2{font-size:clamp(27px,3.8vw,40px);letter-spacing:-.018em}
+.lede{font-size:19px;color:var(--ink2);margin-top:16px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:34px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px}
+.c .ico{font-size:24px}.c h3{font-size:17px;margin-top:12px}.c p{font-size:15.5px;color:var(--ink2)}
+
+/* étages */
+.floors{display:grid;gap:16px;margin-top:36px}
+.floor{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 28px;border-left:5px solid var(--u)}
+.floor .mark{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;background:color-mix(in srgb,var(--u) 20%,transparent);color:var(--u);font-size:24px}
+.floor h3{font-size:21px}
+.floor .role{font-family:"Sora";font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--u)}
+.floor p{font-size:16px;color:var(--ink2)}
+.floor .ask{margin-top:14px;font-weight:700;color:var(--ink)}
+.floor .go{display:inline-block;margin-top:16px;font-weight:800;font-size:14.5px;color:var(--u);text-decoration:none;border-bottom:2px solid color-mix(in srgb,var(--u) 40%,transparent)}
+
+/* flux */
+.flow{background:var(--paper2);padding:70px 0;border-top:1px solid var(--line)}
+.chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:36px}
+.node{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;position:relative}
+.node .st{font-family:"Sora";font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.node h3{font-size:17px;margin-top:9px}
+.node p{font-size:15px;color:var(--ink2)}
+.node .arrow{position:absolute;right:-11px;top:50%;transform:translateY(-50%);color:var(--accent);font-size:18px}
+@media(max-width:820px){.node .arrow{display:none}}
+
+.quote{margin-top:38px;padding:26px 30px;border-left:4px solid var(--accent);background:var(--card);border-radius:0 18px 18px 0}
+.quote p{font-size:19px;font-style:italic;color:var(--ink);max-width:40em}
+
+.principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:34px}
+.pr{padding:22px 24px;border:1px solid var(--line);border-radius:18px;background:var(--card)}
+.pr h3{font-size:16px;color:var(--accent)}.pr p{font-size:15px;color:var(--ink2)}
+
+.steps{display:grid;gap:14px;margin-top:32px;max-width:46em}
+.step{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.step .n{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:"Sora";font-weight:700;font-size:14px}
+.step h3{font-size:16px}.step p{font-size:15px;color:var(--ink2);margin-top:3px}
+
+.guides{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:34px}
+.g{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px;border-top:4px solid var(--u)}
+.g:hover{border-color:var(--u)}
+.g .ico{font-size:22px;color:var(--u)}
+.g h3{font-size:19px;margin-top:12px}
+.g p{font-size:15px;color:var(--ink2)}
+.g .open{margin-top:16px;font-weight:800;color:var(--u);font-size:14.5px}
+
+.cta{padding:70px 0 80px;border-top:1px solid var(--line);text-align:center}
+.cta h2{font-size:clamp(27px,3.8vw,38px)}.cta p{margin:16px auto 0}
+.btn{display:inline-block;margin-top:28px;background:var(--accent);color:var(--card);font-weight:800;padding:16px 32px;border-radius:14px;text-decoration:none;font-size:16px}
+.foot{padding:28px 0 44px;color:var(--ink2);font-size:13px;text-align:center}
+@media(max-width:700px){.hero{padding:56px 0 30px}.floor{grid-template-columns:1fr;gap:14px}}
+</style>
+</head>
+<body><nav style="background:var(--paper2);border-bottom:1px solid var(--line);font-size:12.5px"><div class="wrap" style="display:flex;gap:18px;align-items:center;padding:11px 24px"><b style="font-family:Sora;letter-spacing:.3em;font-size:11px;color:var(--accent)">&#9672; LA SUITE STONE</b><a href="../" style="color:inherit;text-decoration:none;font-weight:800">&#8592; Ouvrir l&#8217;application</a></div></nav>
+
+
+<header class="hero"><div class="wrap">
+  <p class="eyebrow">◈ La suite STONE</p>
+  <h1>Un seul patrimoine,<br>trois dimensions.</h1>
+  <p class="promise">Votre argent, vos placements et vos biens ne sont pas trois sujets séparés.
+    Ce sont trois étages d'une même construction — et STONE est la première application qui les
+    montre ensemble.</p>
+
+  <svg class="pyr" viewBox="0 0 260 208" role="img" aria-label="La pyramide STONE : Money la base, Invest l'étage, Estate la pointe">
+    <defs>
+      <radialGradient id="glow" cx="50%" cy="62%" r="52%">
+        <stop offset="0%" stop-color="#c9a567" stop-opacity=".30"/>
+        <stop offset="100%" stop-color="#c9a567" stop-opacity="0"/></radialGradient>
+    </defs>
+    <ellipse cx="130" cy="124" rx="128" ry="94" fill="url(#glow)"/>
+    <g><path d="M130 10 L162 62 H98 Z" fill="#a88347"/>
+       <path class="detail" d="M124 62 V51 H136 V62"/>
+       <text x="130" y="49" text-anchor="middle" font-size="7.5">ESTATE</text></g>
+    <g><path d="M93 70 H167 L199 122 H61 Z" fill="#c9a567"/>
+       <path class="detail" d="M86 109 L112 95 L132 102 L156 89"/>
+       <circle cx="156" cy="89" r="2.4" fill="rgba(20,15,4,.5)"/>
+       <text x="130" y="105" text-anchor="middle" font-size="12">INVEST</text></g>
+    <g><path d="M56 130 H204 L236 182 H24 Z" fill="#e0c18a"/>
+       <path class="detail" d="M60 166 H200"/>
+       <text x="130" y="161" text-anchor="middle" font-size="13">MONEY</text></g>
+    <path d="M22 190 H238" stroke="#c9a567" stroke-opacity=".55" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+  </svg>
+  <p class="caption">Money soutient tout. Invest fait grandir. Estate couronne.</p>
+</div></header>
+
+<section class="band"><div class="wrap">
+  <p class="eyebrow">Pourquoi STONE existe</p>
+  <h2>Personne ne voit son patrimoine en entier.</h2>
+  <p class="lede">Le salaire est dans une application bancaire. Les actions, dans un relevé papier
+    trimestriel. Le terrain, dans une chemise cartonnée et deux conversations WhatsApp. Chaque
+    morceau existe. L'ensemble, jamais.</p>
+  <p>Résultat : on décide à l'aveugle. On investit sans savoir ce qu'on peut réellement engager.
+    On garde un terrain sans savoir ce qu'il a coûté. On croit gagner de l'argent parce qu'un
+    chiffre a monté, sans compter les frais. Et on transmet un patrimoine que personne d'autre
+    ne sait lire.</p>
+  <div class="quote"><p>« STONE n'a pas été conçu pour gérer de l'argent. Il a été conçu pour
+    qu'un patrimoine cesse d'être un mystère, y compris pour celui qui le possède. »</p></div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <p class="eyebrow">Le modèle</p>
+  <h2>Une pyramide, parce qu'un patrimoine se construit par le bas.</h2>
+  <p class="lede">Ce n'est pas une métaphore décorative. C'est l'ordre réel dans lequel les choses
+    tiennent : sans revenu maîtrisé, pas d'épargne. Sans capital, pas de pierre. Chaque étage
+    porte le suivant.</p>
+
+  <div class="floors">
+    <div class="floor" style="--u:var(--money)">
+      <div class="mark">▁</div>
+      <div>
+        <div class="role">La base</div>
+        <h3>Money — Du revenu à l’épargne</h3>
+        <p>Ce qui entre, ce qui sort, ce qui reste. Money sépare la dépense qui consomme de la
+          dette qui construit, et vous rend visible la part de votre revenu que vous ne voyiez plus.</p>
+        <p class="ask">Il répond à : « De combien puis-je disposer, vraiment ? »</p>
+        <a class="go" href="money.html">Lire le guide Money →</a>
+      </div>
+    </div>
+    <div class="floor" style="--u:var(--invest)">
+      <div class="mark">◢</div>
+      <div>
+        <div class="role">L'étage</div>
+        <h3>Invest — De l'épargne au capital</h3>
+        <p>Vos placements à la BRVM, leur performance réelle — frais et dividendes compris — et le
+          marché pour préparer vos décisions. Un portefeuille par projet.</p>
+        <p class="ask">Il répond à : « Est-ce que mon argent travaille vraiment ? »</p>
+        <a class="go" href="invest.html">Lire le guide Invest →</a>
+      </div>
+    </div>
+    <div class="floor" style="--u:var(--estate)">
+      <div class="mark">▲</div>
+      <div>
+        <div class="role">La pointe</div>
+        <h3>Estate — Du capital à la pierre</h3>
+        <p>Vos biens, leur coût réel engagé poste par poste, l'état de leurs papiers, leur
+          viabilisation, leur valeur d'aujourd'hui.</p>
+        <p class="ask">Il répond à : « Qu'est-ce que je possède, et que vaut-il ? »</p>
+        <a class="go" href="estate.html">Lire le guide Estate →</a>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="flow"><div class="wrap">
+  <p class="eyebrow">Comment ils travaillent ensemble</p>
+  <h2>Le même argent, à quatre moments de sa vie.</h2>
+  <p class="lede">Ce ne sont pas trois applications qui coexistent. C'est un seul parcours, suivi
+    d'un bout à l'autre — et chaque étage renseigne le suivant.</p>
+  <div class="chain">
+    <div class="node"><div class="st">1 · Money</div><h3>Le revenu arrive</h3>
+      <p>695 000 tombent. Money montre ce qui est déjà engagé et ce qui reste vraiment disponible.</p>
+      <span class="arrow">→</span></div>
+    <div class="node"><div class="st">2 · Money → Invest</div><h3>Le disponible devient épargne</h3>
+      <p>Money dit combien vous pouvez engager sans vous mettre en difficulté. C'est le montant que
+        vous portez dans Invest.</p>
+      <span class="arrow">→</span></div>
+    <div class="node"><div class="st">3 · Invest</div><h3>L'épargne devient capital</h3>
+      <p>Les titres travaillent. Invest mesure ce que cela produit réellement, une fois les frais
+        payés et les dividendes encaissés.</p>
+      <span class="arrow">→</span></div>
+    <div class="node"><div class="st">4 · Invest → Estate</div><h3>Le capital devient pierre</h3>
+      <p>Un jour, le capital sort de la bourse et devient un terrain, une maison. Estate reprend le
+        fil : coût réel, papiers, valeur.</p></div>
+  </div>
+  <div class="quote"><p>« Un remboursement de crédit employeur apparaît dans Money comme une
+    sortie. Mais c'est Invest qui détient ce qu'il a acheté. Séparées, ces deux applications se
+    contrediraient. Ensemble, elles racontent la même histoire — la vôtre. »</p></div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <p class="eyebrow">Le parcours</p>
+  <h2>Comprendre, organiser, construire, piloter.</h2>
+  <div class="cards">
+    <div class="c"><div class="ico" style="color:var(--money)">◔</div><h3>Comprendre</h3>
+      <p>D'abord voir. Un mois réel, des chiffres justes, aucune moyenne rassurante. C'est
+      inconfortable la première fois, et c'est le point de départ.</p></div>
+    <div class="c"><div class="ico" style="color:var(--invest)">◫</div><h3>Organiser</h3>
+      <p>Séparer ce qui était mêlé : les dépenses de vie, les engagements familiaux, la dette,
+      l'épargne, les projets. Chaque chose à sa place.</p></div>
+    <div class="c"><div class="ico" style="color:var(--estate)">◈</div><h3>Construire</h3>
+      <p>Faire grandir : un portefeuille par projet, un bien sécurisé, un crédit qui s'éteint et
+      libère une mensualité.</p></div>
+    <div class="c"><div class="ico" style="color:var(--accent)">◎</div><h3>Piloter</h3>
+      <p>Décider avec des faits — et savoir, mois après mois, si l'on avance dans la direction
+      qu'on s'était donnée.</p></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <p class="eyebrow">Ce qui ne changera pas</p>
+  <h2>Quatre principes valables dans toute la suite.</h2>
+  <div class="principles">
+    <div class="pr"><h3>Vos données restent chez vous</h3>
+      <p>Chaque univers écrit dans un espace privé qui vous appartient. STONE ne conserve rien,
+      ne revend rien. L'application a besoin du réseau pour parler à votre espace, jamais pour
+      envoyer vos chiffres ailleurs.</p></div>
+    <div class="pr"><h3>Des faits, pas des conseils</h3>
+      <p>STONE ne vous dit jamais quoi acheter, vendre ou garder. Il montre ce qui est, avec ses
+      sources et ses limites. La décision reste la vôtre, entièrement.</p></div>
+    <div class="pr"><h3>Le téléphone d'abord</h3>
+      <p>Tout est pensé pour un écran de poche tenu d'une main, puis enrichi sur ordinateur —
+      jamais l'inverse.</p></div>
+    <div class="pr"><h3>Les mêmes gestes partout</h3>
+      <p>Trois apparences — jour, nuit, sable — et un œil qui masque tous vos montants d'un geste.
+      Identiques dans les trois univers : on apprend une fois.</p></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <p class="eyebrow">Les guides</p>
+  <h2>Chaque univers a le sien.</h2>
+  <p class="lede">Chacun se lit seul, sans rien connaître des autres. Commencez par celui qui
+    répond à la question que vous vous posez aujourd'hui.</p>
+  <div class="guides">
+    <a class="g" style="--u:var(--money)" href="money.html">
+      <div class="ico">▁</div><h3>STONE Money</h3>
+      <p>Où va votre argent, et ce qu'il vous reste vraiment pour construire.</p>
+      <div class="open">Ouvrir le guide →</div></a>
+    <a class="g" style="--u:var(--invest)" href="invest.html">
+      <div class="ico">◢</div><h3>STONE Invest</h3>
+      <p>Votre portefeuille BRVM et sa performance réelle, sans flatterie.</p>
+      <div class="open">Ouvrir le guide →</div></a>
+    <a class="g" style="--u:var(--estate)" href="estate.html">
+      <div class="ico">▲</div><h3>STONE Estate</h3>
+      <p>Vos biens, leur coût réel, leurs papiers, leur valeur d'aujourd'hui.</p>
+      <div class="open">Ouvrir le guide →</div></a>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <p class="eyebrow">Installer</p>
+  <h2>Une seule application, trois univers.</h2>
+  <p class="lede">STONE s'installe depuis le navigateur — ni Play Store, ni App Store. Une icône
+    sur votre écran d'accueil, et les trois univers dedans.</p>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><div><h3>Ouvrez stonesuite.github.io</h3>
+      <p>Depuis le navigateur de votre téléphone.</p></div></div>
+    <div class="step"><div class="n">2</div><div><h3>Ajoutez STONE à l'écran d'accueil</h3>
+      <p><b>Android</b> : menu ⋮ → Installer. <b>iPhone</b> : Partager ⎋ → Sur l'écran d'accueil.</p></div></div>
+    <div class="step"><div class="n">3</div><div><h3>Choisissez votre étage</h3>
+      <p>La pyramide s'assemble à l'ouverture. Touchez une tranche pour entrer — ou commencez par
+        la base, comme on construit.</p></div></div>
+  </div>
+</div></section>
+
+<section class="cta"><div class="wrap">
+  <p class="eyebrow">La suite STONE</p>
+  <h2>Chaque tranche porte la suivante.</h2>
+  <p>Money, Invest et Estate ne sont pas trois outils à choisir. Ce sont trois manières de
+    regarder la même chose : ce que vous construisez.</p>
+  <a class="btn" href="https://stonesuite.github.io/">Ouvrir STONE</a>
+  <div class="foot">La suite STONE · Money · Invest · Estate — septembre 2026</div>
+</div></section>
+
+</body>
+</html>

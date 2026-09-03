@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080b10">
+<link rel="icon" href="../icons/stone-192.png" type="image/png">
+<title>STONE Invest</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --paper:#f5f2ea; --paper2:#ece7db; --ink:#141821; --ink2:#545d6c; --line:#dbd3c2;
+  --card:#fffdf8; --accent:#8a6526; --accent-soft:#c9a567; --pos:#1c7a54; --neg:#a83a3a;
+  --p-bg:#080b10; --p-card:#111722; --p-line:#253044; --p-ink:#eef2f7; --p-mut:#9aa7ba; --p-gold:#d5aa63;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0a0e17; --paper2:#101622; --ink:#eef1f7; --ink2:#98a3b6; --line:#222c3f;
+  --card:#121825; --accent:#d5aa63; --accent-soft:#c9a567; --pos:#4cc593; --neg:#ef7b7b;}}
+:root[data-theme="dark"]{
+  --paper:#0a0e17; --paper2:#101622; --ink:#eef1f7; --ink2:#98a3b6; --line:#222c3f;
+  --card:#121825; --accent:#d5aa63; --accent-soft:#c9a567; --pos:#4cc593; --neg:#ef7b7b;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Nunito Sans",system-ui,sans-serif;font-size:17px;line-height:1.68}
+h1,h2,h3{font-family:"Sora",system-ui,sans-serif;line-height:1.12;text-wrap:balance;margin:0}
+p{margin:.55em 0 0;max-width:36em}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+.num{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
+.family{background:var(--paper2);border-bottom:1px solid var(--line);font-size:12.5px}
+.family .wrap{display:flex;gap:18px;align-items:center;flex-wrap:wrap;padding-top:11px;padding-bottom:11px}
+.family b{font-family:"Sora";letter-spacing:.3em;font-size:11px;color:var(--accent)}
+.family a{color:var(--ink2);text-decoration:none;border-bottom:1px solid transparent}
+.family a:hover{color:var(--ink);border-color:var(--accent)}
+.family .here{color:var(--ink);font-weight:800}
+.hero{padding:74px 0 52px;background:radial-gradient(1100px 460px at 78% -12%,color-mix(in srgb,var(--accent-soft) 26%,transparent),transparent 70%)}
+.hero .wrap{display:flex;gap:56px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.hero-txt{flex:1 1 400px;min-width:min(320px,100%)}
+.eyebrow{font-family:"Sora";font-weight:700;letter-spacing:.34em;font-size:11px;color:var(--accent);text-transform:uppercase}
+.hero h1{font-size:clamp(38px,6vw,62px);margin-top:16px;letter-spacing:-.02em}
+.hero .promise{font-size:21px;color:var(--ink2);margin-top:18px;max-width:20em}
+.hero .sub{margin-top:20px;font-size:16px}
+.badges{margin-top:26px;display:flex;gap:9px;flex-wrap:wrap}
+.badge{font-size:12.5px;font-weight:700;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink2)}
+.phone{width:274px;flex:0 0 auto;background:#05080f;border-radius:44px;padding:11px;box-shadow:0 30px 70px -20px rgba(8,12,22,.5),0 0 0 1px rgba(255,255,255,.07) inset}
+.screen{position:relative;background:var(--p-bg);border-radius:34px;overflow:hidden;height:552px;color:var(--p-ink);font-size:12px;line-height:1.45;display:flex;flex-direction:column}
+.sb{display:flex;justify-content:space-between;padding:13px 20px 5px;font-size:10px;color:var(--p-mut);font-weight:700}
+.ab{display:flex;align-items:center;justify-content:space-between;padding:8px 15px 6px}
+.ab .t{font-family:"Sora";font-weight:700;letter-spacing:.28em;font-size:10.5px}
+.ab .s{color:var(--p-mut);font-size:9px}
+.ab .icons{color:var(--p-mut);font-size:12px;letter-spacing:.18em}
+.pbody{flex:1;overflow:hidden;padding:8px 14px 10px;display:flex;flex-direction:column;gap:9px}
+.kick{font-family:"Sora";letter-spacing:.3em;font-size:8.5px;color:var(--p-mut);font-weight:700}
+.pc{background:var(--p-card);border:1px solid var(--p-line);border-radius:14px;padding:11px 12px}
+.lab{font-size:9.5px;color:var(--p-mut)}
+.big{font-size:21px;font-weight:700}
+.gold{color:var(--p-gold)}.up{color:#66d6a3}.down{color:#ff8c8c}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.line{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #1b2740}
+.line:last-child{border-bottom:0}
+.fold{display:flex;justify-content:space-between;align-items:center;padding:9px 11px;border:1px solid var(--p-line);border-radius:12px;background:var(--p-card);font-weight:700;font-size:11px}
+.band{padding:64px 0;border-top:1px solid var(--line)}
+.band h2{font-size:clamp(26px,3.6vw,38px);letter-spacing:-.015em}
+.lede{font-size:19px;color:var(--ink2);margin-top:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:34px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+.c .ico{font-size:22px;color:var(--accent)}
+.c h3{font-size:17px;margin-top:12px}.c p{font-size:15.5px;color:var(--ink2)}
+.feat{display:flex;gap:60px;align-items:center;flex-wrap:wrap;justify-content:space-between;padding:56px 0;border-top:1px solid var(--line)}
+.feat.rev{flex-direction:row-reverse}
+.feat-txt{flex:1 1 420px;min-width:min(320px,100%)}
+.tag{display:inline-block;font-family:"Sora";font-weight:700;font-size:11px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase}
+.feat h3{font-size:clamp(22px,3vw,30px);margin-top:12px}
+.feat .what{margin-top:14px}
+.why{margin-top:18px;padding:14px 18px;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent-soft) 16%,var(--card));border-radius:0 14px 14px 0}
+.why b{color:var(--ink)}.why p{font-size:15.5px;color:var(--ink2);margin:0}
+.story{background:var(--paper2);padding:64px 0;border-top:1px solid var(--line)}
+.cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:32px}
+.case{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
+.case .who{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.case h3{font-size:18px;margin-top:10px}.case p{font-size:15.5px;color:var(--ink2)}
+.case .out{margin-top:14px;font-size:15px;font-weight:700;color:var(--pos)}
+.steps{display:grid;gap:14px;margin-top:30px;max-width:44em}
+.step{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.step .n{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:"Sora";font-weight:700;font-size:14px}
+.step h3{font-size:16px}.step p{font-size:15px;color:var(--ink2);margin-top:3px}
+.cta{padding:66px 0 74px;border-top:1px solid var(--line);text-align:center}
+.cta h2{font-size:clamp(26px,3.6vw,36px)}.cta p{margin:14px auto 0}
+.btn{display:inline-block;margin-top:26px;background:var(--accent);color:var(--card);font-weight:800;padding:15px 30px;border-radius:14px;text-decoration:none;font-size:16px}
+.foot{padding:26px 0 40px;color:var(--ink2);font-size:13px;text-align:center}
+@media(max-width:760px){.feat{gap:34px;padding:44px 0}.phone{width:252px}.screen{height:512px}.hero{padding:52px 0 36px}}
+</style>
+</head>
+<body>
+
+<nav class="family"><div class="wrap">
+  <b>◈ LA SUITE STONE</b>
+  <a href="../" style="color:inherit;text-decoration:none;font-weight:800">&#8592; Ouvrir l&#8217;application</a>
+  <a href="money.html">Money</a>
+  <span class="here">Invest</span>
+  <a href="estate.html">Estate</a>
+  <a href="index.html">La suite entière</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="hero-txt">
+    <p class="eyebrow">STONE Invest</p>
+    <h1>De l'épargne au capital.</h1>
+    <p class="promise">Votre portefeuille BRVM, sa performance réelle, et le marché — sans jargon et sans flatterie.</p>
+    <p class="sub">Invest est l'étage de votre pyramide patrimoniale : celui qui fait grandir.
+      Il ne vous dit pas quoi acheter. Il vous montre, honnêtement, ce que vos décisions ont
+      produit — frais et dividendes compris.</p>
+    <div class="badges">
+      <span class="badge">Performance réelle, pas flatteuse</span>
+      <span class="badge">Plusieurs portefeuilles</span>
+      <span class="badge">Cours officiels BRVM</span>
+    </div>
+  </div>
+  <div class="phone"><div class="screen">
+    <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
+    <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · De l'épargne au capital</div></div><span class="icons">☀☾△ 👁</span></div>
+    <div class="pbody">
+      <div class="kick">SYNTHÈSE</div>
+      <div style="font-family:Sora;font-weight:700;font-size:19px">Mon portefeuille</div>
+      <div class="lab">Cours BRVM · mise à jour 02/09/2026</div>
+      <div class="pc" style="border-left:3px solid var(--p-gold)">
+        <div class="lab">Ça vaut aujourd'hui</div>
+        <div class="num big gold">3 137 612 XOF</div>
+        <div class="lab">Actions valorisées + cash</div></div>
+      <div class="pc" style="border-left:3px solid #3dbd8b">
+        <div class="lab">Performance réelle</div>
+        <div class="num big up">+57,5 %</div>
+        <div class="lab">Gain total +1 146 042 XOF · frais et dividendes inclus</div></div>
+      <div class="row2">
+        <div class="pc"><div class="lab">J'ai investi</div><div class="num" style="font-size:13px">1 991 570</div></div>
+        <div class="pc"><div class="lab">Dividendes reçus</div><div class="num up" style="font-size:13px">76 944</div></div>
+      </div>
+    </div>
+    <div class="tabs"></div>
+  </div></div>
+</div></header>
+
+<section class="band"><div class="wrap">
+  <h2>« Mon portefeuille est en hausse. » Vraiment ?</h2>
+  <p class="lede">Votre relevé de compte titres montre la valeur du jour. Il ne dit pas ce que vous
+    avez réellement versé, ce que les frais vous ont pris, ni ce que les dividendes vous ont
+    rendu. Résultat : vous ignorez si vous gagnez de l'argent.</p>
+  <div class="cards">
+    <div class="c"><div class="ico">◑</div><h3>La performance flattée</h3>
+      <p>Comparer la valeur du jour au prix d'achat ignore les apports successifs, les retraits,
+      les frais. Le chiffre est faux — presque toujours dans le bon sens.</p></div>
+    <div class="c"><div class="ico">⌗</div><h3>Le marché opaque</h3>
+      <p>La BRVM publie ses cours, mais qui lit un bulletin officiel chaque soir ? Vous découvrez
+      les mouvements avec trois jours de retard.</p></div>
+    <div class="c"><div class="ico">◍</div><h3>Les projets mélangés</h3>
+      <p>L'épargne de précaution, le projet 2030 et le portefeuille de votre fille vivent dans le
+      même compte. Impossible de savoir lequel avance.</p></div>
+  </div>
+</div></section>
+
+<div class="wrap">
+  <section class="feat">
+    <div class="feat-txt">
+      <span class="tag">Performance réelle</span>
+      <h3>Le seul chiffre qui ne vous ment pas</h3>
+      <p class="what">Invest compare ce que vaut votre portefeuille aujourd'hui à vos apports nets
+        — versements moins retraits — en tenant compte des frais payés et des dividendes encaissés.
+        Trois cartes le disent : <em>J'ai investi</em>, <em>Ça vaut aujourd'hui</em>,
+        <em>Performance réelle</em>.</p>
+      <div class="why"><p><b>Ce que ça change :</b> vous savez enfin si votre argent travaille.
+        Un +57,5 % chez Invest veut dire quelque chose, parce que les 64 000 XOF de frais sont
+        déjà dedans.</p></div>
+    </div>
+    <div class="phone"><div class="screen">
+      <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Synthèse</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="pbody">
+        <div class="pc"><div class="lab">J'ai investi</div><div class="num big">1 991 570</div>
+          <div class="lab">Mes apports, moins mes retraits</div></div>
+        <div class="pc" style="border-left:3px solid var(--p-gold)"><div class="lab">Ça vaut aujourd'hui</div>
+          <div class="num big gold">3 137 612</div></div>
+        <div class="pc" style="border-left:3px solid #3dbd8b"><div class="lab">Performance réelle</div>
+          <div class="num big up">+57,5 %</div></div>
+        <div class="row2">
+          <div class="pc"><div class="lab">Frais payés</div><div class="num down" style="font-size:13px">−64 087</div></div>
+          <div class="pc"><div class="lab">Cash disponible</div><div class="num gold" style="font-size:13px">2 192</div></div>
+        </div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="feat rev">
+    <div class="feat-txt">
+      <span class="tag">Mes positions</span>
+      <h3>Chaque titre, son prix de revient, sa tendance</h3>
+      <p class="what">Pour chaque ligne : la quantité, le prix de revient unitaire, la valeur au
+        cours du jour, la plus ou moins-value, et une mini-courbe des 30 dernières séances.
+        En dessous, la répartition de votre portefeuille et l'évolution de votre patrimoine.</p>
+      <div class="why"><p><b>Ce que ça change :</b> vous voyez d'un coup d'œil quelle ligne porte
+        le portefeuille et laquelle pèse dessus — sans ouvrir un tableur, sans faire un calcul.</p></div>
+    </div>
+    <div class="phone"><div class="screen">
+      <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Mes positions</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="pbody">
+        <div class="pc">
+          <div class="line"><div><b>SNTS</b><div class="lab">Sonatel · 30 titres</div></div>
+            <svg width="42" height="18" viewBox="0 0 54 18"><polyline points="0,14 9,12 18,13 27,9 36,10 45,5 54,4" fill="none" stroke="#66d6a3" stroke-width="1.8"/></svg>
+            <div style="text-align:right"><div class="num">690 000</div><div class="num up" style="font-size:10px">+9,2 %</div></div></div>
+          <div class="line"><div><b>BOAB</b><div class="lab">BOA Bénin · 85 titres</div></div>
+            <svg width="42" height="18" viewBox="0 0 54 18"><polyline points="0,10 9,8 18,11 27,7 36,8 45,6 54,7" fill="none" stroke="#66d6a3" stroke-width="1.8"/></svg>
+            <div style="text-align:right"><div class="num">552 500</div><div class="num up" style="font-size:10px">+4,1 %</div></div></div>
+          <div class="line"><div><b>ETIT</b><div class="lab">Ecobank · 2 400 titres</div></div>
+            <svg width="42" height="18" viewBox="0 0 54 18"><polyline points="0,6 9,8 18,7 27,11 36,10 45,13 54,12" fill="none" stroke="#ff8c8c" stroke-width="1.8"/></svg>
+            <div style="text-align:right"><div class="num">48 000</div><div class="num down" style="font-size:10px">−2,3 %</div></div></div>
+        </div>
+        <div class="kick">RÉPARTITION</div>
+        <div class="pc"><div style="display:flex;height:10px;border-radius:6px;overflow:hidden">
+          <span style="flex:53;background:#d5aa63"></span><span style="flex:33;background:#3dbd8b"></span><span style="flex:14;background:#4a6db3"></span></div>
+          <div class="lab" style="margin-top:6px">SNTS 53 % · BOAB 33 % · ETIT + cash 14 %</div></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="feat">
+    <div class="feat-txt">
+      <span class="tag">Plusieurs portefeuilles</span>
+      <h3>Un projet, un portefeuille</h3>
+      <p class="what">Créez autant de portefeuilles que de projets — Origine, Horizon 2030, celui
+        de votre fille — chacun avec son cash, ses opérations, sa performance. Une vue consolidée,
+        en lecture seule, montre l'ensemble.</p>
+      <div class="why"><p><b>Ce que ça change :</b> l'argent du projet long cesse d'être noyé dans
+        l'argent courant. Vous voyez chaque projet avancer à son rythme, et vous décidez pour
+        chacun séparément.</p></div>
+    </div>
+    <div class="phone"><div class="screen">
+      <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Portefeuilles</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="pbody">
+        <div class="pc"><div class="lab">Portefeuille suivi</div>
+          <div style="border:1px solid var(--p-line);border-radius:10px;padding:8px 10px;margin-top:5px;background:#0a0f18"><b>Origine</b></div>
+          <div class="lab" style="margin-top:6px">Portefeuille actif · XOF</div></div>
+        <div class="pc">
+          <div class="line"><span>Origine</span><span class="num up">+57,5 %</span></div>
+          <div class="line"><span>Horizon 2030</span><span class="num up">+12,1 %</span></div>
+          <div class="line"><span>Naelia</span><span class="num down">−1,4 %</span></div>
+        </div>
+        <div class="pc" style="border-left:3px solid var(--p-gold)">
+          <div class="lab">Vue consolidée</div><div class="num gold" style="font-size:15px">6 480 112 XOF</div>
+          <div class="lab">Lecture seule · aucune opération possible ici</div></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="feat rev">
+    <div class="feat-txt">
+      <span class="tag">Marché BRVM · Analyse</span>
+      <h3>Le marché, et un titre au microscope</h3>
+      <p class="what">Les plus fortes hausses et baisses de la séance, vos favoris épinglés, et
+        une analyse par action : courbe sur 1 mois à 2 ans, moyennes mobiles, volumes, supports et
+        résistances, plus haut et plus bas sur 52 semaines, RSI.</p>
+      <div class="why"><p><b>Ce que ça change :</b> vous préparez une décision au lieu de la
+        subir. Et quand vous touchez un titre, la courbe apparaît <em>immédiatement</em> —
+        l'historique complet la remplace ensuite.</p></div>
+    </div>
+    <div class="phone"><div class="screen">
+      <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Marché BRVM</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="pbody">
+        <div class="row2">
+          <div class="pc"><div class="lab">Plus fortes hausses</div>
+            <div class="line" style="padding:4px 0"><b>PALC</b><span class="num up">+7,4 %</span></div>
+            <div class="line" style="padding:4px 0"><b>SIBC</b><span class="num up">+5,1 %</span></div></div>
+          <div class="pc"><div class="lab">Plus fortes baisses</div>
+            <div class="line" style="padding:4px 0"><b>STBC</b><span class="num down">−4,2 %</span></div>
+            <div class="line" style="padding:4px 0"><b>ONTBF</b><span class="num down">−2,8 %</span></div></div>
+        </div>
+        <div class="kick">ANALYSE D'UNE ACTION</div>
+        <div class="pc">
+          <div class="line"><div><b>SNTS</b> <span class="lab">Sonatel</span></div><div class="num gold">23 000 XOF</div></div>
+          <svg viewBox="0 0 220 56" style="width:100%;height:auto">
+            <polyline points="0,46 20,42 40,44 60,34 80,36 100,29 120,31 140,21 160,25 180,14 200,17 220,9" fill="none" stroke="#d5aa63" stroke-width="2.2"/>
+            <polyline points="0,50 40,47 80,41 120,35 160,28 220,18" fill="none" stroke="#4a6db3" stroke-width="1.2" stroke-dasharray="3 3"/>
+            <circle cx="220" cy="9" r="3" fill="#d5aa63"/></svg>
+          <div class="lab">6 mois · MM20 · tendance haussière</div></div>
+        <div class="pc"><div class="line"><span class="lab">RSI 14</span><span class="num">61</span></div>
+          <div class="line"><span class="lab">52 semaines</span><span class="num">17 400 – 23 500</span></div></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="feat">
+    <div class="feat-txt">
+      <span class="tag">Opérations</span>
+      <h3>Vous notez, Invest calcule</h3>
+      <p class="what">Achat, vente, dividende, apport, retrait. Cherchez l'entreprise par son nom
+        ou son code — « Sonatel » trouve SNTS — puis la date, la quantité, le prix et les frais.
+        Tout le reste se recalcule : PRU, performance, répartition, courbe.</p>
+      <div class="why"><p><b>Ce que ça change :</b> tenir son portefeuille cesse d'être une corvée
+        de tableur du dimanche. Trente secondes après l'ordre, c'est enregistré.</p></div>
+    </div>
+    <div class="phone"><div class="screen">
+      <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Ajouter</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="pbody">
+        <div style="font-family:Sora;font-weight:700;font-size:16px">Ajouter une opération</div>
+        <div style="display:flex;gap:5px">
+          <span style="flex:1;text-align:center;border-radius:9px;padding:5px 0;font-size:10px;font-weight:700;background:#2a2410;border:1px solid #6b5426;color:var(--p-gold)">Achat</span>
+          <span style="flex:1;text-align:center;border-radius:9px;padding:5px 0;font-size:10px;background:#0d1730;border:1px solid #223252;color:var(--p-mut)">Vente</span>
+          <span style="flex:1;text-align:center;border-radius:9px;padding:5px 0;font-size:10px;background:#0d1730;border:1px solid #223252;color:var(--p-mut)">Dividende</span>
+          <span style="flex:1;text-align:center;border-radius:9px;padding:5px 0;font-size:10px;background:#0d1730;border:1px solid #223252;color:var(--p-mut)">Apport</span>
+        </div>
+        <div class="pc"><div class="lab">Entreprise</div><div><b>SNTS</b> — Sonatel</div>
+          <div class="lab">Dernière clôture 23 000 · +2,9 %</div></div>
+        <div class="row2">
+          <div class="pc"><div class="lab">Date</div><div class="num">02/09/2026</div></div>
+          <div class="pc"><div class="lab">Quantité</div><div class="num">10</div></div></div>
+        <div class="row2">
+          <div class="pc"><div class="lab">Prix unitaire</div><div class="num">22 000</div></div>
+          <div class="pc"><div class="lab">Frais</div><div class="num">1 540</div></div></div>
+        <div style="background:var(--p-gold);color:#161206;font-weight:800;text-align:center;border-radius:11px;padding:9px;font-size:12px">Enregistrer</div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="feat rev">
+    <div class="feat-txt">
+      <span class="tag">Lecture calme</span>
+      <h3>Une page courte, que vous dépliez à volonté</h3>
+      <p class="what">À l'ouverture, Invest ne vous jette pas tout au visage : la synthèse, puis
+        des sections repliées — positions, répartition, évolution, favoris, marché, analyse,
+        opérations. Vous ouvrez ce que vous voulez voir.</p>
+      <div class="why"><p><b>Ce que ça change :</b> consulter son patrimoine redevient un geste
+        calme de trente secondes, au lieu d'une plongée dans un tableau de bord saturé.</p></div>
+    </div>
+    <div class="phone"><div class="screen">
+      <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Horizon 2030</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="pbody">
+        <div class="pc" style="border-left:3px solid #3dbd8b"><div class="lab">Performance réelle</div>
+          <div class="num big up">+12,1 %</div></div>
+        <div class="fold"><span>Mes positions</span><span class="lab">▾</span></div>
+        <div class="fold"><span>Répartition</span><span class="lab">▾</span></div>
+        <div class="fold"><span>Évolution de mon patrimoine</span><span class="lab">▾</span></div>
+        <div class="fold"><span>Mes favoris</span><span class="lab">▾</span></div>
+        <div class="fold"><span>Marché BRVM</span><span class="lab">▾</span></div>
+        <div class="fold"><span>Analyse d'une action</span><span class="lab">▾</span></div>
+        <div class="fold"><span>Ajouter une opération</span><span class="lab">▾</span></div>
+      </div>
+    </div></div>
+  </section>
+</div>
+
+<section class="story"><div class="wrap">
+  <p class="eyebrow">Cas d'usage réels</p>
+  <h2>Trois questions auxquelles Invest répond enfin</h2>
+  <div class="cases">
+    <div class="case"><div class="who">Le bilan honnête</div>
+      <h3>« Est-ce que je gagne vraiment de l'argent ? »</h3>
+      <p>Apports nets, valeur du jour, frais, dividendes : la performance réelle est calculée
+        avec tout dedans.</p>
+      <div class="out">→ Plus d'illusion d'optique.</div></div>
+    <div class="case"><div class="who">Avant d'acheter</div>
+      <h3>« À quel moment j'entre sur ce titre ? »</h3>
+      <p>Courbe sur deux ans, moyennes mobiles, plus haut et plus bas sur 52 semaines, volumes.</p>
+      <div class="out">→ Vous décidez avec des repères, pas avec une rumeur.</div></div>
+    <div class="case"><div class="who">Le projet long</div>
+      <h3>« Où en est Horizon 2030 ? »</h3>
+      <p>Un portefeuille dédié, avec son cash et sa propre courbe de patrimoine.</p>
+      <div class="out">→ Le projet existe, séparément.</div></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <p class="eyebrow">Commencer</p>
+  <h2>Votre premier portefeuille en cinq minutes</h2>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><div><h3>Ouvrez Invest dans STONE</h3>
+      <p>Depuis la pyramide d'accueil, touchez l'étage du milieu.</p></div></div>
+    <div class="step"><div class="n">2</div><div><h3>Nommez votre portefeuille</h3>
+      <p>« Origine », « Horizon 2030 »… Le nom compte : c'est votre projet, pas un numéro de compte.</p></div></div>
+    <div class="step"><div class="n">3</div><div><h3>Enregistrez votre apport puis vos achats</h3>
+      <p>D'abord ce que vous avez versé, ensuite les titres achetés. L'ordre importe : c'est ce
+        qui rend la performance juste.</p></div></div>
+    <div class="step"><div class="n">4</div><div><h3>Sauvegardez</h3>
+      <p>Un fichier que vous gardez. Sur un nouveau téléphone, <em>Restaurer</em> et tout revient.</p></div></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2>Aller plus loin</h2>
+  <div class="cards">
+    <div class="c"><div class="ico">▁</div><h3>Combien puis-je investir ce mois-ci ?</h3>
+      <p>C'est Money, la base de la pyramide, qui répond — en séparant ce qui part en dépenses de
+      ce qui reste vraiment disponible.</p></div>
+    <div class="c"><div class="ico">▲</div><h3>Et après le capital ?</h3>
+      <p>Estate couronne la pyramide : le capital devient pierre, avec son coût réel, ses papiers
+      et sa valeur.</p></div>
+    <div class="c"><div class="ico">👁</div><h3>Discrétion et sauvegarde</h3>
+      <p>L'œil masque tous vos montants d'un geste. Trois apparences s'adaptent à la lumière.
+      Et vos données restent dans votre espace privé.</p></div>
+  </div>
+</div></section>
+
+<section class="cta"><div class="wrap">
+  <p class="eyebrow">Ton patrimoine, en clair</p>
+  <h2>Invest montre les faits. Les décisions restent les vôtres.</h2>
+  <p>Aucune recommandation d'achat ou de vente. Les cours sont ceux de la BRVM, non ajustés des
+    dividendes et opérations sur titres — et l'application le dit. Vos données vivent dans votre
+    espace privé, jamais chez STONE.</p>
+  <a class="btn" href="https://stonesuite.github.io/?u=invest">Ouvrir STONE Invest</a>
+  <div class="foot">STONE Invest · De l'épargne au capital · Guide utilisateur, septembre 2026</div>
+</div></section>
+
+</body>
+</html>
