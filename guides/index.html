@@ -14,12 +14,33 @@
   --pos:#1c7a54;
   --p-bg:#0c1119; --p-card:#141c29; --p-line:#243147; --p-ink:#eef2f8; --p-mut:#8f9bb0;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+@media (prefers-color-scheme: dark){:root:not([data-theme="clair"]){
   --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
   --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347; --pos:#4cc593;}}
-:root[data-theme="dark"]{
+:root[data-theme="nuit"]{
   --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
   --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347; --pos:#4cc593;}
+:root[data-theme="clair"]{
+  --paper:#f4f1e9; --paper2:#eae4d7; --ink:#13161d; --ink2:#525a68; --line:#dad2c0;
+  --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;
+  --pos:#1c7a54;
+  --p-bg:#0c1119; --p-card:#141c29; --p-line:#243147; --p-ink:#eef2f8; --p-mut:#8f9bb0;
+}
+:root[data-theme="sable"]{--paper:#120d06;--paper2:#1c150a;--ink:#f3e9d6;--ink2:#b9a480;--line:#3c2c14;--card:#1a1309;--accent:#d8b273;--money:#e0c18a;--invest:#c9a567;--estate:#a88347;--pos:#4cc593}
+
+.theme-switch{display:inline-flex;align-items:center;gap:1px;padding:2px;border:1px solid var(--line);border-radius:999px;background:var(--paper2);margin-left:auto}
+.theme-choice{position:relative;display:grid;place-items:center;min-width:36px;min-height:36px;border-radius:999px;background:transparent;color:var(--ink2);border:0;padding:0;cursor:pointer}
+.theme-choice svg{width:15px;height:15px;display:block;transition:transform .5s cubic-bezier(.34,1.4,.5,1)}
+.theme-choice[aria-pressed="true"]{background:var(--card);color:var(--accent);box-shadow:0 1px 6px rgba(0,0,0,.18)}
+.theme-choice[aria-pressed="true"] svg{transform:rotate(360deg) scale(1.06)}
+.theme-choice:hover{color:var(--ink)}
+.theme-choice:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ctl-label{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  color:var(--ink);font-size:11px;font-weight:600;white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity .18s ease;z-index:20}
+.theme-choice:hover .ctl-label,.theme-choice:focus-visible .ctl-label{opacity:1}
+@media(prefers-reduced-motion:reduce){.theme-choice svg,.ctl-label{transition:none}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:"Nunito Sans",system-ui,sans-serif;font-size:17px;line-height:1.68}
 h1,h2,h3{font-family:"Sora",system-ui,sans-serif;line-height:1.1;text-wrap:balance;margin:0}
@@ -48,8 +69,11 @@ a{color:var(--accent)}
 
 /* étages */
 .floors{display:grid;gap:16px;margin-top:36px}
-.floor{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 28px;border-left:5px solid var(--u)}
-.floor .mark{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;background:color-mix(in srgb,var(--u) 20%,transparent);color:var(--u);font-size:24px}
+.floor{display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 28px;border-left:5px solid var(--u)}
+.floor .mark{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;background:color-mix(in srgb,var(--u) 20%,transparent);color:var(--u);font-size:24px;align-self:start}
+.floor .mark svg{width:26px;height:26px}
+.floor .cap{width:132px;flex:none;align-self:center;border-radius:14px;border:1px solid var(--line);overflow:hidden;box-shadow:0 14px 30px -12px rgba(0,0,0,.35)}
+.floor .cap img{display:block;width:100%;height:auto}
 .floor h3{font-size:21px}
 .floor .role{font-family:"Sora";font-weight:700;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--u)}
 .floor p{font-size:16px;color:var(--ink2)}
@@ -90,10 +114,10 @@ a{color:var(--accent)}
 .cta h2{font-size:clamp(27px,3.8vw,38px)}.cta p{margin:16px auto 0}
 .btn{display:inline-block;margin-top:28px;background:var(--accent);color:var(--card);font-weight:800;padding:16px 32px;border-radius:14px;text-decoration:none;font-size:16px}
 .foot{padding:28px 0 44px;color:var(--ink2);font-size:13px;text-align:center}
-@media(max-width:700px){.hero{padding:56px 0 30px}.floor{grid-template-columns:1fr;gap:14px}}
+@media(max-width:700px){.hero{padding:56px 0 30px}.floor{grid-template-columns:auto 1fr;gap:14px}.floor .cap{grid-column:1/-1;width:100%;max-width:220px;margin:6px auto 0}}
 </style>
 </head>
-<body><nav style="background:var(--paper2);border-bottom:1px solid var(--line);font-size:12.5px"><div class="wrap" style="display:flex;gap:18px;align-items:center;padding:11px 24px"><b style="font-family:Sora;letter-spacing:.3em;font-size:11px;color:var(--accent)"><span style="display:inline-flex;vertical-align:-1px"><svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 2 L14.55 7.39 H9.45 Z" fill="currentColor"/><path d="M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z" fill="currentColor"/><path d="M5.55 15.61 H18.45 L21 21 H3 Z" fill="currentColor"/></svg></span> LA SUITE STONE</b><a href="../" style="color:inherit;text-decoration:none;font-weight:800">&#8592; Ouvrir l&#8217;application</a></div></nav>
+<body><nav style="background:var(--paper2);border-bottom:1px solid var(--line);font-size:12.5px"><div class="wrap" style="display:flex;gap:18px;align-items:center;padding:11px 24px"><b style="font-family:Sora;letter-spacing:.3em;font-size:11px;color:var(--accent)"><span style="display:inline-flex;vertical-align:-1px"><svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 2 L14.55 7.39 H9.45 Z" fill="currentColor"/><path d="M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z" fill="currentColor"/><path d="M5.55 15.61 H18.45 L21 21 H3 Z" fill="currentColor"/></svg></span> LA SUITE STONE</b><a href="../" style="color:inherit;text-decoration:none;font-weight:800">&#8592; Ouvrir l&#8217;application</a><div class="theme-switch" role="group" aria-label="Apparence"><button type="button" class="theme-choice" data-theme-choice="clair" aria-pressed="false" aria-label="Apparence claire" title="Clair"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6"/></svg><span class="ctl-label">Clair</span></button><button type="button" class="theme-choice" data-theme-choice="nuit" aria-pressed="false" aria-label="Apparence nuit" title="Nuit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M20 14.2A8.4 8.4 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2Z"/></svg><span class="ctl-label">Nuit</span></button><button type="button" class="theme-choice" data-theme-choice="sable" aria-pressed="false" aria-label="Apparence sable" title="Sable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 4 20 19H4Z"/><path d="M8.6 13.4h6.8"/></svg><span class="ctl-label">Sable</span></button></div></div></nav>
 
 
 <header class="hero"><div class="wrap">
@@ -148,7 +172,7 @@ a{color:var(--accent)}
 
   <div class="floors">
     <div class="floor" style="--u:var(--money)">
-      <div class="mark">▁</div>
+      <div class="mark"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round'><path d='M4.75 17.5 H19.25 L21 21 H3 Z'/><path d='M6.4 19.3 H17.6'/></svg></div>
       <div>
         <div class="role">La base</div>
         <h3>Money — Du revenu à l’épargne</h3>
@@ -157,9 +181,10 @@ a{color:var(--accent)}
         <p class="ask">Il répond à : « De combien puis-je disposer, vraiment ? »</p>
         <a class="go" href="money.html">Lire le guide Money →</a>
       </div>
+      <a class="cap" href="money.html" tabindex="-1" aria-hidden="true"><img src="capture-money.png" alt="" loading="lazy" width="375" height="620"></a>
     </div>
     <div class="floor" style="--u:var(--invest)">
-      <div class="mark">◢</div>
+      <div class="mark"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round'><path d='M7.75 11.5 H16.25 L18.5 16 H5.5 Z'/><path d='M8.8 14.3 L11.3 12.9 L13.1 13.6 L15.4 12.4'/><circle cx='15.4' cy='12.4' r='0.85' fill='currentColor' stroke='none'/></svg></div>
       <div>
         <div class="role">L'étage</div>
         <h3>Invest — De l'épargne au capital</h3>
@@ -168,9 +193,10 @@ a{color:var(--accent)}
         <p class="ask">Il répond à : « Est-ce que mon argent travaille vraiment ? »</p>
         <a class="go" href="invest.html">Lire le guide Invest →</a>
       </div>
+      <a class="cap" href="invest.html" tabindex="-1" aria-hidden="true"><img src="capture-invest.png" alt="" loading="lazy" width="375" height="620"></a>
     </div>
     <div class="floor" style="--u:var(--estate)">
-      <div class="mark">▲</div>
+      <div class="mark"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round'><path d='M12 3 L15.5 10 H8.5 Z'/><path d='M10.9 10 V7.9 H13.1 V10'/></svg></div>
       <div>
         <div class="role">La pointe</div>
         <h3>Estate — Du capital à la pierre</h3>
@@ -179,6 +205,7 @@ a{color:var(--accent)}
         <p class="ask">Il répond à : « Qu'est-ce que je possède, et que vaut-il ? »</p>
         <a class="go" href="estate.html">Lire le guide Estate →</a>
       </div>
+      <a class="cap" href="estate.html" tabindex="-1" aria-hidden="true"><img src="capture-estate.png" alt="" loading="lazy" width="375" height="620"></a>
     </div>
   </div>
 </div></section>
@@ -295,5 +322,23 @@ a{color:var(--accent)}
     <a href="confidentialite.html">Confidentialité</a></div>
 </div></section>
 
+
+<script>
+(function(){
+  var THEMES=["clair","nuit","sable"];
+  var KEY="STONE_GUIDE_THEME";
+  var buttons=document.querySelectorAll("[data-theme-choice]");
+  function apply(theme,persist){
+    if(THEMES.indexOf(theme)===-1)theme="";
+    if(theme)document.documentElement.setAttribute("data-theme",theme);
+    else document.documentElement.removeAttribute("data-theme");
+    buttons.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.themeChoice===theme))});
+    if(persist){try{if(theme)localStorage.setItem(KEY,theme);else localStorage.removeItem(KEY)}catch(e){}}
+  }
+  buttons.forEach(function(b){b.addEventListener("click",function(){apply(b.dataset.themeChoice,true)})});
+  var saved="";try{saved=localStorage.getItem(KEY)||""}catch(e){}
+  apply(saved,false);
+})();
+</script>
 </body>
 </html>

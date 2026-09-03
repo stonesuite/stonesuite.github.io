@@ -13,12 +13,32 @@
   --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;
   --pos:#1c7a54; --neg:#a1402c;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+@media (prefers-color-scheme: dark){:root:not([data-theme="clair"]){
   --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
   --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347; --pos:#4cc593; --neg:#e2846f;}}
-:root[data-theme="dark"]{
+:root[data-theme="nuit"]{
   --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
   --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347; --pos:#4cc593; --neg:#e2846f;}
+:root[data-theme="clair"]{
+  --paper:#f4f1e9; --paper2:#eae4d7; --ink:#13161d; --ink2:#525a68; --line:#dad2c0;
+  --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;
+  --pos:#1c7a54; --neg:#a1402c;
+}
+:root[data-theme="sable"]{--paper:#120d06;--paper2:#1c150a;--ink:#f3e9d6;--ink2:#b9a480;--line:#3c2c14;--card:#1a1309;--accent:#d8b273;--money:#e0c18a;--invest:#c9a567;--estate:#a88347;--pos:#4cc593;--neg:#e2846f}
+
+.theme-switch{display:inline-flex;align-items:center;gap:1px;padding:2px;border:1px solid var(--line);border-radius:999px;background:var(--paper2);margin-left:auto}
+.theme-choice{position:relative;display:grid;place-items:center;min-width:36px;min-height:36px;border-radius:999px;background:transparent;color:var(--ink2);border:0;padding:0;cursor:pointer}
+.theme-choice svg{width:15px;height:15px;display:block;transition:transform .5s cubic-bezier(.34,1.4,.5,1)}
+.theme-choice[aria-pressed="true"]{background:var(--card);color:var(--accent);box-shadow:0 1px 6px rgba(0,0,0,.18)}
+.theme-choice[aria-pressed="true"] svg{transform:rotate(360deg) scale(1.06)}
+.theme-choice:hover{color:var(--ink)}
+.theme-choice:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ctl-label{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  color:var(--ink);font-size:11px;font-weight:600;white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity .18s ease;z-index:20}
+.theme-choice:hover .ctl-label,.theme-choice:focus-visible .ctl-label{opacity:1}
+@media(prefers-reduced-motion:reduce){.theme-choice svg,.ctl-label{transition:none}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:"Nunito Sans",system-ui,sans-serif;font-size:17px;line-height:1.68}
 h1,h2,h3{font-family:"Sora",system-ui,sans-serif;line-height:1.15;text-wrap:balance;margin:0}
@@ -59,7 +79,7 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
 </style>
 </head>
 <body>
-<nav class="family"><div class="row"><b><span style="display:inline-flex;vertical-align:-1px"><svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 2 L14.55 7.39 H9.45 Z" fill="currentColor"/><path d="M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z" fill="currentColor"/><path d="M5.55 15.61 H18.45 L21 21 H3 Z" fill="currentColor"/></svg></span> LA SUITE STONE</b><a href="../">&#8592; Ouvrir l&#8217;application</a></div></nav>
+<nav class="family"><div class="row"><b><span style="display:inline-flex;vertical-align:-1px"><svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 2 L14.55 7.39 H9.45 Z" fill="currentColor"/><path d="M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z" fill="currentColor"/><path d="M5.55 15.61 H18.45 L21 21 H3 Z" fill="currentColor"/></svg></span> LA SUITE STONE</b><a href="../">&#8592; Ouvrir l&#8217;application</a><div class="theme-switch" role="group" aria-label="Apparence"><button type="button" class="theme-choice" data-theme-choice="clair" aria-pressed="false" aria-label="Apparence claire" title="Clair"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6"/></svg><span class="ctl-label">Clair</span></button><button type="button" class="theme-choice" data-theme-choice="nuit" aria-pressed="false" aria-label="Apparence nuit" title="Nuit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M20 14.2A8.4 8.4 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2Z"/></svg><span class="ctl-label">Nuit</span></button><button type="button" class="theme-choice" data-theme-choice="sable" aria-pressed="false" aria-label="Apparence sable" title="Sable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 4 20 19H4Z"/><path d="M8.6 13.4h6.8"/></svg><span class="ctl-label">Sable</span></button></div></div></nav>
 
 <div class="wrap">
   <header class="hero">
@@ -155,5 +175,23 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
     changement qui touche vos données.</p>
   </main>
 </div>
+
+<script>
+(function(){
+  var THEMES=["clair","nuit","sable"];
+  var KEY="STONE_GUIDE_THEME";
+  var buttons=document.querySelectorAll("[data-theme-choice]");
+  function apply(theme,persist){
+    if(THEMES.indexOf(theme)===-1)theme="";
+    if(theme)document.documentElement.setAttribute("data-theme",theme);
+    else document.documentElement.removeAttribute("data-theme");
+    buttons.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.themeChoice===theme))});
+    if(persist){try{if(theme)localStorage.setItem(KEY,theme);else localStorage.removeItem(KEY)}catch(e){}}
+  }
+  buttons.forEach(function(b){b.addEventListener("click",function(){apply(b.dataset.themeChoice,true)})});
+  var saved="";try{saved=localStorage.getItem(KEY)||""}catch(e){}
+  apply(saved,false);
+})();
+</script>
 </body>
 </html>

@@ -13,12 +13,32 @@
   --card:#fffdf7; --accent:#8a6526; --accent-soft:#e0c18a; --pos:#1c7a54; --neg:#a83a3a;
   --p-bg:#0e1526; --p-card:#151f36; --p-line:#22304e; --p-ink:#e8edf6; --p-mut:#8b96ad; --p-gold:#e0c18a;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+@media (prefers-color-scheme: dark){:root:not([data-theme="clair"]){
   --paper:#0b0f18; --paper2:#101623; --ink:#eef1f7; --ink2:#98a3b6; --line:#232d42;
   --card:#121926; --accent:#e0c18a; --accent-soft:#c9a567; --pos:#4cc593; --neg:#ef7b7b;}}
-:root[data-theme="dark"]{
+:root[data-theme="nuit"]{
   --paper:#0b0f18; --paper2:#101623; --ink:#eef1f7; --ink2:#98a3b6; --line:#232d42;
   --card:#121926; --accent:#e0c18a; --accent-soft:#c9a567; --pos:#4cc593; --neg:#ef7b7b;}
+:root[data-theme="clair"]{
+  --paper:#f3f0e8; --paper2:#eae5d9; --ink:#15181f; --ink2:#565f6e; --line:#dcd4c3;
+  --card:#fffdf7; --accent:#8a6526; --accent-soft:#e0c18a; --pos:#1c7a54; --neg:#a83a3a;
+  --p-bg:#0e1526; --p-card:#151f36; --p-line:#22304e; --p-ink:#e8edf6; --p-mut:#8b96ad; --p-gold:#e0c18a;
+}
+:root[data-theme="sable"]{--paper:#120d06;--paper2:#1c150a;--ink:#f3e9d6;--ink2:#b9a480;--line:#3c2c14;--card:#1a1309;--accent:#e0c18a;--accent-soft:#c9a567;--pos:#4cc593;--neg:#ef7b7b}
+
+.theme-switch{display:inline-flex;align-items:center;gap:1px;padding:2px;border:1px solid var(--line);border-radius:999px;background:var(--paper2);margin-left:auto}
+.theme-choice{position:relative;display:grid;place-items:center;min-width:36px;min-height:36px;border-radius:999px;background:transparent;color:var(--ink2);border:0;padding:0;cursor:pointer}
+.theme-choice svg{width:15px;height:15px;display:block;transition:transform .5s cubic-bezier(.34,1.4,.5,1)}
+.theme-choice[aria-pressed="true"]{background:var(--card);color:var(--accent);box-shadow:0 1px 6px rgba(0,0,0,.18)}
+.theme-choice[aria-pressed="true"] svg{transform:rotate(360deg) scale(1.06)}
+.theme-choice:hover{color:var(--ink)}
+.theme-choice:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ctl-label{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  color:var(--ink);font-size:11px;font-weight:600;white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity .18s ease;z-index:20}
+.theme-choice:hover .ctl-label,.theme-choice:focus-visible .ctl-label{opacity:1}
+@media(prefers-reduced-motion:reduce){.theme-choice svg,.ctl-label{transition:none}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:"Nunito Sans",system-ui,sans-serif;font-size:17px;line-height:1.68}
 h1,h2,h3{font-family:"Sora",system-ui,sans-serif;line-height:1.12;text-wrap:balance;margin:0}
@@ -118,7 +138,7 @@ section{padding:0}
   <span class="here">Money</span>
   <a href="invest.html">Invest</a>
   <a href="estate.html">Estate</a>
-  <a href="index.html">La suite entière</a>
+  <a href="index.html">La suite entière</a><div class="theme-switch" role="group" aria-label="Apparence"><button type="button" class="theme-choice" data-theme-choice="clair" aria-pressed="false" aria-label="Apparence claire" title="Clair"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6"/></svg><span class="ctl-label">Clair</span></button><button type="button" class="theme-choice" data-theme-choice="nuit" aria-pressed="false" aria-label="Apparence nuit" title="Nuit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M20 14.2A8.4 8.4 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2Z"/></svg><span class="ctl-label">Nuit</span></button><button type="button" class="theme-choice" data-theme-choice="sable" aria-pressed="false" aria-label="Apparence sable" title="Sable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 4 20 19H4Z"/><path d="M8.6 13.4h6.8"/></svg><span class="ctl-label">Sable</span></button></div>
 </div></nav>
 
 <header class="hero"><div class="wrap">
@@ -379,5 +399,23 @@ section{padding:0}
   <div class="foot">STONE Money · Du revenu à l’épargne · Guide utilisateur, septembre 2026</div>
 </div></section>
 
+
+<script>
+(function(){
+  var THEMES=["clair","nuit","sable"];
+  var KEY="STONE_GUIDE_THEME";
+  var buttons=document.querySelectorAll("[data-theme-choice]");
+  function apply(theme,persist){
+    if(THEMES.indexOf(theme)===-1)theme="";
+    if(theme)document.documentElement.setAttribute("data-theme",theme);
+    else document.documentElement.removeAttribute("data-theme");
+    buttons.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.themeChoice===theme))});
+    if(persist){try{if(theme)localStorage.setItem(KEY,theme);else localStorage.removeItem(KEY)}catch(e){}}
+  }
+  buttons.forEach(function(b){b.addEventListener("click",function(){apply(b.dataset.themeChoice,true)})});
+  var saved="";try{saved=localStorage.getItem(KEY)||""}catch(e){}
+  apply(saved,false);
+})();
+</script>
 </body>
 </html>
