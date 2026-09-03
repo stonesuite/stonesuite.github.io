@@ -101,6 +101,10 @@
       border-radius:10px;background:var(--panel2);color:var(--text);font:inherit;font-size:12px;
       font-weight:700;cursor:pointer}
     .tour-replay:hover{border-color:var(--gold)}
+    .privacy-link{display:block;width:100%;min-height:44px;margin-top:8px;padding:11px 0;
+      border:0;background:transparent;color:var(--muted);font:inherit;font-size:12px;
+      font-weight:700;text-align:center;text-decoration:none}
+    .privacy-link:hover,.privacy-link:focus-visible{color:var(--gold)}
     @media(prefers-reduced-motion:reduce){.tour-spot,.tour-card{transition:none}}
     @media(prefers-reduced-motion:reduce){
       .home-panel .pyr [data-go],.home-panel .pyr text,.home-panel .pyr .detail,
@@ -148,6 +152,9 @@
     .stage-panel .eyebrow{margin:12px 0 0;color:var(--u-accent,var(--gold));font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
     .stage-panel h1{margin:8px 0 0;font-size:20px;letter-spacing:-.02em}
     .stage-panel p{max-width:420px;margin:10px auto 0;color:var(--muted);font-size:12px;line-height:1.6}
+    .stage-panel .warn-hint{margin-top:14px;padding:10px 13px;border:1px solid var(--line);border-radius:10px;
+      background:var(--panel2);text-align:left}
+    .stage-panel .warn-hint b{color:var(--text)}
     .loading-line{width:180px;height:2px;margin:20px auto 0;border-radius:2px;background:var(--line);overflow:hidden}
     .loading-line span{display:block;width:40%;height:100%;background:var(--u-accent,var(--gold));animation:slide 1.4s ease-in-out infinite}
     @keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(350%)}}
@@ -183,6 +190,9 @@
     </div>
   </header>
 
+  <section class="notice" id="inAppNotice" role="status" aria-live="polite" hidden>
+    <span id="inAppNoticeText"></span>
+  </section>
   <section class="notice" id="updateNotice" role="status" aria-live="polite" hidden>
     <span>Une nouvelle version de STONE est disponible.</span>
     <button type="button" id="updateButton">Mettre à jour</button>
@@ -203,6 +213,7 @@
   <p class="sheet-sub">Ces adresses restent uniquement sur cet appareil, jamais publiées. Laisse vide pour garder la valeur par défaut.</p>
   <div id="settingsFields"></div>
   <button type="button" class="tour-replay" id="tourReplay">Revoir la visite guidée</button>
+  <a class="privacy-link" id="privacyPolicyLink" href="guides/confidentialite.html">Confidentialité</a>
   <div class="settings-actions">
     <button type="button" class="settings-cancel" id="settingsCancel">Annuler</button>
     <button type="button" class="settings-save" id="settingsSave">Enregistrer</button>
@@ -290,6 +301,10 @@
         "<h1>STONE " + u.label + " n’a pas pu s’ouvrir</h1>" +
         "<p>Première visite ? Google demande une autorisation qui ne peut pas s’afficher ici : " +
         "ouvrez " + u.label + " une fois dans le navigateur, acceptez, puis revenez réessayer.</p>" +
+        '<p class="warn-hint">Google va d’abord afficher <b>« Cette application n’a pas été vérifiée »</b> — ' +
+        'normal pour un projet indépendant à ce stade, pas un signe de danger : ' +
+        'touche <b>Paramètres avancés</b> puis <b>Accéder à STONE ' + u.label + '</b> pour continuer. ' +
+        'Tes données restent dans ton propre compte Google, jamais sur un serveur STONE.</p>' +
         '<button class="primary-button" type="button" data-authorize="' + u.key + '">Autoriser dans le navigateur</button>' +
         '<div style="height:10px"></div>' +
         '<button class="quiet-button" type="button" data-retry="' + u.key + '">Réessayer ici</button></section>';
@@ -780,17 +795,35 @@
     return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
   }
   function isAppleMobile() { return /iphone|ipad|ipod/i.test(navigator.userAgent); }
+  /* Navigateurs intégrés à d'autres applications (Instagram, Messenger, Line,
+     WeChat, TikTok, LinkedIn, Snapchat...) : l'installation y est impossible,
+     et ni beforeinstallprompt ni le partage iOS n'y fonctionnent normalement.
+     WhatsApp n'a volontairement pas de test dédié : il ouvre les liens dans le
+     navigateur du système (Chrome/Custom Tabs, Safari), pas dans une vue
+     intégrée, et son UA ne se distingue pas — un test le visant serait un
+     faux repère, pas une vraie détection. */
+  function isInAppBrowser() {
+    return /FBAN|FBAV|FB_IAB|Instagram|Line\/|MicroMessenger|Snapchat|TikTok|musical_ly|LinkedInApp/i.test(navigator.userAgent || "");
+  }
+  var inAppNotice = document.getElementById("inAppNotice");
+  var inAppNoticeText = document.getElementById("inAppNoticeText");
+  if (isInAppBrowser() && !isStandalone()) {
+    inAppNoticeText.textContent = isAppleMobile()
+      ? "Ce lien s’est ouvert dans le navigateur d’une autre application : l’installation n’est pas possible ici. Touche ⋯ puis « Ouvrir dans Safari »."
+      : "Ce lien s’est ouvert dans le navigateur d’une autre application : l’installation n’est pas possible ici. Touche ⋮ puis « Ouvrir dans Chrome ».";
+    inAppNotice.hidden = false;
+  }
   window.addEventListener("beforeinstallprompt", function (event) {
     event.preventDefault();
     deferredPrompt = event;
-    if (!isStandalone()) installButton.hidden = false;
+    if (!isStandalone() && !isInAppBrowser()) installButton.hidden = false;
   });
   window.addEventListener("appinstalled", function () {
     deferredPrompt = null;
     installButton.hidden = true;
     appleNotice.hidden = true;
   });
-  if (isAppleMobile() && !isStandalone()) installButton.hidden = false;
+  if (isAppleMobile() && !isStandalone() && !isInAppBrowser()) installButton.hidden = false;
   installButton.addEventListener("click", function () {
     if (deferredPrompt) {
       deferredPrompt.prompt();
