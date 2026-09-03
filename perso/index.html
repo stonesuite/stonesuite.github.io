@@ -74,6 +74,34 @@
       animation:stone-row .5s ease both;animation-delay:1.89s}
     .home-guides a:hover,.home-guides a:focus-visible{border-color:var(--gold);color:var(--gold);outline:none}
     .home-trust{margin-top:14px;color:var(--muted);font-size:10.5px;letter-spacing:.02em}
+    /* Visite guidée : un halo découpé autour de l'élément expliqué, une bulle
+       à côté, et deux commandes. Le halo est un simple bloc à l'ombre immense :
+       aucune capture d'événement, aucune copie du DOM. */
+    .tour-spot{position:fixed;z-index:60;border-radius:16px;border:2px solid var(--gold);
+      box-shadow:0 0 0 9999px rgba(4,6,11,.74),0 0 26px rgba(201,165,103,.35);
+      pointer-events:none;transition:top .28s ease,left .28s ease,width .28s ease,height .28s ease}
+    .tour-card{position:fixed;z-index:61;max-width:min(330px,calc(100vw - 28px));
+      border:1px solid var(--line);border-radius:16px;background:var(--panel);
+      padding:16px 18px 14px;box-shadow:0 22px 50px rgba(0,0,0,.55);
+      transition:top .28s ease,left .28s ease}
+    .tour-card .step{font-family:'Sora';font-size:10px;font-weight:800;letter-spacing:.22em;
+      text-transform:uppercase;color:var(--gold)}
+    .tour-card h2{margin:8px 0 0;font-size:16px;letter-spacing:-.01em}
+    .tour-card p{margin:7px 0 0;color:var(--muted);font-size:12.5px;line-height:1.55}
+    .tour-actions{display:flex;align-items:center;gap:10px;margin-top:14px}
+    .tour-dots{display:flex;gap:5px;flex:1}
+    .tour-dots i{width:6px;height:6px;border-radius:50%;background:var(--line);display:block}
+    .tour-dots i.on{background:var(--gold)}
+    .tour-skip{border:0;background:transparent;color:var(--muted);font:inherit;font-size:11.5px;
+      font-weight:700;cursor:pointer;padding:8px 4px;min-height:38px}
+    .tour-skip:hover{color:var(--text)}
+    .tour-next{border:1px solid var(--gold);border-radius:10px;background:var(--gold);
+      color:#171109;font:inherit;font-size:12px;font-weight:800;padding:9px 16px;min-height:38px;cursor:pointer}
+    .tour-replay{width:100%;min-height:44px;margin-top:4px;border:1px solid var(--line);
+      border-radius:10px;background:var(--panel2);color:var(--text);font:inherit;font-size:12px;
+      font-weight:700;cursor:pointer}
+    .tour-replay:hover{border-color:var(--gold)}
+    @media(prefers-reduced-motion:reduce){.tour-spot,.tour-card{transition:none}}
     @media(prefers-reduced-motion:reduce){
       .home-panel .pyr [data-go],.home-panel .pyr text,.home-panel .pyr .detail,
       .home-panel .pyr .pyr-glow,.home-panel .pyr .pyr-plinth,
@@ -174,6 +202,7 @@
   <h2>Réglages des univers</h2>
   <p class="sheet-sub">Ces adresses restent uniquement sur cet appareil, jamais publiées. Laisse vide pour garder la valeur par défaut.</p>
   <div id="settingsFields"></div>
+  <button type="button" class="tour-replay" id="tourReplay">Revoir la visite guidée</button>
   <div class="settings-actions">
     <button type="button" class="settings-cancel" id="settingsCancel">Annuler</button>
     <button type="button" class="settings-save" id="settingsSave">Enregistrer</button>
@@ -500,6 +529,8 @@
     });
     syncVisibility();
     homeEl.classList.add("is-visible");
+    /* Première ouverture : la visite démarre une fois la cinématique posée. */
+    if (!tourSeen()) setTimeout(function () { tourStart(); }, 2300);
     /* L'URL redevient celle du hall d'entrée : un rechargement ou un partage
        depuis l'accueil ne renvoie pas dans le dernier univers visité. */
     try {
@@ -514,7 +545,113 @@
        invisible ; prefers-reduced-motion coupe l'animation plus bas. */
   }
 
+  /* ---- Visite guidée de la coque ----
+     Elle explique la maison (pyramide, univers, guides, barre, logo), jamais
+     l'intérieur d'un univers : ceux-ci sont des pages isolées que la coque ne
+     peut pas annoter, et c'est cette isolation qui protège les données. */
+  var TOUR_KEY = "STONE_PWA_TOUR_SEEN::" + INSTANCE;
+  var TOUR_STEPS = [
+    { sel: ".home-panel .pyr", titre: "Ta pyramide patrimoniale",
+      texte: "Trois étages d'un même patrimoine. Chaque tranche porte la suivante : sans revenu maîtrisé, pas d'épargne ; sans capital, pas de pierre." },
+    { sel: '.home-panel .pyr [data-go="money"]', titre: "La base : Money",
+      texte: "Ce que ton revenu libère réellement chaque mois, une fois les dépenses et les remboursements comptés." },
+    { sel: '.home-panel .pyr [data-go="invest"]', titre: "L'étage : Invest",
+      texte: "Ce que ton épargne devient à la BRVM, et ce qu'elle rapporte vraiment une fois les frais payés." },
+    { sel: '.home-panel .pyr [data-go="estate"]', titre: "La pointe : Estate",
+      texte: "Ce que ton capital devient en pierre : tes biens, leur coût réel et leurs papiers." },
+    { sel: ".home-rows", titre: "Entrer dans un univers",
+      texte: "Touche une tranche de la pyramide ou sa rangée ici : les deux mènent au même endroit." },
+    { sel: ".home-guides a", titre: "Les guides",
+      texte: "Chaque univers a son guide : à quoi il sert, ce qu'il change pour toi, comment commencer." },
+    { sel: ".universe-nav", titre: "Passer d'un univers à l'autre",
+      texte: "Cette barre reste toujours là. Tu changes d'univers sans rien recharger ni perdre ta place." },
+    { sel: "#brandHomeButton", titre: "Revenir ici",
+      texte: "Ce logo te ramène toujours à la pyramide. Et la molette garde une entrée pour revoir cette visite." }
+  ];
+  var tour = { i: 0, spot: null, card: null, open: false, onResize: null };
+
+  function tourSeen() { try { return localStorage.getItem(TOUR_KEY) === "1"; } catch (e) { return true; } }
+  function tourRemember() { try { localStorage.setItem(TOUR_KEY, "1"); } catch (e) {} }
+
+  function tourPlace() {
+    var step = TOUR_STEPS[tour.i];
+    var el = document.querySelector(step.sel);
+    if (!el) { tourNext(); return; }
+    var r = el.getBoundingClientRect();
+    var pad = 8;
+    tour.spot.style.top = Math.max(4, r.top - pad) + "px";
+    tour.spot.style.left = Math.max(4, r.left - pad) + "px";
+    tour.spot.style.width = Math.min(window.innerWidth - 8, r.width + pad * 2) + "px";
+    tour.spot.style.height = Math.min(window.innerHeight - 8, r.height + pad * 2) + "px";
+
+    tour.card.querySelector(".step").textContent = "Étape " + (tour.i + 1) + " sur " + TOUR_STEPS.length;
+    tour.card.querySelector("h2").textContent = step.titre;
+    tour.card.querySelector(".txt").textContent = step.texte;
+    tour.card.querySelector(".tour-next").textContent =
+      tour.i === TOUR_STEPS.length - 1 ? "Terminer" : "Suivant";
+    Array.prototype.forEach.call(tour.card.querySelectorAll(".tour-dots i"), function (dot, n) {
+      dot.classList.toggle("on", n === tour.i);
+    });
+
+    /* La bulle se pose sous la cible, ou au-dessus si elle depasserait l'ecran. */
+    var cr = tour.card.getBoundingClientRect();
+    var dessous = r.bottom + 12;
+    var top = dessous + cr.height > window.innerHeight - 8 ? Math.max(8, r.top - cr.height - 12) : dessous;
+    var left = Math.min(Math.max(8, r.left + r.width / 2 - cr.width / 2), window.innerWidth - cr.width - 8);
+    tour.card.style.top = top + "px";
+    tour.card.style.left = left + "px";
+  }
+
+  function tourNext() {
+    tour.i += 1;
+    if (tour.i >= TOUR_STEPS.length) { tourEnd(); return; }
+    tourPlace();
+  }
+
+  function tourEnd() {
+    tour.open = false;
+    tourRemember();
+    if (tour.spot) { tour.spot.remove(); tour.spot = null; }
+    if (tour.card) { tour.card.remove(); tour.card = null; }
+    if (tour.onResize) { window.removeEventListener("resize", tour.onResize); tour.onResize = null; }
+    var home = document.querySelector("#brandHomeButton");
+    if (home) home.focus({ preventScroll: true });
+  }
+
+  function tourStart() {
+    if (tour.open || !homeEl || !homeEl.classList.contains("is-visible")) return;
+    tour.open = true;
+    tour.i = 0;
+    tour.spot = document.createElement("div");
+    tour.spot.className = "tour-spot";
+    tour.card = document.createElement("section");
+    tour.card.className = "tour-card";
+    tour.card.setAttribute("role", "dialog");
+    tour.card.setAttribute("aria-label", "Visite guidée de STONE");
+    tour.card.innerHTML =
+      '<p class="step"></p><h2></h2><p class="txt"></p>' +
+      '<div class="tour-actions"><span class="tour-dots">' +
+      TOUR_STEPS.map(function () { return "<i></i>"; }).join("") +
+      '</span><button type="button" class="tour-skip">Passer</button>' +
+      '<button type="button" class="tour-next">Suivant</button></div>';
+    document.body.appendChild(tour.spot);
+    document.body.appendChild(tour.card);
+    tour.card.querySelector(".tour-next").addEventListener("click", tourNext);
+    tour.card.querySelector(".tour-skip").addEventListener("click", tourEnd);
+    tour.onResize = function () { if (tour.open) tourPlace(); };
+    window.addEventListener("resize", tour.onResize);
+    document.addEventListener("keydown", function esc(event) {
+      if (!tour.open) { document.removeEventListener("keydown", esc); return; }
+      if (event.key === "Escape") { event.preventDefault(); tourEnd(); }
+      else if (event.key === "Enter" || event.key === "ArrowRight") { event.preventDefault(); tourNext(); }
+    });
+    tourPlace();
+    tour.card.querySelector(".tour-next").focus({ preventScroll: true });
+  }
+
   function activate(key, fromUser) {
+    if (tour.open) tourEnd();
+
     var u = universe(key);
     if (!u) return;
     if (homeEl) homeEl.classList.remove("is-visible");
@@ -703,6 +840,11 @@
      pas garder de résidu orphelin sur l'appareil. */
   try { localStorage.removeItem("STONE_PWA_LAST_UNIVERSE::" + INSTANCE); } catch (e) {}
   document.getElementById("brandHomeButton").addEventListener("click", function () { showHome(); });
+  document.getElementById("tourReplay").addEventListener("click", function () {
+    closeSettings();
+    showHome();
+    setTimeout(function () { tourStart(); }, 420);
+  });
   var requested = bootTarget(window.location.href);
   if (universe(requested)) activate(requested, false);
   else showHome();
