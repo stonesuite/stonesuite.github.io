@@ -1,4 +1,6 @@
-/* STONE PWA — registre des univers · COQUE BÊTA (amis).
+/* STONE PWA — registre des univers · COQUE TOUT OUVERT.
+   GÉNÉRÉ par site-build.mjs depuis config.beta.js — ne pas éditer.
+   Identique à la coque publique, tous les univers ouverts.
    Ne contient AUCUNE adresse personnelle : Invest pointe sur le Starter
    multi-utilisateur, Money sur son canal multi-utilisateur (chaque personne
    crée et possède son propre classeur) et Estate sur son déploiement dédié.
@@ -28,7 +30,7 @@ window.STONE_PWA_UNIVERSES = [
     url: "https://script.google.com/macros/s/AKfycbxPNnyqKv1IiSclCvDSQKPYx2ZUEm4guXz-2FXXn_wYWskXN5VA-rCrJ66KkvvIlu34bg/exec",
     msgPrefix: "STONE_MONEY_PWA",
     /* Fermé au lancement — décision de Stan (04/09/2026). */
-    enabled: false,
+    enabled: true,
     preview: {
       shot: "/guides/capture-money.png",
       lead: "Savoir où part ton argent, et ce qu’il t’en reste vraiment.",
@@ -71,7 +73,7 @@ window.STONE_PWA_UNIVERSES = [
     url: "https://script.google.com/macros/s/AKfycbzKg44_NL6kzqDJByrnoTCnHLVnrvyv4ozO-qIt72rs8Muk2yS1a_lrRIT4IYq54ZNDiQ/exec",
     msgPrefix: "STONE_ESTATE_PWA",
     /* Fermé au lancement — décision de Stan (04/09/2026). */
-    enabled: false,
+    enabled: true,
     preview: {
       shot: "/guides/capture-estate.png",
       lead: "Le registre de ce que tu possèdes, poste par poste.",
