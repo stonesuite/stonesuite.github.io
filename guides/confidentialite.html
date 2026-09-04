@@ -74,6 +74,14 @@ table.scopes td.app{color:var(--ink);font-weight:700;font-family:Sora;white-spac
 table.scopes td:last-child,table.scopes th:last-child{width:44%}
 .contact{margin-top:18px;border:1px dashed var(--line);border-radius:14px;padding:18px 20px;background:var(--paper2)}
 .contact .tag{font-family:Sora;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--neg)}
+/* Bloc renseigne : trait plein, plus l'encadre en pointilles d'une mention
+   manquante. */
+.contact.is-set{border-style:solid}
+.contact .who{margin:0;font-family:Sora;font-size:17px;font-weight:700;letter-spacing:.01em}
+.contact .what{margin:4px 0 0;color:var(--ink2);font-size:14px}
+.contact .how{margin:14px 0 0;font-size:14.5px;line-height:1.6}
+.contact .how a{font-family:Sora;font-weight:700;white-space:nowrap}
+.contact .note{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);color:var(--ink2);font-size:13px;line-height:1.6}
 .foot{margin-top:56px;padding-top:24px;border-top:1px solid var(--line);color:var(--ink2);font-size:13.5px}
 @media(max-width:560px){header.hero{padding:36px 0 4px}main{padding:32px 0 70px}}
 </style>
@@ -163,10 +171,15 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
 
     <section>
       <h2>Contact</h2>
-      <div class="contact">
-        <span class="tag">À compléter</span>
-        <p style="margin-top:8px">Le responsable de STONE et une adresse de contact seront publiés ici avant la mise
-        en ligne définitive de cette page.</p>
+      <div class="contact is-set">
+        <p class="who">Stone Dev Corp</p>
+        <p class="what">Responsable des applications STONE Invest, STONE Money et STONE Estate.</p>
+        <p class="how">Pour toute question sur vos données, ou pour exercer un droit d’accès,
+        de rectification ou d’effacement :<br>
+        <a href="tel:+2250789158343">+225 07 89 15 83 43</a></p>
+        <p class="note">Rappel utile : STONE ne détient aucune copie de vos données. Vos fichiers
+        vivent dans votre propre compte Google, et vous pouvez les supprimer vous-même à tout
+        moment — sans passer par nous.</p>
       </div>
     </section>
 

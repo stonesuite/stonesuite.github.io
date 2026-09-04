@@ -25,7 +25,7 @@
     .brand{display:flex;align-items:center;gap:10px;min-width:0;background:none;border:0;padding:0;color:inherit;text-align:left;font:inherit;cursor:pointer}
     /* L'accueil peut dépasser la hauteur d'un petit écran (pyramide + trois
        univers + guides) : il défile au lieu de passer sous la barre d'onglets. */
-    .home-panel{overflow-y:auto;align-content:safe center;padding-block:18px}
+    .home-panel{padding-block:18px}
     .home-panel .pyr{margin:12px auto 0;display:block;max-width:min(280px,64vh);width:100%}
     /* Cinematique : la pyramide s'assemble, base d'abord, la pointe couronne.
        Chaque tranche part de sa position d'arrivee (pas de fill-mode qui pourrait
@@ -185,7 +185,7 @@
     .stage{position:relative;flex:1;min-height:0;background:var(--bg)}
     .stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .18s}
     .stage iframe.is-visible{opacity:1;pointer-events:auto}
-    .stage-panel{position:absolute;inset:0;display:none;place-items:center;padding:24px;text-align:center;background:var(--bg)}
+    .stage-panel{position:absolute;inset:0;display:none;place-items:center;padding:24px;text-align:center;background:var(--bg);overflow-y:auto;align-content:safe center}
     .stage-panel.is-visible{display:grid}
     .stage-panel .mark{font-size:40px;color:var(--u-accent,var(--gold))}
     .stage-panel .eyebrow{margin:12px 0 0;color:var(--u-accent,var(--gold));font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
