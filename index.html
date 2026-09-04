@@ -523,7 +523,12 @@
     var ecart = Math.round((aujourdhui - jour) / 86400000);
     if (ecart <= 0) return "aujourd’hui";
     if (ecart === 1) return "hier";
-    try { return "le " + new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long" }).format(d); }
+    /* Au-dela d'un an, « le 12 mars » serait ambigu : l'annee devient
+       necessaire, surtout pour une estimation immobiliere qui peut dormir. */
+    var options = ecart > 330
+      ? { day: "numeric", month: "long", year: "numeric" }
+      : { day: "numeric", month: "long" };
+    try { return "le " + new Intl.DateTimeFormat("fr-FR", options).format(d); }
     catch (e) { return ""; }
   }
 
@@ -568,21 +573,42 @@
     valueEl.className = "r-value";
     valueEl.innerHTML = '<span class="' + (partiel ? "rv-partial" : "") + '">' +
       moneyFormat(Number(snapshot.amountXOF)) + "</span>";
-    if (noteEl) {
-      var quand = wealthFreshness(snapshot.asOf);
-      noteEl.textContent = partiel
-        ? "Valorisation partielle · " + snapshot.pricedPositionCount + "/" + snapshot.positionCount + " titres cotés"
-        : "Clôture BRVM" + (quand ? " · " + quand : "");
+    if (noteEl) noteEl.textContent = wealthNote(key, snapshot, partiel);
+  }
+
+  /* La phrase sous le montant dit d'ou vient le chiffre. Un solde saisi a la
+     main et une estimation declaree ne doivent jamais se lire comme une
+     cloture officielle : c'est toute la difference entre les trois etages. */
+  function wealthNote(key, snapshot, partiel) {
+    var quand = wealthFreshness(snapshot.asOf);
+    if (key === "invest") {
+      if (partiel) return "Valorisation partielle · " + snapshot.pricedPositionCount + "/" + snapshot.positionCount + " titres cotés";
+      return "Clôture BRVM" + (quand ? " · " + quand : "");
     }
+    if (key === "money") {
+      var base = "Soldes saisis" + (quand ? " · dernier mouvement " + quand : "");
+      /* La convention de signe d'un compte de dette appartient a
+         l'utilisateur : on ne la deduit pas, on dit que le chiffre est brut. */
+      if (Number(snapshot.debtAccountCount || 0) > 0) {
+        return base + " · hors " + snapshot.debtAccountCount + " compte(s) de dette";
+      }
+      return base;
+    }
+    if (key === "estate") {
+      if (partiel) return "Estimations déclarées · " + snapshot.valuedAssetCount + "/" + snapshot.assetCount + " biens estimés";
+      return "Estimation déclarée" + (quand ? " · la plus ancienne " + quand : "");
+    }
+    return quand ? "Mis à jour " + quand : "";
   }
 
   /* Monte en arriere-plan les univers qui alimentent l'inventaire. Appele
      seulement quand l'accueil est affiche, une fois par session, et jamais de
      maniere bloquante : si le montage echoue ou traine, l'accueil ne bouge pas.
-     Pour l'instant Invest seul — Money et Estate suivront par le meme contrat. */
+     Les trois univers repondent au meme contrat ; l'ordre suit la pyramide,
+     de la base au sommet. */
   var wealthMounted = {};
   function ensureWealthFrames() {
-    ["invest"].forEach(function (key) {
+    ["money", "invest", "estate"].forEach(function (key) {
       if (wealthMounted[key]) return;
       var u = universe(key);
       if (!u || !u.enabled || !effectiveUrl(u)) return;
