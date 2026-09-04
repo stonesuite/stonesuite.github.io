@@ -5,6 +5,18 @@
    Décision Stan 02/09/2026 : la suite publique = Invest, Money, Estate —
    Ledge est retiré de la bêta (usage privé) et Trade abandonné. */
 window.STONE_PWA_INSTANCE = "beta";
+
+/* ══ OUVERTURE DES UNIVERS ══════════════════════════════════════════════
+   Un seul interrupteur par univers, plus bas : `enabled`.
+
+     enabled: true   l'univers s'ouvre normalement
+     enabled: false  l'univers affiche son ecran « Bientot », avec un apercu
+                     de ce qu'il donnera — et rien d'autre ne change
+
+   Un univers ferme n'est ni charge, ni interroge pour l'inventaire : aucune
+   connexion n'est tentee vers lui. Le passer a `true` suffit a l'ouvrir, sans
+   aucune autre modification.
+   ══════════════════════════════════════════════════════════════════════ */
 window.STONE_PWA_UNIVERSES = [
   {
     key: "money",
@@ -15,7 +27,18 @@ window.STONE_PWA_UNIVERSES = [
     accent: "#e0c18a",
     url: "https://script.google.com/macros/s/AKfycbxPNnyqKv1IiSclCvDSQKPYx2ZUEm4guXz-2FXXn_wYWskXN5VA-rCrJ66KkvvIlu34bg/exec",
     msgPrefix: "STONE_MONEY_PWA",
-    enabled: true
+    /* Fermé au lancement — décision de Stan (04/09/2026). */
+    enabled: false,
+    preview: {
+      shot: "/guides/capture-money.png",
+      lead: "Savoir où part ton argent, et ce qu’il t’en reste vraiment.",
+      points: [
+        "Un seul chiffre qui dit la vérité sur ton mois",
+        "La dette distinguée de la dépense",
+        "Ce que tu mets de côté, visible avant la fin du mois"
+      ],
+      guide: "/guides/money.html"
+    }
   },
   {
     key: "invest",
@@ -26,7 +49,17 @@ window.STONE_PWA_UNIVERSES = [
     accent: "#c9a567",
     url: "https://script.google.com/macros/s/AKfycbwZ4LbcsS7jHv38XReH0l_l70JOKp6biJr1vskYDJBxvrFfdQ_kHGp_v61reoP-TToEJQ/exec",
     msgPrefix: "STONE_STARTER_PWA",
-    enabled: true
+    enabled: true,
+    preview: {
+      shot: "/guides/capture-invest.png",
+      lead: "Suivre tes actions BRVM et ta performance réelle.",
+      points: [
+        "Ce que tu as investi, ce que ça vaut aujourd’hui",
+        "La répartition de ton portefeuille, titre par titre",
+        "Ta courbe comparée aux indices BRVM"
+      ],
+      guide: "/guides/invest.html"
+    }
   },
   {
     key: "estate",
@@ -37,6 +70,17 @@ window.STONE_PWA_UNIVERSES = [
     accent: "#a88347",
     url: "https://script.google.com/macros/s/AKfycbzKg44_NL6kzqDJByrnoTCnHLVnrvyv4ozO-qIt72rs8Muk2yS1a_lrRIT4IYq54ZNDiQ/exec",
     msgPrefix: "STONE_ESTATE_PWA",
-    enabled: true
+    /* Fermé au lancement — décision de Stan (04/09/2026). */
+    enabled: false,
+    preview: {
+      shot: "/guides/capture-estate.png",
+      lead: "Le registre de ce que tu possèdes, poste par poste.",
+      points: [
+        "Ce que le bien t’a réellement coûté, frais compris",
+        "Tes papiers rassemblés, datés, au même endroit",
+        "La valeur que tu déclares, avec sa date et son auteur"
+      ],
+      guide: "/guides/estate.html"
+    }
   }
 ];

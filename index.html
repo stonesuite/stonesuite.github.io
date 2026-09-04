@@ -131,6 +131,31 @@
     .home-panel .pyr text{font-family:inherit;font-weight:800;letter-spacing:.14em;fill:#141008;pointer-events:none}
     .home-panel .pyr .detail{stroke:rgba(18,13,4,.5);stroke-width:1.4;fill:none;stroke-linecap:round;pointer-events:none}
     .home-panel .home-hint{margin-top:14px}
+    /* Etage ferme : discret, jamais eteint — la porte mene a son apercu. */
+    .home-row.is-soon .r-mark,.home-row.is-soon .r-name{opacity:.72}
+    .home-panel .pyr [data-go].is-soon{opacity:.5}
+    /* Ecran « Bientot » : une promesse et son apercu. Il doit se lire comme une
+       vitrine, jamais comme une panne — d'ou l'absence totale de rouge, de
+       pictogramme d'alerte et de bouton de secours. */
+    .stage-panel .soon{max-width:420px;padding-bottom:26px}
+    .soon .soon-lead{margin:6px auto 0;max-width:34ch;color:var(--text);font-size:15px;line-height:1.5}
+    .soon-shot{position:relative;margin:18px auto 0;width:min(206px,56vw);border-radius:18px;
+      overflow:hidden;border:1px solid var(--line);background:var(--surface);
+      box-shadow:0 20px 44px rgba(0,0,0,.34)}
+    .soon-shot img{display:block;width:100%;height:auto;max-height:min(288px,34vh);
+      object-fit:cover;object-position:top;opacity:.94}
+    /* Le degrade suggere que l'ecran continue : un apercu, pas une image
+       coupee net. */
+    .soon-fade{position:absolute;left:0;right:0;bottom:0;height:38%;pointer-events:none;
+      background:linear-gradient(to bottom,transparent,var(--bg) 92%)}
+    .soon-points{list-style:none;margin:18px auto 0;padding:0;max-width:32ch;text-align:left;
+      display:grid;gap:9px}
+    .soon-points li{position:relative;padding-left:18px;color:var(--muted);font-size:12.5px;line-height:1.5}
+    .soon-points li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;
+      border-radius:50%;background:var(--u-accent,var(--gold))}
+    .soon-guide{margin-top:20px;display:inline-flex;align-items:center;justify-content:center;
+      text-decoration:none}
+    @media(max-width:420px){.soon-shot{width:min(208px,58vw)}}
     /* Apparition douce de la pyramide juste après la coque (aucun saut de mise
        en page : le panneau est en position absolue au-dessus de la scène).
        Animation CSS pure et JAMAIS d'état invisible par défaut : une bascule
@@ -323,11 +348,24 @@
         '<div style="height:10px"></div>' +
         '<button class="quiet-button" type="button" data-retry="' + u.key + '">Réessayer ici</button></section>';
     } else if (kind === "disabled") {
+      var apercu = u.preview || {};
+      var puces = (apercu.points || []).map(function (point) {
+        return '<li>' + point + "</li>";
+      }).join("");
       el.innerHTML =
-        '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
+        '<section class="soon"><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
         '<p class="eyebrow">Bientôt</p>' +
         "<h1>STONE " + u.label + "</h1>" +
-        "<p>Cet univers arrive bientôt dans STONE.</p></section>";
+        "<p class=\"soon-lead\">" + (apercu.lead || "Cet univers arrive bientôt dans STONE.") + "</p>" +
+        (apercu.shot
+          ? '<div class="soon-shot"><img src="' + apercu.shot + '" alt="Aperçu de STONE ' + u.label +
+            '" loading="lazy" decoding="async" width="750" height="1240"><span class="soon-fade" aria-hidden="true"></span></div>'
+          : "") +
+        (puces ? '<ul class="soon-points">' + puces + "</ul>" : "") +
+        (apercu.guide
+          ? '<a class="quiet-button soon-guide" href="' + apercu.guide + '">Découvrir ' + u.label + "</a>"
+          : "") +
+        "</section>";
     } else if (kind === "configure") {
       el.innerHTML =
         '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
@@ -532,6 +570,22 @@
     catch (e) { return ""; }
   }
 
+  /* Un univers ferme le dit des l'accueil : personne ne doit cliquer pour
+     l'apprendre. On reutilise la colonne du montant, qui est exactement la
+     place ou l'oeil cherche l'etat de l'etage. */
+  function markSoonUniverses() {
+    if (!homeEl) return;
+    UNIVERSES.forEach(function (u) {
+      if (u.enabled) return;
+      var valueEl = homeEl.querySelector('[data-wealth-value="' + u.key + '"]');
+      var row = valueEl && valueEl.closest(".home-row");
+      if (!valueEl || !row) return;
+      row.classList.add("has-value", "is-soon");
+      valueEl.className = "r-value is-empty";
+      valueEl.textContent = "Bientôt";
+    });
+  }
+
   function applyWealth(key, snapshot) {
     wealth[key] = snapshot || null;
     if (!homeEl) return;
@@ -703,7 +757,13 @@
       btn.setAttribute("aria-current", "false");
     });
     syncVisibility();
+    UNIVERSES.forEach(function (u) {
+      if (u.enabled) return;
+      var tranche = homeEl.querySelector('.pyr [data-go="' + u.key + '"]');
+      if (tranche) tranche.classList.add("is-soon");
+    });
     homeEl.classList.add("is-visible");
+    markSoonUniverses();
     /* L'inventaire demarre APRES la peinture de l'accueil : il ne doit jamais
        en retarder l'affichage ni ses portes. */
     if (window.requestAnimationFrame) requestAnimationFrame(ensureWealthFrames);
