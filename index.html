@@ -67,6 +67,20 @@
     .home-row .r-copy{min-width:0}
     .home-row .r-name{display:block;font-size:13px;font-weight:800;letter-spacing:.02em}
     .home-row .r-sub{display:block;color:var(--muted);font-size:11px;line-height:1.4}
+    /* Inventaire : le montant n'apparait que lorsqu'un univers a repondu. La
+       quatrieme colonne n'existe que dans ce cas — une rangee sans chiffre
+       reste strictement identique a ce qu'elle etait. */
+    .home-row.has-value{grid-template-columns:auto 1fr auto auto}
+    .home-row .r-value{display:none}
+    .home-row.has-value .r-value{display:block;text-align:right;font-size:12.5px;
+      font-weight:800;letter-spacing:.01em;color:var(--text);white-space:nowrap;
+      font-variant-numeric:tabular-nums}
+    .home-row.has-value .r-value .rv-note{display:block;font-size:10px;font-weight:600;
+      color:var(--muted);letter-spacing:.02em}
+    /* Une valorisation incomplete ne doit pas se distinguer par la seule
+       couleur : elle porte un signe. */
+    .home-row .r-value .rv-partial::before{content:"\2248 ";font-weight:800}
+    .home-row .r-value.is-empty{color:var(--muted);font-weight:600}
     .home-row .r-go{color:var(--muted);font-size:15px}
     .home-guides{margin-top:18px}
     .home-guides a{display:inline-block;padding:9px 16px;border:1px solid var(--line);border-radius:999px;
@@ -369,7 +383,8 @@
     if (state.timeoutId) clearTimeout(state.timeoutId);
     state.timeoutId = setTimeout(function () {
       if (state.loaded) return;
-      setPanelVisible(state, "errorPanel");
+      if (state.errorPanel) state.errorPanel.dataset.shown = "1";
+      syncVisibility();
     }, FRAME_READY_TIMEOUT_MS);
 
     if (state.iframe) { stage.removeChild(state.iframe); state.iframe = null; }
@@ -438,6 +453,12 @@
         document.documentElement.dataset.shellReady = "true";
         document.documentElement.dataset.shellLoadMs = String(Math.round(performance.now() - state.startedAt));
         syncVisibility();
+        requestWealth(state);
+        return;
+      }
+      if (data.type === prefix + "_WEALTH") {
+        if (event.source !== state.trustedSource || event.origin !== state.trustedOrigin) return;
+        applyWealth(key, data.snapshot);
         return;
       }
     }
@@ -458,6 +479,118 @@
         else if (state.loadingPanel) setPanelVisible(state, "loadingPanel");
       }
     }
+  }
+
+  /* ---- Inventaire du patrimoine ---------------------------------------
+     La coque ne calcule aucun patrimoine : elle demande a chaque univers son
+     seul etage et cite la reponse. Trois regles tiennent cet ecran :
+
+     1. **Rien n'est stocke.** Le montant vit dans cette page, le temps de
+        l'affichage. Ni cache, ni stockage navigateur, ni serveur.
+     2. **L'accueil ne depend jamais de l'inventaire.** La pyramide et les
+        portes s'affichent entierement avec zero moteur qui repond. Un univers
+        muet laisse simplement sa rangee telle quelle.
+     3. **Aucune somme.** Additionner une cloture BRVM officielle a une
+        estimation declaree produirait un nombre indefendable. Chaque etage
+        porte son chiffre, sa nature de preuve et sa fraicheur — separement.
+
+     Le montant traverse une frontiere postMessage : il n'est accepte que du
+     `trustedSource` du handshake, a son origine exacte, avec le bon nonce. */
+  var wealth = {};
+
+  function requestWealth(state) {
+    if (!state || !state.trustedSource || !state.trustedOrigin || !state.nonce) return;
+    state.trustedSource.postMessage(
+      { type: state.universe.msgPrefix + "_WEALTH_QUERY", nonce: state.nonce },
+      state.trustedOrigin
+    );
+  }
+
+  function moneyFormat(value) {
+    try { return new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 }).format(value) + " XOF"; }
+    catch (e) { return String(value) + " XOF"; }
+  }
+
+  /* « aujourd'hui », « hier », sinon la date courte : l'ISO brut n'atteint
+     jamais l'ecran, ici comme dans les applications. */
+  function wealthFreshness(iso) {
+    if (!iso) return "";
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return "";
+    var jour = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    var now = new Date();
+    var aujourdhui = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var ecart = Math.round((aujourdhui - jour) / 86400000);
+    if (ecart <= 0) return "aujourd’hui";
+    if (ecart === 1) return "hier";
+    try { return "le " + new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long" }).format(d); }
+    catch (e) { return ""; }
+  }
+
+  function applyWealth(key, snapshot) {
+    wealth[key] = snapshot || null;
+    if (!homeEl) return;
+    var valueEl = homeEl.querySelector('[data-wealth-value="' + key + '"]');
+    var noteEl = homeEl.querySelector('[data-wealth-note="' + key + '"]');
+    var row = valueEl && valueEl.closest(".home-row");
+    if (!valueEl || !row) return;
+
+    var u = universe(key);
+    var etat = snapshot && snapshot.state;
+
+    if (!snapshot || snapshot.ok !== true || etat === "UNAVAILABLE") {
+      /* Univers muet : on ne dit rien plutot que de dire faux. La rangee
+         reste ce qu'elle etait. */
+      row.classList.remove("has-value");
+      valueEl.textContent = "";
+      if (noteEl && u) noteEl.textContent = u.tagline;
+      return;
+    }
+
+    if (etat === "PRIVACY") {
+      row.classList.add("has-value");
+      valueEl.className = "r-value";
+      valueEl.textContent = "•••";
+      if (noteEl) noteEl.textContent = "Masqué à ta demande";
+      return;
+    }
+
+    if (etat === "EMPTY" || snapshot.amountXOF == null) {
+      row.classList.add("has-value");
+      valueEl.className = "r-value is-empty";
+      valueEl.textContent = "Non renseigné";
+      if (noteEl && u) noteEl.textContent = u.tagline;
+      return;
+    }
+
+    var partiel = snapshot.proof === "PARTIEL";
+    row.classList.add("has-value");
+    valueEl.className = "r-value";
+    valueEl.innerHTML = '<span class="' + (partiel ? "rv-partial" : "") + '">' +
+      moneyFormat(Number(snapshot.amountXOF)) + "</span>";
+    if (noteEl) {
+      var quand = wealthFreshness(snapshot.asOf);
+      noteEl.textContent = partiel
+        ? "Valorisation partielle · " + snapshot.pricedPositionCount + "/" + snapshot.positionCount + " titres cotés"
+        : "Clôture BRVM" + (quand ? " · " + quand : "");
+    }
+  }
+
+  /* Monte en arriere-plan les univers qui alimentent l'inventaire. Appele
+     seulement quand l'accueil est affiche, une fois par session, et jamais de
+     maniere bloquante : si le montage echoue ou traine, l'accueil ne bouge pas.
+     Pour l'instant Invest seul — Money et Estate suivront par le meme contrat. */
+  var wealthMounted = {};
+  function ensureWealthFrames() {
+    ["invest"].forEach(function (key) {
+      if (wealthMounted[key]) return;
+      var u = universe(key);
+      if (!u || !u.enabled || !effectiveUrl(u)) return;
+      wealthMounted[key] = true;
+      var state = frames[key];
+      if (!state) state = mountUniverse(u);
+      else if (state.loaded) requestWealth(state);
+    });
   }
 
   /* ---- Accueil : la pyramide STONE complète, chaque tranche ouvre son univers
@@ -514,7 +647,8 @@
           return '<button class="home-row" type="button" data-go="' + u.key + '" style="--u-accent:' + u.accent + '">' +
             '<span class="r-mark" aria-hidden="true">' + u.glyph + "</span>" +
             '<span class="r-copy"><span class="r-name">' + u.label + '</span>' +
-            '<span class="r-sub">' + u.tagline + "</span></span>" +
+            '<span class="r-sub" data-wealth-note="' + u.key + '">' + u.tagline + "</span></span>" +
+            '<span class="r-value" data-wealth-value="' + u.key + '"></span>' +
             '<span class="r-go" aria-hidden="true">→</span></button>';
         }).join("") + "</div>" +
         '<p class="home-guides"><a href="guides/">Découvrir la suite — les guides</a></p>' +
@@ -544,6 +678,10 @@
     });
     syncVisibility();
     homeEl.classList.add("is-visible");
+    /* L'inventaire demarre APRES la peinture de l'accueil : il ne doit jamais
+       en retarder l'affichage ni ses portes. */
+    if (window.requestAnimationFrame) requestAnimationFrame(ensureWealthFrames);
+    else setTimeout(ensureWealthFrames, 0);
     /* Première ouverture : la visite démarre une fois la cinématique posée. */
     if (!tourSeen()) setTimeout(function () { tourStart(); }, 2300);
     /* L'URL redevient celle du hall d'entrée : un rechargement ou un partage
