@@ -3,7 +3,7 @@
    moteurs Apps Script ni d'aucune autre origine. Seule la coque statique
    (index, manifeste, icônes, écran hors-ligne) est servie depuis le cache. */
 const SHELL_PREFIX = 'stone-pwa-shell-';
-const SHELL_VERSION = 'v22';
+const SHELL_VERSION = 'v23';
 const SHELL_CACHE = `${SHELL_PREFIX}${SHELL_VERSION}`;
 const SHELL_FILES = [
   './',
