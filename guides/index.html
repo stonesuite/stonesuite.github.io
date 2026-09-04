@@ -113,6 +113,16 @@ a{color:var(--accent)}
 .cta{padding:70px 0 80px;border-top:1px solid var(--line);text-align:center}
 .cta h2{font-size:clamp(27px,3.8vw,38px)}.cta p{margin:16px auto 0}
 .btn{display:inline-block;margin-top:28px;background:var(--accent);color:var(--card);font-weight:800;padding:16px 32px;border-radius:14px;text-decoration:none;font-size:16px}
+.qr{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:26px;
+  margin-top:30px;padding:24px;border:1px solid var(--line);border-radius:20px;background:var(--card)}
+.qr img{display:block;width:180px;height:180px;border-radius:12px;background:#fffdf7;padding:8px}
+.qr-mots h3{font-family:Sora,system-ui,sans-serif;font-size:17px;font-weight:700;margin:0 0 6px}
+.qr-mots p{margin:0;color:var(--ink2);font-size:14.5px;line-height:1.55}
+.qr-url{margin-top:10px !important}
+.qr-url a{font-family:Sora,system-ui,sans-serif;font-size:14px;font-weight:700;
+  color:var(--accent);text-decoration:none}
+.qr-url a:hover{text-decoration:underline}
+@media(max-width:560px){.qr{grid-template-columns:1fr;justify-items:center;text-align:center}}
 .foot{padding:28px 0 44px;color:var(--ink2);font-size:13px;text-align:center}
 @media(max-width:700px){.hero{padding:56px 0 30px}.floor{grid-template-columns:auto 1fr;gap:14px}.floor .cap{grid-column:1/-1;width:100%;max-width:220px;margin:6px auto 0}}
 </style>
@@ -124,7 +134,7 @@ a{color:var(--accent)}
   <p class="eyebrow"><span style="display:inline-flex;vertical-align:-2px"><svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 2 L14.55 7.39 H9.45 Z" fill="currentColor"/><path d="M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z" fill="currentColor"/><path d="M5.55 15.61 H18.45 L21 21 H3 Z" fill="currentColor"/></svg></span> La suite STONE</p>
   <h1>Un seul patrimoine,<br>trois dimensions.</h1>
   <p class="promise">Votre argent, vos placements et vos biens ne sont pas trois sujets séparés.
-    Ce sont trois étages d'une même construction — et STONE est la première application qui les
+    Ce sont trois étages d'une même construction, et STONE est la première application qui les
     montre ensemble.</p>
 
   <svg class="pyr" viewBox="0 0 260 208" role="img" aria-label="La pyramide STONE : Money la base, Invest l'étage, Estate la pointe">
@@ -175,7 +185,7 @@ a{color:var(--accent)}
       <div class="mark"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round'><path d='M4.75 17.5 H19.25 L21 21 H3 Z'/><path d='M6.4 19.3 H17.6'/></svg></div>
       <div>
         <div class="role">La base</div>
-        <h3>Money — Du revenu à l’épargne</h3>
+        <h3>Money · Du revenu à l’épargne</h3>
         <p>Ce qui entre, ce qui sort, ce qui reste. Money sépare la dépense qui consomme de la
           dette qui construit, et vous rend visible la part de votre revenu que vous ne voyiez plus.</p>
         <p class="ask">Il répond à : « De combien puis-je disposer, vraiment ? »</p>
@@ -187,8 +197,8 @@ a{color:var(--accent)}
       <div class="mark"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round'><path d='M7.75 11.5 H16.25 L18.5 16 H5.5 Z'/><path d='M8.8 14.3 L11.3 12.9 L13.1 13.6 L15.4 12.4'/><circle cx='15.4' cy='12.4' r='0.85' fill='currentColor' stroke='none'/></svg></div>
       <div>
         <div class="role">L'étage</div>
-        <h3>Invest — De l'épargne au capital</h3>
-        <p>Vos placements à la BRVM, leur performance réelle — frais et dividendes compris — et le
+        <h3>Invest · De l'épargne au capital</h3>
+        <p>Vos placements à la BRVM, leur performance réelle (frais et dividendes compris) et le
           marché pour préparer vos décisions. Un portefeuille par projet.</p>
         <p class="ask">Il répond à : « Est-ce que mon argent travaille vraiment ? »</p>
         <a class="go" href="invest.html">Lire le guide Invest →</a>
@@ -199,7 +209,7 @@ a{color:var(--accent)}
       <div class="mark"><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round'><path d='M12 3 L15.5 10 H8.5 Z'/><path d='M10.9 10 V7.9 H13.1 V10'/></svg></div>
       <div>
         <div class="role">La pointe</div>
-        <h3>Estate — Du capital à la pierre</h3>
+        <h3>Estate · Du capital à la pierre</h3>
         <p>Vos biens, leur coût réel engagé poste par poste, l'état de leurs papiers, leur
           viabilisation, leur valeur d'aujourd'hui.</p>
         <p class="ask">Il répond à : « Qu'est-ce que je possède, et que vaut-il ? »</p>
@@ -214,7 +224,7 @@ a{color:var(--accent)}
   <p class="eyebrow">Comment ils travaillent ensemble</p>
   <h2>Le même argent, à quatre moments de sa vie.</h2>
   <p class="lede">Ce ne sont pas trois applications qui coexistent. C'est un seul parcours, suivi
-    d'un bout à l'autre — et chaque étage renseigne le suivant.</p>
+    d'un bout à l'autre, et chaque étage renseigne le suivant.</p>
   <div class="chain">
     <div class="node"><div class="st">1 · Money</div><h3>Le revenu arrive</h3>
       <p>695 000 tombent. Money montre ce qui est déjà engagé et ce qui reste vraiment disponible.</p>
@@ -233,7 +243,7 @@ a{color:var(--accent)}
   </div>
   <div class="quote"><p>« Un remboursement de crédit employeur apparaît dans Money comme une
     sortie. Mais c'est Invest qui détient ce qu'il a acheté. Séparées, ces deux applications se
-    contrediraient. Ensemble, elles racontent la même histoire — la vôtre. »</p></div>
+    contrediraient. Ensemble, elles racontent la même histoire : la vôtre. »</p></div>
 </div></section>
 
 <section class="band"><div class="wrap">
@@ -250,7 +260,7 @@ a{color:var(--accent)}
       <p>Faire grandir : un portefeuille par projet, un bien sécurisé, un crédit qui s'éteint et
       libère une mensualité.</p></div>
     <div class="c"><div class="ico" style="color:var(--accent)">◎</div><h3>Piloter</h3>
-      <p>Décider avec des faits — et savoir, mois après mois, si l'on avance dans la direction
+      <p>Décider avec des faits, et savoir, mois après mois, si l'on avance dans la direction
       qu'on s'était donnée.</p></div>
   </div>
 </div></section>
@@ -267,10 +277,10 @@ a{color:var(--accent)}
       <p>STONE ne vous dit jamais quoi acheter, vendre ou garder. Il montre ce qui est, avec ses
       sources et ses limites. La décision reste la vôtre, entièrement.</p></div>
     <div class="pr"><h3>Le téléphone d'abord</h3>
-      <p>Tout est pensé pour un écran de poche tenu d'une main, puis enrichi sur ordinateur —
+      <p>Tout est pensé pour un écran de poche tenu d'une main, puis enrichi sur ordinateur,
       jamais l'inverse.</p></div>
     <div class="pr"><h3>Les mêmes gestes partout</h3>
-      <p>Trois apparences — jour, nuit, sable — et un œil qui masque tous vos montants d'un geste.
+      <p>Trois apparences (jour, nuit, sable) et un œil qui masque tous vos montants d'un geste.
       Identiques dans les trois univers : on apprend une fois.</p></div>
   </div>
 </div></section>
@@ -299,7 +309,7 @@ a{color:var(--accent)}
 <section class="band"><div class="wrap">
   <p class="eyebrow">Installer</p>
   <h2>Une seule application, trois univers.</h2>
-  <p class="lede">STONE s'installe depuis le navigateur — ni Play Store, ni App Store. Une icône
+  <p class="lede">STONE s'installe depuis le navigateur : ni Play Store, ni App Store. Une icône
     sur votre écran d'accueil, et les trois univers dedans.</p>
   <div class="steps">
     <div class="step"><div class="n">1</div><div><h3>Ouvrez stonesuite.github.io</h3>
@@ -307,8 +317,19 @@ a{color:var(--accent)}
     <div class="step"><div class="n">2</div><div><h3>Ajoutez STONE à l'écran d'accueil</h3>
       <p><b>Android</b> : menu ⋮ → Installer. <b>iPhone</b> : Partager ⎋ → Sur l'écran d'accueil.</p></div></div>
     <div class="step"><div class="n">3</div><div><h3>Choisissez votre étage</h3>
-      <p>La pyramide s'assemble à l'ouverture. Touchez une tranche pour entrer — ou commencez par
+      <p>La pyramide s'assemble à l'ouverture. Touchez une tranche pour entrer, ou commencez par
         la base, comme on construit.</p></div></div>
+  </div>
+
+  <div class="qr">
+    <img src="qr-stone.svg" alt="Code QR menant à la page d'installation de STONE"
+         width="180" height="180" loading="lazy" decoding="async">
+    <div class="qr-mots">
+      <h3>Ou scannez, simplement</h3>
+      <p>Le code mène à une page qui explique l'installation, étape par étape,
+        selon votre téléphone.</p>
+      <p class="qr-url"><a href="https://stonesuite.github.io/installer/">stonesuite.github.io/installer</a></p>
+    </div>
   </div>
 </div></section>
 
@@ -318,7 +339,7 @@ a{color:var(--accent)}
   <p>Money, Invest et Estate ne sont pas trois outils à choisir. Ce sont trois manières de
     regarder la même chose : ce que vous construisez.</p>
   <a class="btn" href="https://stonesuite.github.io/">Ouvrir STONE</a>
-  <div class="foot">La suite STONE · Money · Invest · Estate — septembre 2026 ·
+  <div class="foot">La suite STONE · Money · Invest · Estate · septembre 2026 ·
     <a href="confidentialite.html">Confidentialité</a></div>
 </div></section>
 
