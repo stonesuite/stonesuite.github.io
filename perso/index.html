@@ -8,6 +8,25 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/stone-192.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/stone-192.png">
+  <!-- Polices de la marque, chargées comme sur la page d'atterrissage et les
+       guides : une seule méthode pour tout le site. `display=swap` fait
+       afficher le texte immédiatement dans la police de repli, puis le met à
+       jour : la pyramide d'accueil n'attend jamais un fichier de police.
+       Seules les graisses réellement employées sont demandées — Inter 400
+       (texte courant), 600, 700 (titres, `b`, `strong`) et 800 (accents et
+       chiffres) ; Sora 800 pour l'unique libellé de la visite guidée. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- La feuille est chargee en `preload` puis basculee en `stylesheet` : une
+       balise `rel="stylesheet"` ordinaire BLOQUE le premier rendu jusqu'a ce
+       que Google Fonts reponde. Mesure du 04/09/2026 avec un serveur de
+       polices lent : en blocage, la pyramide n'apparaissait qu'a l'arrivee de
+       la feuille ; ici elle est peinte tout de suite, dans la pile de repli,
+       et la police la remplace ensuite grace a `display=swap`.
+       `<noscript>` garde le cas sans JavaScript. -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Sora:wght@800&display=swap"
+        onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Sora:wght@800&display=swap"></noscript>
   <style>
     /* STONE — coque PWA unifiée · design "Quiet Capital" */
     :root{
@@ -98,7 +117,7 @@
       border:1px solid var(--line);border-radius:16px;background:var(--panel);
       padding:16px 18px 14px;box-shadow:0 22px 50px rgba(0,0,0,.55);
       transition:top .28s ease,left .28s ease}
-    .tour-card .step{font-family:'Sora';font-size:10px;font-weight:800;letter-spacing:.22em;
+    .tour-card .step{font-family:'Sora',var(--font);font-size:10px;font-weight:800;letter-spacing:.22em;
       text-transform:uppercase;color:var(--gold)}
     .tour-card h2{margin:8px 0 0;font-size:16px;letter-spacing:-.01em}
     .tour-card p{margin:7px 0 0;color:var(--muted);font-size:12.5px;line-height:1.55}
@@ -165,9 +184,16 @@
        donc jamais bloqué à 0 (onglet démarré caché, animation suspendue). */
     .home-panel.is-visible{animation:home-in .34s ease}
     @keyframes home-in{from{opacity:0}to{opacity:1}}
+    /* Interlignes explicites : sans eux la hauteur de ces blocs est celle du
+       CADRATIN de la police, qui change a l'arrivee d'Inter (repli Segoe UI
+       ~1,33, Inter ~1,21). La barre se tassait alors de 2 px et poussait tout
+       l'accueil vers le haut. Un nombre sans unite ne depend d'aucune metrique
+       de police : la hauteur est la meme avant et apres l'echange, sur toutes
+       les plateformes (Segoe UI, San Francisco, Roboto). Voir aussi
+       `.stage-panel .mark` et `.stage-panel h1`. */
     .brand-mark{color:var(--gold);font-size:20px;display:inline-flex}
-    .brand-copy strong{display:block;font-size:14px;letter-spacing:.14em}
-    .brand-copy small{display:block;color:var(--muted);font-size:10px}
+    .brand-copy strong{display:block;font-size:14px;letter-spacing:.14em;line-height:1.2}
+    .brand-copy small{display:block;color:var(--muted);font-size:10px;line-height:1.2}
     .shell-actions{display:flex;align-items:center;gap:8px}
     .connection-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--muted);font-size:10px;white-space:nowrap}
     .connection-pill span{width:7px;height:7px;border-radius:50%;background:var(--red)}
@@ -187,9 +213,18 @@
     .stage iframe.is-visible{opacity:1;pointer-events:auto}
     .stage-panel{position:absolute;inset:0;display:none;place-items:center;padding:24px;text-align:center;background:var(--bg);overflow-y:auto;align-content:safe center}
     .stage-panel.is-visible{display:grid}
-    .stage-panel .mark{font-size:40px;color:var(--u-accent,var(--gold))}
+    /* Hauteur fixe, et non une boite de ligne : le losange est un SVG pose sur
+       la ligne de base, donc SA POSITION suivait l'ascendante de la police et
+       la boite suivait son cadratin. Une boite flex de 50 px (exactement la
+       hauteur rendue avec Inter) centre le signe sans jamais dependre de la
+       police : rien ne bouge quand Inter remplace le repli. */
+    .stage-panel .mark{font-size:40px;color:var(--u-accent,var(--gold));
+      display:flex;align-items:center;justify-content:center;height:50px;line-height:1}
     .stage-panel .eyebrow{margin:12px 0 0;color:var(--u-accent,var(--gold));font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
-    .stage-panel h1{margin:8px 0 0;font-size:20px;letter-spacing:-.02em}
+    /* 1,2 sans unite = 24 px a 20 px de corps, soit la hauteur deja obtenue
+       avec Inter. Le titre garde son allure et cesse de grandir de 3 px tant
+       que la police n'est pas arrivee. */
+    .stage-panel h1{margin:8px 0 0;font-size:20px;letter-spacing:-.02em;line-height:1.2}
     .stage-panel p{max-width:420px;margin:10px auto 0;color:var(--muted);font-size:12px;line-height:1.6}
     .stage-panel .warn-hint{margin-top:14px;padding:10px 13px;border:1px solid var(--line);border-radius:10px;
       background:var(--panel2);text-align:left}
@@ -339,10 +374,10 @@
         '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
         "<h1>STONE " + u.label + " n’a pas pu s’ouvrir</h1>" +
         "<p>Première visite ? Google demande une autorisation qui ne peut pas s’afficher ici : " +
-        "ouvrez " + u.label + " une fois dans le navigateur, acceptez, puis revenez réessayer.</p>" +
-        '<p class="warn-hint">Google va d’abord afficher <b>« Cette application n’a pas été vérifiée »</b> — ' +
-        'normal pour un projet indépendant à ce stade, pas un signe de danger : ' +
-        'touche <b>Paramètres avancés</b> puis <b>Accéder à STONE ' + u.label + '</b> pour continuer. ' +
+        "ouvre " + u.label + " une fois dans le navigateur, accepte, puis reviens réessayer.</p>" +
+        '<p class="warn-hint">Google va d’abord afficher <b>« Cette application n’a pas été vérifiée »</b> : ' +
+        'c’est normal pour un projet indépendant à ce stade, ce n’est pas un signe de danger. ' +
+        'Touche <b>Paramètres avancés</b> puis <b>Accéder à STONE ' + u.label + '</b> pour continuer. ' +
         'Tes données restent dans ton propre compte Google, jamais sur un serveur STONE.</p>' +
         '<button class="primary-button" type="button" data-authorize="' + u.key + '">Autoriser dans le navigateur</button>' +
         '<div style="height:10px"></div>' +
@@ -371,14 +406,14 @@
         '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
         '<p class="eyebrow">Configuration requise</p>' +
         "<h1>STONE " + u.label + "</h1>" +
-        "<p>Renseignez l’adresse du moteur " + u.label + " dans les réglages. Elle restera uniquement sur cet appareil.</p>" +
+        "<p>Renseigne l’adresse du moteur " + u.label + " dans les réglages. Elle restera uniquement sur cet appareil.</p>" +
         '<button class="primary-button" type="button" data-open-settings="1">Ouvrir les réglages</button></section>';
     } else {
       el.setAttribute("role", "status");
       el.innerHTML =
         '<section><div class="mark" aria-hidden="true"><svg viewBox=\"0 0 24 24\" width=\"1em\" height=\"1em\" aria-hidden=\"true\"><path d=\"M12 2 L14.55 7.39 H9.45 Z\" fill=\"currentColor\"/><path d=\"M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z\" fill=\"currentColor\"/><path d=\"M5.55 15.61 H18.45 L21 21 H3 Z\" fill=\"currentColor\"/></svg></div>' +
         "<h1>Connexion indisponible</h1>" +
-        "<p>STONE nécessite une connexion pour afficher vos univers. Aucune donnée financière n’est servie depuis le cache.</p>" +
+        "<p>STONE a besoin d’une connexion pour afficher tes univers. Aucune donnée financière n’est servie depuis le cache.</p>" +
         '<button class="primary-button" type="button" data-retry="__reload__">Réessayer</button></section>';
     }
     stage.appendChild(el);

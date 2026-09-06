@@ -6,7 +6,11 @@
 <meta name="theme-color" content="#080b10">
 <link rel="icon" href="../icons/stone-192.png" type="image/png">
 <title>STONE Invest</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;600&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;600&display=swap"></noscript>
 <style>
 :root{
   --paper:#f5f2ea; --paper2:#ece7db; --ink:#141821; --ink2:#545d6c; --line:#dbd3c2;
@@ -47,14 +51,14 @@ p{margin:.55em 0 0;max-width:36em}
 .num{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
 .family{background:var(--paper2);border-bottom:1px solid var(--line);font-size:12.5px}
 .family .wrap{display:flex;gap:18px;align-items:center;flex-wrap:wrap;padding-top:11px;padding-bottom:11px}
-.family b{font-family:"Sora";letter-spacing:.3em;font-size:11px;color:var(--accent)}
+.family b{font-family:"Sora",system-ui,sans-serif;letter-spacing:.3em;font-size:11px;color:var(--accent)}
 .family a{color:var(--ink2);text-decoration:none;border-bottom:1px solid transparent}
 .family a:hover{color:var(--ink);border-color:var(--accent)}
 .family .here{color:var(--ink);font-weight:800}
 .hero{padding:74px 0 52px;background:radial-gradient(1100px 460px at 78% -12%,color-mix(in srgb,var(--accent-soft) 26%,transparent),transparent 70%)}
 .hero .wrap{display:flex;gap:56px;align-items:center;flex-wrap:wrap;justify-content:space-between}
 .hero-txt{flex:1 1 400px;min-width:min(320px,100%)}
-.eyebrow{font-family:"Sora";font-weight:700;letter-spacing:.34em;font-size:11px;color:var(--accent);text-transform:uppercase}
+.eyebrow{font-family:"Sora",system-ui,sans-serif;font-weight:700;letter-spacing:.34em;font-size:11px;color:var(--accent);text-transform:uppercase}
 .hero h1{font-size:clamp(38px,6vw,62px);margin-top:16px;letter-spacing:-.02em}
 .hero .promise{font-size:21px;color:var(--ink2);margin-top:18px;max-width:20em}
 .hero .sub{margin-top:20px;font-size:16px}
@@ -64,11 +68,11 @@ p{margin:.55em 0 0;max-width:36em}
 .screen{position:relative;background:var(--p-bg);border-radius:34px;overflow:hidden;height:552px;color:var(--p-ink);font-size:12px;line-height:1.45;display:flex;flex-direction:column}
 .sb{display:flex;justify-content:space-between;padding:13px 20px 5px;font-size:10px;color:var(--p-mut);font-weight:700}
 .ab{display:flex;align-items:center;justify-content:space-between;padding:8px 15px 6px}
-.ab .t{font-family:"Sora";font-weight:700;letter-spacing:.28em;font-size:10.5px}
+.ab .t{font-family:"Sora",system-ui,sans-serif;font-weight:700;letter-spacing:.28em;font-size:10.5px}
 .ab .s{color:var(--p-mut);font-size:9px}
 .ab .icons{color:var(--p-mut);font-size:12px;letter-spacing:.18em}
 .pbody{flex:1;overflow:hidden;padding:8px 14px 10px;display:flex;flex-direction:column;gap:9px}
-.kick{font-family:"Sora";letter-spacing:.3em;font-size:8.5px;color:var(--p-mut);font-weight:700}
+.kick{font-family:"Sora",system-ui,sans-serif;letter-spacing:.3em;font-size:8.5px;color:var(--p-mut);font-weight:700}
 .pc{background:var(--p-card);border:1px solid var(--p-line);border-radius:14px;padding:11px 12px}
 .lab{font-size:9.5px;color:var(--p-mut)}
 .big{font-size:21px;font-weight:700}
@@ -87,7 +91,7 @@ p{margin:.55em 0 0;max-width:36em}
 .feat{display:flex;gap:60px;align-items:center;flex-wrap:wrap;justify-content:space-between;padding:56px 0;border-top:1px solid var(--line)}
 .feat.rev{flex-direction:row-reverse}
 .feat-txt{flex:1 1 420px;min-width:min(320px,100%)}
-.tag{display:inline-block;font-family:"Sora";font-weight:700;font-size:11px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase}
+.tag{display:inline-block;font-family:"Sora",system-ui,sans-serif;font-weight:700;font-size:11px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase}
 .feat h3{font-size:clamp(22px,3vw,30px);margin-top:12px}
 .feat .what{margin-top:14px}
 .why{margin-top:18px;padding:14px 18px;border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent-soft) 16%,var(--card));border-radius:0 14px 14px 0}
@@ -100,7 +104,7 @@ p{margin:.55em 0 0;max-width:36em}
 .case .out{margin-top:14px;font-size:15px;font-weight:700;color:var(--pos)}
 .steps{display:grid;gap:14px;margin-top:30px;max-width:44em}
 .step{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
-.step .n{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:"Sora";font-weight:700;font-size:14px}
+.step .n{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:"Sora",system-ui,sans-serif;font-weight:700;font-size:14px}
 .step h3{font-size:16px}.step p{font-size:15px;color:var(--ink2);margin-top:3px}
 .cta{padding:66px 0 74px;border-top:1px solid var(--line);text-align:center}
 .cta h2{font-size:clamp(26px,3.6vw,36px)}.cta p{margin:14px auto 0}
@@ -124,9 +128,9 @@ p{margin:.55em 0 0;max-width:36em}
   <div class="hero-txt">
     <p class="eyebrow">STONE Invest</p>
     <h1>De l'épargne au capital.</h1>
-    <p class="promise">Votre portefeuille BRVM, sa performance réelle, et le marché, sans jargon et sans flatterie.</p>
-    <p class="sub">Invest est l'étage de votre pyramide patrimoniale : celui qui fait grandir.
-      Il ne vous dit pas quoi acheter. Il vous montre, honnêtement, ce que vos décisions ont
+    <p class="promise">Ton portefeuille BRVM, sa performance réelle, et le marché, sans jargon et sans flatterie.</p>
+    <p class="sub">Invest est l'étage de ta pyramide patrimoniale : celui qui fait grandir.
+      Il ne te dit pas quoi acheter. Il te montre, honnêtement, ce que tes décisions ont
       produit, frais et dividendes compris.</p>
     <div class="badges">
       <span class="badge">Performance réelle, pas flatteuse</span>
@@ -139,7 +143,7 @@ p{margin:.55em 0 0;max-width:36em}
     <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · De l'épargne au capital</div></div><span class="icons">☀☾△ 👁</span></div>
     <div class="pbody">
       <div class="kick">SYNTHÈSE</div>
-      <div style="font-family:Sora;font-weight:700;font-size:19px">Mon portefeuille</div>
+      <div style="font-family:Sora,system-ui,sans-serif;font-weight:700;font-size:19px">Mon portefeuille</div>
       <div class="lab">Cours BRVM · mise à jour 02/09/2026</div>
       <div class="pc" style="border-left:3px solid var(--p-gold)">
         <div class="lab">Ça vaut aujourd'hui</div>
@@ -160,18 +164,18 @@ p{margin:.55em 0 0;max-width:36em}
 
 <section class="band"><div class="wrap">
   <h2>« Mon portefeuille est en hausse. » Vraiment ?</h2>
-  <p class="lede">Votre relevé de compte titres montre la valeur du jour. Il ne dit pas ce que vous
-    avez réellement versé, ce que les frais vous ont pris, ni ce que les dividendes vous ont
-    rendu. Résultat : vous ignorez si vous gagnez de l'argent.</p>
+  <p class="lede">Ton relevé de compte titres montre la valeur du jour. Il ne dit pas ce que tu
+    as réellement versé, ce que les frais t'ont pris, ni ce que les dividendes t'ont
+    rendu. Résultat : tu ignores si tu gagnes de l'argent.</p>
   <div class="cards">
     <div class="c"><div class="ico">◑</div><h3>La performance flattée</h3>
       <p>Comparer la valeur du jour au prix d'achat ignore les apports successifs, les retraits,
       les frais. Le chiffre est faux, presque toujours dans le bon sens.</p></div>
     <div class="c"><div class="ico">⌗</div><h3>Le marché opaque</h3>
-      <p>La BRVM publie ses cours, mais qui lit un bulletin officiel chaque soir ? Vous découvrez
+      <p>La BRVM publie ses cours, mais qui lit un bulletin officiel chaque soir ? Tu découvres
       les mouvements avec trois jours de retard.</p></div>
     <div class="c"><div class="ico">◍</div><h3>Les projets mélangés</h3>
-      <p>L'épargne de précaution, le projet 2030 et le portefeuille de votre fille vivent dans le
+      <p>L'épargne de précaution, le projet 2030 et le portefeuille de ta fille vivent dans le
       même compte. Impossible de savoir lequel avance.</p></div>
   </div>
 </div></section>
@@ -180,12 +184,12 @@ p{margin:.55em 0 0;max-width:36em}
   <section class="feat">
     <div class="feat-txt">
       <span class="tag">Performance réelle</span>
-      <h3>Le seul chiffre qui ne vous ment pas</h3>
-      <p class="what">Invest compare ce que vaut votre portefeuille aujourd'hui à vos apports nets
+      <h3>Le seul chiffre qui ne te ment pas</h3>
+      <p class="what">Invest compare ce que vaut ton portefeuille aujourd'hui à tes apports nets
         (versements moins retraits) en tenant compte des frais payés et des dividendes encaissés.
         Trois cartes le disent : <em>J'ai investi</em>, <em>Ça vaut aujourd'hui</em>,
         <em>Performance réelle</em>.</p>
-      <div class="why"><p><b>Ce que ça change :</b> vous savez enfin si votre argent travaille.
+      <div class="why"><p><b>Ce que ça change :</b> tu sais enfin si ton argent travaille.
         Un +50,0 % chez Invest veut dire quelque chose, parce que les 58 000 XOF de frais sont
         déjà dedans.</p></div>
     </div>
@@ -213,8 +217,8 @@ p{margin:.55em 0 0;max-width:36em}
       <h3>Chaque titre, son prix de revient, sa tendance</h3>
       <p class="what">Pour chaque ligne : la quantité, le prix de revient unitaire, la valeur au
         cours du jour, la plus ou moins-value, et une mini-courbe des 30 dernières séances.
-        En dessous, la répartition de votre portefeuille et l'évolution de votre patrimoine.</p>
-      <div class="why"><p><b>Ce que ça change :</b> vous voyez d'un coup d'œil quelle ligne porte
+        En dessous, la répartition de ton portefeuille et l'évolution de ton patrimoine.</p>
+      <div class="why"><p><b>Ce que ça change :</b> tu vois d'un coup d'œil quelle ligne porte
         le portefeuille et laquelle pèse dessus, sans ouvrir un tableur, sans faire un calcul.</p></div>
     </div>
     <div class="phone"><div class="screen">
@@ -244,11 +248,11 @@ p{margin:.55em 0 0;max-width:36em}
     <div class="feat-txt">
       <span class="tag">Plusieurs portefeuilles</span>
       <h3>Un projet, un portefeuille</h3>
-      <p class="what">Créez autant de portefeuilles que de projets : Portefeuille principal, Projet long terme,
+      <p class="what">Crée autant de portefeuilles que de projets : Portefeuille principal, Projet long terme,
         Épargne enfants, chacun avec son cash, ses opérations, sa performance. Une vue consolidée,
         en lecture seule, montre l'ensemble.</p>
       <div class="why"><p><b>Ce que ça change :</b> l'argent du projet long cesse d'être noyé dans
-        l'argent courant. Vous voyez chaque projet avancer à son rythme, et vous décidez pour
+        l'argent courant. Tu vois chaque projet avancer à son rythme, et tu décides pour
         chacun séparément.</p></div>
     </div>
     <div class="phone"><div class="screen">
@@ -274,11 +278,11 @@ p{margin:.55em 0 0;max-width:36em}
     <div class="feat-txt">
       <span class="tag">Marché BRVM · Analyse</span>
       <h3>Le marché, et un titre au microscope</h3>
-      <p class="what">Les plus fortes hausses et baisses de la séance, vos favoris épinglés, et
+      <p class="what">Les plus fortes hausses et baisses de la séance, tes favoris épinglés, et
         une analyse par action : courbe sur 1 mois à 2 ans, moyennes mobiles, volumes, supports et
         résistances, plus haut et plus bas sur 52 semaines, RSI.</p>
-      <div class="why"><p><b>Ce que ça change :</b> vous préparez une décision au lieu de la
-        subir. Et quand vous touchez un titre, la courbe apparaît <em>immédiatement</em>,
+      <div class="why"><p><b>Ce que ça change :</b> tu prépares une décision au lieu de la
+        subir. Et quand tu touches un titre, la courbe apparaît <em>immédiatement</em>,
         l'historique complet la remplace ensuite.</p></div>
     </div>
     <div class="phone"><div class="screen">
@@ -310,8 +314,8 @@ p{margin:.55em 0 0;max-width:36em}
   <section class="feat">
     <div class="feat-txt">
       <span class="tag">Opérations</span>
-      <h3>Vous notez, Invest calcule</h3>
-      <p class="what">Achat, vente, dividende, apport, retrait. Cherchez l'entreprise par son nom
+      <h3>Tu notes, Invest calcule</h3>
+      <p class="what">Achat, vente, dividende, apport, retrait. Cherche l'entreprise par son nom
         ou son code (« Sonatel » trouve SNTS), puis la date, la quantité, le prix et les frais.
         Tout le reste se recalcule : PRU, performance, répartition, courbe.</p>
       <div class="why"><p><b>Ce que ça change :</b> tenir son portefeuille cesse d'être une corvée
@@ -321,7 +325,7 @@ p{margin:.55em 0 0;max-width:36em}
       <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
       <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Ajouter</div></div><span class="icons">☀☾△ 👁</span></div>
       <div class="pbody">
-        <div style="font-family:Sora;font-weight:700;font-size:16px">Ajouter une opération</div>
+        <div style="font-family:Sora,system-ui,sans-serif;font-weight:700;font-size:16px">Ajouter une opération</div>
         <div style="display:flex;gap:5px">
           <span style="flex:1;text-align:center;border-radius:9px;padding:5px 0;font-size:10px;font-weight:700;background:#2a2410;border:1px solid #6b5426;color:var(--p-gold)">Achat</span>
           <span style="flex:1;text-align:center;border-radius:9px;padding:5px 0;font-size:10px;background:#0d1730;border:1px solid #223252;color:var(--p-mut)">Vente</span>
@@ -344,10 +348,10 @@ p{margin:.55em 0 0;max-width:36em}
   <section class="feat rev">
     <div class="feat-txt">
       <span class="tag">Lecture calme</span>
-      <h3>Une page courte, que vous dépliez à volonté</h3>
-      <p class="what">À l'ouverture, Invest ne vous jette pas tout au visage : la synthèse, puis
+      <h3>Une page courte, que tu déplies à volonté</h3>
+      <p class="what">À l'ouverture, Invest ne te jette pas tout au visage : la synthèse, puis
         des sections repliées : positions, répartition, évolution, favoris, marché, analyse,
-        opérations. Vous ouvrez ce que vous voulez voir.</p>
+        opérations. Tu ouvres ce que tu veux voir.</p>
       <div class="why"><p><b>Ce que ça change :</b> consulter son patrimoine redevient un geste
         calme de trente secondes, au lieu d'une plongée dans un tableau de bord saturé.</p></div>
     </div>
@@ -381,7 +385,7 @@ p{margin:.55em 0 0;max-width:36em}
     <div class="case"><div class="who">Avant d'acheter</div>
       <h3>« À quel moment j'entre sur ce titre ? »</h3>
       <p>Courbe sur deux ans, moyennes mobiles, plus haut et plus bas sur 52 semaines, volumes.</p>
-      <div class="out">→ Vous décidez avec des repères, pas avec une rumeur.</div></div>
+      <div class="out">→ Tu décides avec des repères, pas avec une rumeur.</div></div>
     <div class="case"><div class="who">Le projet long</div>
       <h3>« Où en est mon projet long terme ? »</h3>
       <p>Un portefeuille dédié, avec son cash et sa propre courbe de patrimoine.</p>
@@ -391,17 +395,17 @@ p{margin:.55em 0 0;max-width:36em}
 
 <section class="band"><div class="wrap">
   <p class="eyebrow">Commencer</p>
-  <h2>Votre premier portefeuille en cinq minutes</h2>
+  <h2>Ton premier portefeuille en cinq minutes</h2>
   <div class="steps">
-    <div class="step"><div class="n">1</div><div><h3>Ouvrez Invest dans STONE</h3>
-      <p>Depuis la pyramide d'accueil, touchez l'étage du milieu.</p></div></div>
-    <div class="step"><div class="n">2</div><div><h3>Nommez votre portefeuille</h3>
-      <p>« Portefeuille principal », « Projet long terme »… Le nom compte : c'est votre projet, pas un numéro de compte.</p></div></div>
-    <div class="step"><div class="n">3</div><div><h3>Enregistrez votre apport puis vos achats</h3>
-      <p>D'abord ce que vous avez versé, ensuite les titres achetés. L'ordre importe : c'est ce
+    <div class="step"><div class="n">1</div><div><h3>Ouvre Invest dans STONE</h3>
+      <p>Depuis la pyramide d'accueil, touche l'étage du milieu.</p></div></div>
+    <div class="step"><div class="n">2</div><div><h3>Nomme ton portefeuille</h3>
+      <p>« Portefeuille principal », « Projet long terme »… Le nom compte : c'est ton projet, pas un numéro de compte.</p></div></div>
+    <div class="step"><div class="n">3</div><div><h3>Enregistre ton apport puis tes achats</h3>
+      <p>D'abord ce que tu as versé, ensuite les titres achetés. L'ordre importe : c'est ce
         qui rend la performance juste.</p></div></div>
-    <div class="step"><div class="n">4</div><div><h3>Sauvegardez</h3>
-      <p>Un fichier que vous gardez. Sur un nouveau téléphone, <em>Restaurer</em> et tout revient.</p></div></div>
+    <div class="step"><div class="n">4</div><div><h3>Sauvegarde</h3>
+      <p>Un fichier que tu gardes. Sur un nouveau téléphone, <em>Restaurer</em> et tout revient.</p></div></div>
   </div>
 </div></section>
 
@@ -415,16 +419,16 @@ p{margin:.55em 0 0;max-width:36em}
       <p>Estate couronne la pyramide : le capital devient pierre, avec son coût réel, ses papiers
       et sa valeur.</p></div>
     <div class="c"><div class="ico">👁</div><h3>Discrétion et sauvegarde</h3>
-      <p>L'œil masque tous vos montants d'un geste. Trois apparences s'adaptent à la lumière.
-      Et vos données restent dans votre espace privé.</p></div>
+      <p>L'œil masque tous tes montants d'un geste. Trois apparences s'adaptent à la lumière.
+      Et tes données restent dans ton espace privé.</p></div>
   </div>
 </div></section>
 
 <section class="cta"><div class="wrap">
   <p class="eyebrow">Ton patrimoine, en clair</p>
-  <h2>Invest montre les faits. Les décisions restent les vôtres.</h2>
+  <h2>Invest montre les faits. Les décisions restent les tiennes.</h2>
   <p>Aucune recommandation d'achat ou de vente. Les cours sont ceux de la BRVM, non ajustés des
-    dividendes et opérations sur titres, et l'application le dit. Vos données vivent dans votre
+    dividendes et opérations sur titres, et l'application le dit. Tes données vivent dans ton
     espace privé, jamais chez STONE.</p>
   <a class="btn" href="https://stonesuite.github.io/?u=invest">Ouvrir STONE Invest</a>
   <div class="foot">STONE Invest · De l'épargne au capital · Guide utilisateur, septembre 2026</div>
