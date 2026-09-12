@@ -202,12 +202,25 @@
     .quiet-button:hover{border-color:var(--gold)}
     .notice{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 14px;border-bottom:1px solid var(--line);background:var(--gold-dim);font-size:12px}
     .notice button{border:1px solid var(--gold);border-radius:8px;padding:5px 10px;background:transparent;color:var(--gold);font-size:11px;font-weight:700;cursor:pointer}
-    .universe-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:6px 8px calc(6px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--panel)}
-    .universe-nav button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px;border:1px solid transparent;border-radius:12px;padding:6px 4px;background:transparent;color:var(--muted);font-family:inherit;font-size:10.5px;font-weight:700;cursor:pointer}
-    .universe-nav button .glyph{font-size:16px;line-height:1.2}
-    .universe-nav button.active{border-color:var(--line);background:var(--panel2);color:var(--text)}
-    .universe-nav button.active .glyph{color:var(--u-accent,var(--gold))}
-    .universe-nav button:disabled{opacity:.45;cursor:default}
+    .universe-nav{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:6px 8px calc(6px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--panel)}
+    .universe-nav button[data-universe]{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px;border:1px solid transparent;border-radius:12px;padding:6px 4px;background:transparent;color:var(--muted);font-family:inherit;font-size:10.5px;font-weight:700;cursor:pointer}
+    .universe-nav button[data-universe] .glyph{font-size:16px;line-height:1.2}
+    .universe-nav button[data-universe].active{border-color:var(--line);background:var(--panel2);color:var(--text)}
+    .universe-nav button[data-universe].active .glyph{color:var(--u-accent,var(--gold))}
+    .universe-nav button[data-universe]:disabled{opacity:.45;cursor:default}
+    /* Poignée de repli : la barre reste toujours joignable (un univers actif
+       visible en permanence), seuls les quatre autres univers se cachent. */
+    .nav-toggle{position:absolute;top:-15px;left:50%;transform:translateX(-50%);
+      width:44px;height:15px;border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;
+      background:var(--panel);color:var(--muted);display:flex;align-items:center;justify-content:center;
+      font-size:10px;line-height:1;cursor:pointer;padding:0}
+    .nav-toggle:hover{color:var(--text)}
+    /* :has() borne le repli au cas où un univers est actif : sur l'accueil
+       (aucun bouton .active), la barre reste complète, sinon replier ferait
+       disparaître tous les boutons sans moyen visuel de les retrouver. */
+    .universe-nav.is-collapsed:has(button[data-universe].active){grid-template-columns:1fr}
+    .universe-nav.is-collapsed:has(button[data-universe].active) button[data-universe]:not(.active){display:none}
+    .universe-nav.is-collapsed button[data-universe].active{min-height:38px;flex-direction:row;gap:8px}
     .stage{position:relative;flex:1;min-height:0;background:var(--bg)}
     .stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .18s}
     .stage iframe.is-visible{opacity:1;pointer-events:auto}
@@ -963,6 +976,34 @@
     btn.addEventListener("click", function () { activate(u.key, true); });
     nav.appendChild(btn);
   });
+
+  /* Barre rétractable : repliée, seul l'univers actif reste visible, pour
+     rendre de la hauteur d'écran sans jamais rendre la navigation injoignable
+     (la poignée reste toujours là). Choix mémorisé par appareil/instance. */
+  var NAV_COLLAPSED_KEY = "STONE_PWA_NAV_COLLAPSED::" + INSTANCE;
+  function readNavCollapsed() {
+    try { return localStorage.getItem(NAV_COLLAPSED_KEY) === "1"; } catch (e) { return false; }
+  }
+  function writeNavCollapsed(collapsed) {
+    try { localStorage.setItem(NAV_COLLAPSED_KEY, collapsed ? "1" : "0"); } catch (e) {}
+  }
+  var navToggle = document.createElement("button");
+  navToggle.type = "button";
+  navToggle.className = "nav-toggle";
+  navToggle.setAttribute("aria-controls", "universeNav");
+  function applyNavCollapsed(collapsed) {
+    nav.classList.toggle("is-collapsed", collapsed);
+    navToggle.textContent = collapsed ? "▴" : "▾";
+    navToggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    navToggle.setAttribute("aria-label", collapsed ? "Déplier la barre des univers" : "Réduire la barre des univers");
+  }
+  navToggle.addEventListener("click", function () {
+    var collapsed = !nav.classList.contains("is-collapsed");
+    applyNavCollapsed(collapsed);
+    writeNavCollapsed(collapsed);
+  });
+  nav.appendChild(navToggle);
+  applyNavCollapsed(readNavCollapsed());
 
   stage.addEventListener("click", function (event) {
     if (event.target.closest && event.target.closest("[data-open-settings]")) { openSettings(); return; }
