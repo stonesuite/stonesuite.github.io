@@ -2,9 +2,11 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#08090c">
+  <meta name="color-scheme" content="dark">
   <title>STONE · Hors connexion</title>
+  <link rel="icon" href="icons/stone-192.png" type="image/png">
   <!-- Même chargement de police que la coque. Sans réseau la requête échoue
        tout de suite et `display=swap` laisse la pile de repli en place : cet
        écran s'affiche dans tous les cas. -->
@@ -14,19 +16,32 @@
       onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap"></noscript>
   <style>
-    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:#08090c;color:#eef0f4;font-family:'Inter',-apple-system,'Segoe UI',system-ui,sans-serif;text-align:center}
-    .mark{color:#c9a567;font-size:42px}
-    h1{margin:14px 0 0;font-size:22px;letter-spacing:-.02em}
-    p{max-width:420px;margin:10px auto 0;color:#888d9a;font-size:13px;line-height:1.6}
-    button{margin-top:20px;border:1px solid #c9a567;border-radius:10px;padding:10px 20px;background:#c9a567;color:#171109;font-size:13px;font-weight:800;cursor:pointer}
+    body{margin:0;min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px;background:#08090c;color:#eef0f4;font-family:'Inter',-apple-system,'Segoe UI',system-ui,sans-serif;text-align:center}
+    .mark{display:flex;justify-content:center;color:#c9a567;font-size:42px;line-height:1}
+    h1{margin:14px 0 0;font-size:22px;letter-spacing:-.02em;line-height:1.2}
+    p{max-width:420px;margin:10px auto 0;color:#888d9a;font-size:14px;line-height:1.6}
+    /* Lien plutôt que bouton piloté par un gestionnaire en ligne : il fonctionne sans JavaScript et se lit comme un lien. */
+    .retry{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin-top:20px;border:1px solid #c9a567;border-radius:10px;padding:0 22px;background:#c9a567;color:#171109;font-size:14px;font-weight:800;text-decoration:none}
+    .retry:focus-visible{outline:2px solid #eef0f4;outline-offset:3px}
+    /* Annonce discrète au retour du réseau : l'écran se rouvre tout seul. */
+    #back{min-height:1.6em;color:#eef0f4}
   </style>
 </head>
 <body>
   <main>
-    <div class="mark" aria-hidden="true">◈</div>
+    <div class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 2 L14.55 7.39 H9.45 Z" fill="currentColor"/><path d="M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z" fill="currentColor"/><path d="M5.55 15.61 H18.45 L21 21 H3 Z" fill="currentColor"/></svg></div>
     <h1>Connexion indisponible</h1>
     <p>STONE a besoin d’une connexion pour afficher tes univers. Aucune donnée financière n’est conservée dans le cache de la coque.</p>
-    <button type="button" onclick="window.location.replace('./')">Réessayer</button>
+    <a class="retry" href="./">Réessayer</a>
+    <p id="back" role="status" aria-live="polite"></p>
   </main>
+  <script>
+    /* Quand le réseau revient, on rouvre STONE sans qu'il faille toucher l'écran. Le lien « Réessayer »
+       reste la solution de secours : `online` ne prouve pas que le moteur soit joignable. */
+    window.addEventListener("online", function () {
+      document.getElementById("back").textContent = "Ta connexion est de retour : STONE se rouvre.";
+      setTimeout(function () { window.location.replace("./"); }, 700);
+    });
+  </script>
 </body>
 </html>

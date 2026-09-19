@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0c1119">
 <link rel="icon" href="../icons/stone-192.png" type="image/png">
+<!-- Sans manifeste, Chrome ne declenche jamais `beforeinstallprompt` sur cette page : le bouton
+     « Installer STONE » ne pouvait rien installer sur Android (constate au banc navigateur du
+     19/09/2026). Le manifeste de la coque publique couvre /installer/ (portee « / »). -->
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icons/stone-maskable-192.png">
+<meta name="apple-mobile-web-app-title" content="STONE">
 <title>Installer STONE</title>
 <meta name="description" content="Ton argent, tes placements, tes biens. Trois applications dans une seule, installables depuis le navigateur.">
 <meta property="og:title" content="Installer STONE">
@@ -21,18 +27,24 @@
 :root{
   --paper:#f4f1e9; --paper2:#eae4d7; --ink:#13161d; --ink2:#525a68; --line:#dad2c0;
   --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;
+  --cta-ink:#fffdf7;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="clair"]){
   --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
-  --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347;}}
+  --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347;
+  --cta-ink:#120d04;}}
 :root[data-theme="nuit"]{
   --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
-  --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347;}
+  --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347;
+  --cta-ink:#120d04;}
 :root[data-theme="clair"]{
   --paper:#f4f1e9; --paper2:#eae4d7; --ink:#13161d; --ink2:#525a68; --line:#dad2c0;
-  --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;}
+  --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;
+  --cta-ink:#fffdf7;}
 
 *{margin:0;padding:0;box-sizing:border-box}
+/* Focus clavier visible partout (19/09/2026, audit Q34) : liens, boutons, pied de page. */
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
 html{-webkit-text-size-adjust:100%}
 body{
   min-height:100dvh;
@@ -72,7 +84,7 @@ h1{font-family:Sora,system-ui,sans-serif;font-size:clamp(27px,7.4vw,38px);font-w
   min-height:56px;width:100%;max-width:340px;padding:0 26px;
   border:0;border-radius:16px;cursor:pointer;
   background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 94%, #fff) 0%, var(--accent) 100%);
-  color:#120d04;
+  color:var(--cta-ink,#120d04);
   font-family:Sora,system-ui,sans-serif;font-size:16px;font-weight:800;letter-spacing:.01em;
   box-shadow:0 12px 30px color-mix(in srgb, var(--accent) 34%, transparent);
   transition:transform .16s ease, box-shadow .16s ease;

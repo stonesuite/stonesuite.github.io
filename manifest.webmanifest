@@ -4,6 +4,7 @@
   "short_name": "STONE",
   "description": "La suite STONE (bêta) : Invest, Money et Estate dans une application installable.",
   "lang": "fr",
+  "dir": "ltr",
   "start_url": "./?source=pwa",
   "scope": "./",
   "display": "standalone",
@@ -30,6 +31,12 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "icons/stone-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "icons/stone-maskable-512.png",

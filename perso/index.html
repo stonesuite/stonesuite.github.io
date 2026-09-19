@@ -5,9 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#08090c">
   <title>STONE</title>
+  <meta name="description" content="La suite STONE : tes univers patrimoniaux dans une seule application installable.">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/stone-192.png" type="image/png">
-  <link rel="apple-touch-icon" href="icons/stone-192.png">
+  <!-- iOS ignore le manifeste pour l'ajout à l'écran d'accueil : sans ces métas, la coque
+       ajoutée depuis Safari s'ouvre dans un onglet ordinaire, avec la barre d'adresse.
+       `black` (et non `black-translucent`) laisse le contenu commencer SOUS la barre d'état :
+       l'en-tête de la coque n'est jamais recouvert. Le nom affiché sous l'icône suit l'univers
+       quand la coque n'en porte qu'un (variante /invest/), posé par le script plus bas. -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" id="appleAppTitle" content="STONE">
+  <link rel="apple-touch-icon" href="icons/stone-maskable-192.png">
   <!-- Polices de la marque, chargées comme sur la page d'atterrissage et les
        guides : une seule méthode pour tout le site. `display=swap` fait
        afficher le texte immédiatement dans la police de repli, puis le met à
@@ -37,6 +47,9 @@
     }
     *{box-sizing:border-box}
     [hidden]{display:none!important}
+    /* Règle globale de focus (19/09/2026, audit Q34) : tout ce qui se pilote au clavier se voit,
+       y compris les contrôles qui n'avaient qu'un changement de bordure. */
+    :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
     html,body{height:100%}
     body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;overscroll-behavior:none}
     .shell{display:flex;flex-direction:column;height:100vh;height:100dvh}
@@ -80,7 +93,7 @@
     .home-row:nth-child(1){animation-delay:1.5s}
     .home-row:nth-child(2){animation-delay:1.63s}
     .home-row:nth-child(3){animation-delay:1.76s}
-    .home-row:hover,.home-row:focus-visible{border-color:var(--u-accent,var(--gold));outline:none;transform:translateX(2px)}
+    .home-row:hover,.home-row:focus-visible{border-color:var(--u-accent,var(--gold));transform:translateX(2px)}
     .home-row .r-mark{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
       background:var(--panel);color:var(--u-accent,var(--gold))}
     .home-row .r-copy{min-width:0}
@@ -105,7 +118,7 @@
     .home-guides a{display:inline-block;padding:9px 16px;border:1px solid var(--line);border-radius:999px;
       background:var(--panel2);color:var(--text);font-size:11.5px;font-weight:700;text-decoration:none;
       animation:stone-row .5s ease both;animation-delay:1.89s}
-    .home-guides a:hover,.home-guides a:focus-visible{border-color:var(--gold);color:var(--gold);outline:none}
+    .home-guides a:hover,.home-guides a:focus-visible{border-color:var(--gold);color:var(--gold)}
     .home-trust{margin-top:14px;color:var(--muted);font-size:10.5px;letter-spacing:.02em}
     /* Visite guidée : un halo découpé autour de l'élément expliqué, une bulle
        à côté, et deux commandes. Le halo est un simple bloc à l'ombre immense :
@@ -146,7 +159,7 @@
       .home-panel .pyr .pyr-sheen{display:none}
     }
     .home-panel .pyr [data-go]{cursor:pointer;transition:transform .18s ease,filter .18s ease}
-    .home-panel .pyr [data-go]:hover,.home-panel .pyr [data-go]:focus-visible{transform:translateY(-3px);filter:brightness(1.08);outline:none}
+    .home-panel .pyr [data-go]:hover,.home-panel .pyr [data-go]:focus-visible{transform:translateY(-3px);filter:brightness(1.08)}
     .home-panel .pyr text{font-family:inherit;font-weight:800;letter-spacing:.14em;fill:#141008;pointer-events:none}
     .home-panel .pyr .detail{stroke:rgba(18,13,4,.5);stroke-width:1.4;fill:none;stroke-linecap:round;pointer-events:none}
     .home-panel .home-hint{margin-top:14px}
@@ -202,7 +215,9 @@
     .quiet-button:hover{border-color:var(--gold)}
     .notice{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 14px;border-bottom:1px solid var(--line);background:var(--gold-dim);font-size:12px}
     .notice button{border:1px solid var(--gold);border-radius:8px;padding:5px 10px;background:transparent;color:var(--gold);font-size:11px;font-weight:700;cursor:pointer}
-    .universe-nav{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:6px 8px calc(6px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--panel)}
+    /* Autant de colonnes que d'univers réellement déclarés (19/09/2026) : à quatre colonnes fixes,
+       une coque de trois univers laissait une colonne vide à droite et la barre paraissait bancale. */
+    .universe-nav{position:relative;display:grid;grid-template-columns:repeat(var(--nav-cols,4),1fr);gap:4px;padding:6px 8px calc(6px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--panel)}
     .universe-nav button[data-universe]{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px;border:1px solid transparent;border-radius:12px;padding:6px 4px;background:transparent;color:var(--muted);font-family:inherit;font-size:10.5px;font-weight:700;cursor:pointer}
     .universe-nav button[data-universe] .glyph{font-size:16px;line-height:1.2}
     .universe-nav button[data-universe].active{border-color:var(--line);background:var(--panel2);color:var(--text)}
@@ -246,8 +261,12 @@
     .loading-line span{display:block;width:40%;height:100%;background:var(--u-accent,var(--gold));animation:slide 1.4s ease-in-out infinite}
     @keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(350%)}}
     .primary-button{margin-top:18px;border:1px solid var(--gold);border-radius:10px;padding:9px 18px;background:var(--gold);color:#171109;font-size:12px;font-weight:800;cursor:pointer}
-    .settings-sheet{position:fixed;inset:auto 0 0 0;z-index:40;max-height:85vh;overflow:auto;border:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));background:var(--panel);box-shadow:0 -20px 60px rgba(0,0,0,.6);transform:translateY(105%);transition:transform .22s}
-    .settings-sheet.is-open{transform:none}
+    /* `visibility:hidden` en plus du glissement (19/09/2026, audit Q34) : sans elle, le panneau fermé
+       reste dans l'ordre de tabulation et le clavier partait se perdre dans des champs hors écran.
+       La bascule est immédiate à l'ouverture (durée 0) et retardée à la fermeture : une transition de
+       visibility part de « hidden », et focus() appelé à l'ouverture échouerait sur un panneau encore caché. */
+    .settings-sheet{position:fixed;inset:auto 0 0 0;z-index:40;max-height:85vh;overflow:auto;border:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));background:var(--panel);box-shadow:0 -20px 60px rgba(0,0,0,.6);transform:translateY(105%);visibility:hidden;transition:transform .22s,visibility 0s linear .22s}
+    .settings-sheet.is-open{transform:none;visibility:visible;transition:transform .22s,visibility 0s}
     .settings-sheet h2{margin:0 0 4px;font-size:16px}
     .settings-sheet .sheet-sub{margin:0 0 14px;color:var(--muted);font-size:11px;line-height:1.5}
     .settings-field{margin-bottom:12px}
@@ -335,6 +354,20 @@
   }
 
   var UNIVERSES = Array.isArray(window.STONE_PWA_UNIVERSES) ? window.STONE_PWA_UNIVERSES : [];
+
+  /* ---- Mode d'accueil (19/09/2026, audit section 3 « Coque Invest seul ») ----
+     `index.html` est STRICTEMENT identique dans les quatre variantes du site : c'est donc le registre,
+     et lui seul, qui décide de ce qui s'affiche. Une coque qui ne porte qu'un étage de la pyramide
+     (variante /invest/) montrait quand même la pyramide entière, la phrase « Money soutient tout… » et
+     une barre d'univers à un seul bouton : elle promettait trois univers pour n'en ouvrir qu'un.
+     `homeMode` est volontairement une fonction pure, testée telle quelle par le banc. */
+  function homeMode(universes) {
+    var etages = ["money", "invest", "estate"].filter(function (key) {
+      return universes.some(function (u) { return u.key === key; });
+    });
+    return (universes.length === 1 && etages.length === 1) ? "solo" : "pyramide";
+  }
+  var MODE_ACCUEIL = homeMode(UNIVERSES);
   var stage = document.getElementById("stage");
   var nav = document.getElementById("universeNav");
   var tagline = document.getElementById("universeTagline");
@@ -730,6 +763,30 @@
       '<path d="' + path + '" fill="' + u.accent + '"/>' + (detail || "") +
       '<text x="' + labelX + '" y="' + labelY + '" text-anchor="middle" font-size="' + labelSize + '">' + u.label.toUpperCase() + "</text></g>";
   }
+  /* Rangée d'un univers : le nom, sa promesse, et la place de son montant quand il répond. */
+  function homeRow(u) {
+    if (!u) return "";
+    return '<button class="home-row" type="button" data-go="' + u.key + '" style="--u-accent:' + u.accent + '">' +
+      '<span class="r-mark" aria-hidden="true">' + u.glyph + "</span>" +
+      '<span class="r-copy"><span class="r-name">' + u.label + '</span>' +
+      '<span class="r-sub" data-wealth-note="' + u.key + '">' + u.tagline + "</span></span>" +
+      '<span class="r-value" data-wealth-value="' + u.key + '"></span>' +
+      '<span class="r-go" aria-hidden="true">→</span></button>';
+  }
+
+  /* Accueil d'une coque à un seul univers : sa porte, son guide, la même promesse de confidentialité.
+     Aucune trace des univers qu'elle n'ouvre pas. */
+  function soloHome(u) {
+    return '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
+      '<p class="eyebrow">La suite STONE</p>' +
+      "<h1>STONE " + u.label + "</h1>" +
+      '<p class="home-hint">' + u.tagline + ".</p>" +
+      '<div class="home-rows">' + homeRow(u) + "</div>" +
+      '<p class="home-guides"><a href="guides/' + u.key + '.html">Le guide ' + u.label + "</a></p>" +
+      '<p class="home-trust">Tes chiffres restent dans ton espace privé. STONE ne les conserve jamais.</p>' +
+      "</section>";
+  }
+
   function showHome() {
     if (!homeEl) {
       var byKey = {};
@@ -740,7 +797,8 @@
       homeEl = document.createElement("div");
       homeEl.className = "stage-panel home-panel";
       homeEl.dataset.kind = "home";
-      homeEl.innerHTML =
+      homeEl.dataset.mode = MODE_ACCUEIL;
+      homeEl.innerHTML = MODE_ACCUEIL === "solo" ? soloHome(UNIVERSES[0]) :
         '<section><div class="mark" aria-hidden="true"><svg viewBox=\"0 0 24 24\" width=\"1em\" height=\"1em\" aria-hidden=\"true\"><path d=\"M12 2 L14.55 7.39 H9.45 Z\" fill=\"currentColor\"/><path d=\"M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z\" fill=\"currentColor\"/><path d=\"M5.55 15.61 H18.45 L21 21 H3 Z\" fill=\"currentColor\"/></svg></div>' +
         '<p class="eyebrow">La suite STONE</p>' +
         "<h1>Ta pyramide patrimoniale</h1>" +
@@ -770,14 +828,7 @@
         "</svg></div>" +
         '<p class="home-hint">Money soutient tout, Invest fait grandir, Estate couronne.</p>' +
         '<div class="home-rows">' + ["money", "invest", "estate"].map(function (key) {
-          var u = byKey[key];
-          if (!u) return "";
-          return '<button class="home-row" type="button" data-go="' + u.key + '" style="--u-accent:' + u.accent + '">' +
-            '<span class="r-mark" aria-hidden="true">' + u.glyph + "</span>" +
-            '<span class="r-copy"><span class="r-name">' + u.label + '</span>' +
-            '<span class="r-sub" data-wealth-note="' + u.key + '">' + u.tagline + "</span></span>" +
-            '<span class="r-value" data-wealth-value="' + u.key + '"></span>' +
-            '<span class="r-go" aria-hidden="true">→</span></button>';
+          return homeRow(byKey[key]);
         }).join("") + "</div>" +
         '<p class="home-guides"><a href="guides/">Découvrir la suite · les guides</a></p>' +
         '<p class="home-trust">Tes chiffres restent dans ton espace privé. STONE ne les conserve jamais.</p>' +
@@ -799,7 +850,9 @@
       });
     }
     activeKey = "";
-    tagline.textContent = "Chaque tranche porte la suivante";
+    tagline.textContent = MODE_ACCUEIL === "solo"
+      ? UNIVERSES[0].label + " · " + UNIVERSES[0].tagline
+      : "Chaque tranche porte la suivante";
     Array.prototype.forEach.call(nav.querySelectorAll("button[data-universe]"), function (btn) {
       btn.classList.remove("active");
       btn.setAttribute("aria-current", "false");
@@ -816,8 +869,9 @@
        en retarder l'affichage ni ses portes. */
     if (window.requestAnimationFrame) requestAnimationFrame(ensureWealthFrames);
     else setTimeout(ensureWealthFrames, 0);
-    /* Première ouverture : la visite démarre une fois la cinématique posée. */
-    if (!tourSeen()) setTimeout(function () { tourStart(); }, 2300);
+    /* Première ouverture : la visite démarre une fois la cinématique posée. Elle explique la pyramide,
+       les trois univers et la barre : sur une coque à un seul univers, elle n'aurait rien à montrer. */
+    if (MODE_ACCUEIL !== "solo" && !tourSeen()) setTimeout(function () { tourStart(); }, 2300);
     /* L'URL redevient celle du hall d'entrée : un rechargement ou un partage
        depuis l'accueil ne renvoie pas dans le dernier univers visité. */
     try {
@@ -976,6 +1030,17 @@
     btn.addEventListener("click", function () { activate(u.key, true); });
     nav.appendChild(btn);
   });
+  /* La barre s'ajuste au nombre d'univers, et disparaît quand il n'y en a qu'un : elle ne ferait alors
+     que répéter l'univers ouvert et voler de la hauteur d'écran (19/09/2026). */
+  nav.style.setProperty("--nav-cols", String(Math.max(UNIVERSES.length, 1)));
+  if (UNIVERSES.length < 2) nav.hidden = true;
+  /* Coque à un seul univers : c'est son nom qui doit s'afficher sous l'icône, dans l'onglet et à
+     l'ajout sur l'écran d'accueil iOS (le manifeste, lui, est déjà propre à chaque variante). */
+  if (MODE_ACCUEIL === "solo") {
+    document.title = "STONE " + UNIVERSES[0].label;
+    var appleTitle = document.getElementById("appleAppTitle");
+    if (appleTitle) appleTitle.content = "STONE " + UNIVERSES[0].label;
+  }
 
   /* Barre rétractable : repliée, seul l'univers actif reste visible, pour
      rendre de la hauteur d'écran sans jamais rendre la navigation injoignable
@@ -1054,12 +1119,29 @@
     });
     settingsSheet.classList.add("is-open");
     sheetBackdrop.classList.add("is-open");
+    settingsButton.setAttribute("aria-expanded", "true");
+    /* Le panneau s'ouvre : le clavier et le lecteur d'écran doivent y entrer, sinon ils restent
+       derrière, sur une page que le voile a rendue inaccessible à la souris (19/09/2026). */
+    var premier = settingsSheet.querySelector("input, button, a");
+    if (premier) premier.focus({ preventScroll: true });
   }
   function closeSettings() {
+    var avaitFocus = settingsSheet.contains(document.activeElement);
     settingsSheet.classList.remove("is-open");
     sheetBackdrop.classList.remove("is-open");
+    settingsButton.setAttribute("aria-expanded", "false");
+    if (avaitFocus) settingsButton.focus({ preventScroll: true });
   }
-  document.getElementById("settingsButton").addEventListener("click", openSettings);
+  var settingsButton = document.getElementById("settingsButton");
+  settingsButton.setAttribute("aria-haspopup", "dialog");
+  settingsButton.setAttribute("aria-expanded", "false");
+  settingsButton.addEventListener("click", openSettings);
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && settingsSheet.classList.contains("is-open")) {
+      event.preventDefault();
+      closeSettings();
+    }
+  });
   document.getElementById("settingsCancel").addEventListener("click", closeSettings);
   sheetBackdrop.addEventListener("click", closeSettings);
   document.getElementById("settingsSave").addEventListener("click", function () {
@@ -1143,6 +1225,13 @@
     if (waitingWorker) waitingWorker.postMessage({ type: "SKIP_WAITING" });
   });
   if ("serviceWorker" in navigator) {
+    /* Au TOUT premier lancement, le service worker s'installe puis prend la main (clients.claim) :
+       `controllerchange` se déclenche alors qu'aucun service worker ne contrôlait la page. Recharger là
+       n'apporte rien et coûte cher (l'entrée en scène de l'accueil repart de zéro et la poignée de main
+       des univers déjà ouverts recommence). On ne recharge que pour une VRAIE mise à jour, c'est-à-dire
+       quand un service worker contrôlait déjà cette page (19/09/2026). */
+    var avaitControleur = !!navigator.serviceWorker.controller;
+    var rechargeEnCours = false;
     navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then(function (registration) {
       if (registration.waiting) offerUpdate(registration.waiting);
       registration.addEventListener("updatefound", function () {
@@ -1152,7 +1241,11 @@
           if (candidate.state === "installed" && navigator.serviceWorker.controller) offerUpdate(candidate);
         });
       });
-      navigator.serviceWorker.addEventListener("controllerchange", function () { window.location.reload(); });
+      navigator.serviceWorker.addEventListener("controllerchange", function () {
+        if (!avaitControleur || rechargeEnCours) return;
+        rechargeEnCours = true;
+        window.location.reload();
+      });
     }).catch(function (error) { console.warn("[STONE PWA] Service worker indisponible", error); });
   }
 
@@ -1173,6 +1266,8 @@
      pas garder de résidu orphelin sur l'appareil. */
   try { localStorage.removeItem("STONE_PWA_LAST_UNIVERSE::" + INSTANCE); } catch (e) {}
   document.getElementById("brandHomeButton").addEventListener("click", function () { showHome(); });
+  /* Pas de visite guidée sur une coque à un seul univers : pas de bouton pour la rejouer non plus. */
+  if (MODE_ACCUEIL === "solo") document.getElementById("tourReplay").hidden = true;
   document.getElementById("tourReplay").addEventListener("click", function () {
     closeSettings();
     showHome();

@@ -3,8 +3,30 @@
    moteurs Apps Script ni d'aucune autre origine. Seule la coque statique
    (index, manifeste, icônes, écran hors-ligne) est servie depuis le cache. */
 const SHELL_PREFIX = 'stone-pwa-shell-';
-const SHELL_VERSION = 'v26';
-const SHELL_CACHE = `${SHELL_PREFIX}${SHELL_VERSION}`;
+const SHELL_VERSION = 'v27';
+/* Empreinte de contenu (19/09/2026) : `site-build.mjs` remplace 'source' par un hachage des fichiers de la coque
+   de CETTE variante. Un fichier de la coque qui change modifie donc sw.js, donc le navigateur installe la
+   nouvelle version et le cache change de nom : plus besoin de penser à monter SHELL_VERSION à la main
+   (l'oubli qui laissait un téléphone sur une coque périmée). En développement la valeur reste 'source'. */
+const SHELL_BUILD = 'd9847e03e47f';
+
+/* Un cache PAR VARIANTE (19/09/2026, audit Q36). Les quatre coques (`/`, `/tout/`, `/perso/`, `/invest/`)
+   vivent sur la même origine et partageaient le nom `stone-pwa-shell-v25` : la première qui montait de
+   version supprimait, à son activation, le cache des trois autres (page hors ligne comprise) tant qu'elles
+   n'avaient pas vu leur propre mise à jour. Le nom est désormais dérivé de la portée d'enregistrement, et
+   chaque variante ne purge que ses propres versions. */
+function scopeTag(scope) {
+  let chemin = '/';
+  try { chemin = new URL(scope).pathname; } catch (e) { /* portée illisible : racine */ }
+  const tag = chemin.replace(/^\/+|\/+$/g, '').replace(/[^A-Za-z0-9]+/g, '-').toLowerCase();
+  return tag || 'racine';
+}
+const SHELL_SCOPE = (self.registration && self.registration.scope) || new URL('./', self.location.href).href;
+const VARIANT_PREFIX = `${SHELL_PREFIX}${scopeTag(SHELL_SCOPE)}-`;
+const SHELL_CACHE = `${VARIANT_PREFIX}${SHELL_VERSION}-${SHELL_BUILD}`;
+/* Ancien nom commun à toutes les variantes (jusqu'à v25) : chaque variante n'y retire que SES fichiers,
+   et le dernier à partir supprime le cache vide. Aucune variante ne vide celui d'une autre. */
+const LEGACY_SHARED_CACHE = /^stone-pwa-shell-v\d+$/;
 const SHELL_FILES = [
   './',
   './index.html',
@@ -13,8 +35,17 @@ const SHELL_FILES = [
   './manifest.webmanifest',
   './icons/stone-192.png',
   './icons/stone-512.png',
+  './icons/stone-maskable-192.png',
   './icons/stone-maskable-512.png',
 ];
+const OWN_URLS = SHELL_FILES.map((file) => new URL(file, self.location.href).href);
+
+
+function releaseLegacy(key) {
+  return caches.open(key).then((cache) => cache.keys().then((requests) => Promise.all(
+    requests.filter((req) => OWN_URLS.includes(req.url)).map((req) => cache.delete(req)),
+  )).then(() => cache.keys())).then((left) => (left.length ? null : caches.delete(key)));
+}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(SHELL_CACHE).then((cache) => cache.addAll(SHELL_FILES)));
@@ -22,11 +53,11 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => Promise.all(
-      keys
-        .filter((key) => key.startsWith(SHELL_PREFIX) && key !== SHELL_CACHE)
-        .map((key) => caches.delete(key)),
-    )).then(() => self.clients.claim()),
+    caches.keys().then((keys) => Promise.all(keys.map((key) => {
+      if (key.startsWith(VARIANT_PREFIX) && key !== SHELL_CACHE) return caches.delete(key);
+      if (LEGACY_SHARED_CACHE.test(key)) return releaseLegacy(key);
+      return null;
+    }))).then(() => self.clients.claim()),
   );
 });
 
