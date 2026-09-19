@@ -97,7 +97,7 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
   <header class="hero">
     <p class="eyebrow">Confidentialité</p>
     <h1>Tes données restent chez toi.</h1>
-    <p class="updated">Dernière mise à jour : 19 septembre 2026.</p>
+    <p class="updated">Dernière mise à jour : 19 septembre 2026. Une page dédiée à Invest, plus détaillée, existe : <a href="confidentialite-invest.html">confidentialité de STONE Invest</a>.</p>
   </header>
 
   <main>
@@ -111,7 +111,7 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
         <li>Tes montants, tes biens, tes opérations vivent dans un fichier Google Sheets qui t'appartient.</li>
         <li>Personne d'autre que toi (pas même l'auteur de STONE) n'a accès à ce fichier.</li>
         <li>Aucune donnée financière n'est jamais stockée dans ton navigateur : elle est lue et écrite directement dans ton classeur à chaque ouverture.</li>
-        <li>Fermer l'accès de STONE à ton compte Google, ou supprimer le classeur, supprime tout : il n'y a rien d'autre à effacer ailleurs.</li>
+        <li>Retirer l'accès de STONE à ton compte Google et supprimer ton classeur efface toutes tes données financières. Quelques réglages techniques (identifiant du classeur, thème, visite guidée vue) et les journaux techniques d'exécution restent côté Google, sans aucun montant : pour les faire supprimer, écris à l'adresse de contact.</li>
       </ul>
     </section>
 
@@ -135,29 +135,30 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
           </tbody>
         </table>
       </div>
-      <p class="lede" style="margin-top:16px">Chaque application est un projet Google séparé : accepter Money ne donne aucun accès à
+      <p class="lede" style="margin-top:16px">Google ne propose pas d'autorisation limitée à un seul fichier : l'autorisation <code>spreadsheets</code> couvre techniquement tous tes classeurs Google Sheets. Chaque application n'ouvre que le sien, c'est une règle du code de STONE et non une barrière posée par Google. Chaque application est un projet Google séparé : accepter Money ne donne aucun accès à
       Invest ou à Estate, et réciproquement.</p>
     </section>
 
     <section>
       <h2>Analyse assistée par IA (Invest)</h2>
-      <p class="lede">Invest propose une lecture assistée de ton portefeuille. Elle est facultative : elle
-      ne s'active que si tu l'autorises toi-même dans l'application, et tu peux retirer cette autorisation
-      à tout moment. Tant que tu ne l'as pas donnée, rien n'est envoyé.</p>
+      <p class="lede">Invest propose une lecture assistée de ton portefeuille. Elle est facultative : l'envoi d'une
+      synthèse à un prestataire d'intelligence artificielle ne se fait que si le service est réglé pour cela et que
+      tu l'autorises toi-même dans l'application. Tant que tu ne l'as pas donnée, rien n'est envoyé.</p>
       <div class="card">
         <h3>Ce qui part, et ce qui ne part jamais</h3>
         <p>Quand tu lances une lecture, STONE envoie à un prestataire d'intelligence artificielle
         (Anthropic, dont les serveurs sont situés hors de la zone UEMOA) une synthèse chiffrée de ton
-        portefeuille : les symboles boursiers des titres que tu détiens avec leurs quantités, des montants
-        arrondis, le poids de chaque ligne et les performances. Jamais ton nom, ton adresse
-        e-mail, le nom de ton portefeuille, le détail de tes opérations ni tes notes.</p>
+        portefeuille : les symboles boursiers des titres que tu détiens avec leurs quantités exactes, des montants
+        arrondis, le poids de chaque ligne, les totaux et les performances. Jamais ton nom, ton adresse
+        e-mail, le nom de ton portefeuille, tes notes, ni une opération prise une à une.</p>
         <p>Les phrases que tu lis sont composées par STONE à partir de tes chiffres : le modèle ne fait
         que classer des constats, il n'écrit rien et ne donne aucun conseil. Le nombre de lectures par
         jour est limité.</p>
         <p>Quand le service est réglé pour lire tes chiffres sans le prestataire (lecture « sans envoi »),
         la lecture se fait entièrement chez STONE, rien ne part et aucune autorisation n'est demandée.</p>
-        <p>Retirer ton autorisation dans l'application supprime les lectures conservées et bloque tout
-        nouvel envoi.</p>
+        <p>Tu peux refuser l'envoi au moment où l'application te le demande : cela supprime les lectures conservées
+        dans ton classeur et empêche tout envoi. Pour retirer une autorisation déjà donnée, écris à l'adresse de
+        contact. Ce que le prestataire conserve ensuite relève de ses propres règles.</p>
       </div>
     </section>
 
@@ -165,9 +166,9 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
       <h2>Ce que STONE ne fait pas</h2>
       <ul class="plain">
         <li>Aucune publicité, aucun tiers publicitaire, aucun revendeur de données.</li>
-        <li>Aucun cookie de suivi, aucun traceur, aucune mesure d'audience.</li>
+        <li>Aucun cookie de suivi, aucun traceur et aucune mesure d'audience de la part de STONE. Pour afficher ses polices, les pages chargent des fichiers depuis Google Fonts : Google reçoit alors ton adresse IP et ton type de navigateur, comme pour tout fichier chargé chez un tiers. Les pages sont hébergées par GitHub, qui garde ses propres journaux d'accès.</li>
         <li>Aucun conseil en investissement : les écrans affichent des faits (cours, historique, calculs), jamais une recommandation d'achat ou de vente.</li>
-        <li>Aucun mouvement d'argent : STONE ne déplace jamais de fonds, ne se connecte à aucun compte bancaire, ne détient aucune licence financière.</li>
+        <li>Aucun mouvement d'argent : STONE ne déplace jamais de fonds, ne se connecte à aucun compte bancaire ou de titres.</li>
       </ul>
     </section>
 
@@ -179,7 +180,7 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
         <li>Ouvre <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">le gestionnaire d'accès de ton compte Google</a> et retire l'autorisation à STONE Money, STONE Invest ou STONE Estate.</li>
         <li>Supprime le classeur correspondant dans ton Google Drive.</li>
       </ul>
-      <p class="lede">Les deux gestes ensemble effacent tout ce que STONE a jamais su de toi.</p>
+      <p class="lede">Les deux gestes ensemble effacent tes données financières. Vide aussi la corbeille de Drive (sinon le classeur reste récupérable 30 jours) et supprime les éventuels classeurs de partage créés par Invest, qui sont indépendants. Restent seulement, côté Google, les réglages techniques et journaux d'exécution évoqués plus haut, sans aucun montant.</p>
     </section>
 
     <section>
