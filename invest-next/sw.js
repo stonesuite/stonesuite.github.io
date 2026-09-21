@@ -8,7 +8,7 @@ const SHELL_VERSION = 'v27';
    de CETTE variante. Un fichier de la coque qui change modifie donc sw.js, donc le navigateur installe la
    nouvelle version et le cache change de nom : plus besoin de penser à monter SHELL_VERSION à la main
    (l'oubli qui laissait un téléphone sur une coque périmée). En développement la valeur reste 'source'. */
-const SHELL_BUILD = '19604669880a';
+const SHELL_BUILD = 'b8571d8c78ec';
 
 /* Un cache PAR VARIANTE (19/09/2026, audit Q36). Les quatre coques (`/`, `/tout/`, `/perso/`, `/invest/`)
    vivent sur la même origine et partageaient le nom `stone-pwa-shell-v25` : la première qui montait de
