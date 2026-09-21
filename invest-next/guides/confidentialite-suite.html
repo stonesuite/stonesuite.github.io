@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c1119">
+<link rel="icon" href="../icons/stone-192.png" type="image/png">
+<title>Confidentialité · La suite STONE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;600&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;600&display=swap"></noscript>
+<style>
+:root{
+  --paper:#f4f1e9; --paper2:#eae4d7; --ink:#13161d; --ink2:#525a68; --line:#dad2c0;
+  --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;
+  --pos:#1c7a54; --neg:#a1402c;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="clair"]){
+  --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
+  --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347; --pos:#4cc593; --neg:#e2846f;}}
+:root[data-theme="nuit"]{
+  --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
+  --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347; --pos:#4cc593; --neg:#e2846f;}
+:root[data-theme="clair"]{
+  --paper:#f4f1e9; --paper2:#eae4d7; --ink:#13161d; --ink2:#525a68; --line:#dad2c0;
+  --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;
+  --pos:#1c7a54; --neg:#a1402c;
+}
+:root[data-theme="sable"]{--paper:#120d06;--paper2:#1c150a;--ink:#f3e9d6;--ink2:#b9a480;--line:#3c2c14;--card:#1a1309;--accent:#d8b273;--money:#e0c18a;--invest:#c9a567;--estate:#a88347;--pos:#4cc593;--neg:#e2846f}
+
+.theme-switch{display:inline-flex;align-items:center;gap:1px;padding:2px;border:1px solid var(--line);border-radius:999px;background:var(--paper2);margin-left:auto}
+.theme-choice{position:relative;display:grid;place-items:center;min-width:36px;min-height:36px;border-radius:999px;background:transparent;color:var(--ink2);border:0;padding:0;cursor:pointer}
+.theme-choice svg{width:15px;height:15px;display:block;transition:transform .5s cubic-bezier(.34,1.4,.5,1)}
+.theme-choice[aria-pressed="true"]{background:var(--card);color:var(--accent);box-shadow:0 1px 6px rgba(0,0,0,.18)}
+.theme-choice[aria-pressed="true"] svg{transform:rotate(360deg) scale(1.06)}
+.theme-choice:hover{color:var(--ink)}
+.theme-choice:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ctl-label{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  color:var(--ink);font-size:11px;font-weight:600;white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity .18s ease;z-index:20}
+.theme-choice:hover .ctl-label,.theme-choice:focus-visible .ctl-label{opacity:1}
+@media(prefers-reduced-motion:reduce){.theme-choice svg,.ctl-label{transition:none}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Nunito Sans",system-ui,sans-serif;font-size:17px;line-height:1.68}
+h1,h2,h3{font-family:"Sora",system-ui,sans-serif;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:.7em 0 0;max-width:38em}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+a{color:var(--accent)}
+.eyebrow{font-family:"Sora",system-ui,sans-serif;font-weight:700;letter-spacing:.3em;font-size:11px;color:var(--accent);text-transform:uppercase}
+code{font-family:"JetBrains Mono",monospace;font-size:.86em;background:var(--paper2);border-radius:4px;padding:.1em .4em}
+nav.family{background:var(--paper2);border-bottom:1px solid var(--line);font-size:12.5px}
+nav.family .row{display:flex;gap:18px;align-items:center;padding:11px 24px;max-width:760px;margin:0 auto}
+nav.family b{font-family:Sora,system-ui,sans-serif;letter-spacing:.3em;font-size:11px;color:var(--accent)}
+nav.family a{color:inherit;text-decoration:none;font-weight:800}
+header.hero{padding:56px 0 8px}
+header.hero h1{font-size:clamp(32px,6vw,46px);letter-spacing:-.02em;margin-top:14px}
+header.hero .updated{margin-top:14px;color:var(--ink2);font-size:14.5px}
+main{padding:44px 0 90px}
+section{padding-top:40px;border-top:1px solid var(--line);margin-top:40px}
+section:first-of-type{border-top:0;margin-top:0;padding-top:0}
+section h2{font-size:22px;letter-spacing:-.01em}
+section .lede{color:var(--ink2);margin-top:10px}
+ul.plain{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:14px}
+ul.plain li{padding-left:22px;position:relative}
+ul.plain li::before{content:"—";position:absolute;left:0;color:var(--accent);font-weight:700}
+.card{margin-top:18px;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:18px 20px}
+.card h3{font-size:14px;letter-spacing:.02em}
+.card p{color:var(--ink2);font-size:15px}
+.tablewrap{overflow-x:auto}
+table.scopes{width:100%;min-width:560px;border-collapse:collapse;margin-top:18px;font-size:14.5px}
+table.scopes th{text-align:left;font-family:Sora,system-ui,sans-serif;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink2);padding:9px 10px;border-bottom:1px solid var(--line)}
+table.scopes td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink2)}
+table.scopes td.app{color:var(--ink);font-weight:700;font-family:Sora,system-ui,sans-serif;white-space:nowrap}
+table.scopes td:last-child,table.scopes th:last-child{width:44%}
+.contact{margin-top:18px;border:1px dashed var(--line);border-radius:14px;padding:18px 20px;background:var(--paper2)}
+.contact .tag{font-family:Sora,system-ui,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--neg)}
+/* Bloc renseigne : trait plein, plus l'encadre en pointilles d'une mention
+   manquante. */
+.contact.is-set{border-style:solid}
+.contact .who{margin:0;font-family:Sora,system-ui,sans-serif;font-size:17px;font-weight:700;letter-spacing:.01em}
+.contact .what{margin:4px 0 0;color:var(--ink2);font-size:14px}
+.contact .how{margin:14px 0 0;font-size:14.5px;line-height:1.6}
+.contact .how a{font-family:Sora,system-ui,sans-serif;font-weight:700;white-space:nowrap}
+.contact .note{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);color:var(--ink2);font-size:13px;line-height:1.6}
+.foot{margin-top:56px;padding-top:24px;border-top:1px solid var(--line);color:var(--ink2);font-size:13.5px}
+@media(max-width:560px){header.hero{padding:36px 0 4px}main{padding:32px 0 70px}}
+</style>
+</head>
+<body>
+<nav class="family"><div class="row"><b><span style="display:inline-flex;vertical-align:-1px"><svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 2 L14.55 7.39 H9.45 Z" fill="currentColor"/><path d="M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z" fill="currentColor"/><path d="M5.55 15.61 H18.45 L21 21 H3 Z" fill="currentColor"/></svg></span> LA SUITE STONE</b><a href="../">&#8592; Ouvrir l&#8217;application</a><div class="theme-switch" role="group" aria-label="Apparence"><button type="button" class="theme-choice" data-theme-choice="clair" aria-pressed="false" aria-label="Apparence claire" title="Clair"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6"/></svg><span class="ctl-label">Clair</span></button><button type="button" class="theme-choice" data-theme-choice="nuit" aria-pressed="false" aria-label="Apparence nuit" title="Nuit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M20 14.2A8.4 8.4 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2Z"/></svg><span class="ctl-label">Nuit</span></button><button type="button" class="theme-choice" data-theme-choice="sable" aria-pressed="false" aria-label="Apparence sable" title="Sable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 4 20 19H4Z"/><path d="M8.6 13.4h6.8"/></svg><span class="ctl-label">Sable</span></button></div></div></nav>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Confidentialité</p>
+    <h1>Tes données restent chez toi.</h1>
+    <p class="updated">Dernière mise à jour : 19 septembre 2026. Une page dédiée à Invest, plus détaillée, existe : <a href="confidentialite-invest.html">confidentialité de STONE Invest</a>.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Le principe</h2>
+      <p class="lede">STONE (Money, Invest, Estate) n'a pas de serveur et pas de base de données. Chaque application
+      s'exécute sous ta propre identité Google, dans un classeur Google Sheets créé et détenu
+      par toi, dans ton propre Google&nbsp;Drive. STONE n'a jamais de copie de tes données : il
+      n'existe nulle part une base STONE à consulter, à perdre ou à faire fuiter.</p>
+      <ul class="plain">
+        <li>Tes montants, tes biens, tes opérations vivent dans un fichier Google Sheets qui t'appartient.</li>
+        <li>Personne d'autre que toi (pas même l'auteur de STONE) n'a accès à ce fichier.</li>
+        <li>Aucune donnée financière n'est jamais stockée dans ton navigateur : elle est lue et écrite directement dans ton classeur à chaque ouverture.</li>
+        <li>Retirer l'accès de STONE à ton compte Google et supprimer ton classeur efface toutes tes données financières. Quelques réglages techniques (identifiant du classeur, thème, visite guidée vue) et les journaux techniques d'exécution restent côté Google, sans aucun montant : pour les faire supprimer, écris à l'adresse de contact.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Ce que chaque autorisation Google sert à faire</h2>
+      <p class="lede">Au premier lancement, chaque application demande ton accord Google. Voici exactement ce
+      que chaque autorisation permet, et à quoi elle sert dans STONE, rien de plus.</p>
+      <div class="tablewrap">
+        <table class="scopes">
+          <thead><tr><th>Application</th><th>Autorisation demandée</th><th>À quoi elle sert dans STONE</th></tr></thead>
+          <tbody>
+            <tr><td class="app">Money</td><td><code>spreadsheets</code></td><td>Lire et écrire ton propre classeur Money (comptes, mouvements, budgets).</td></tr>
+            <tr><td class="app">Money</td><td><code>userinfo.email</code></td><td>Te reconnaître d'une visite à l'autre, sans mot de passe. Ton adresse n'est jamais affichée en clair dans l'écran : seule une version masquée l'est.</td></tr>
+            <tr><td class="app">Invest</td><td><code>spreadsheets</code></td><td>Lire et écrire ton propre classeur Invest (portefeuilles, opérations, favoris).</td></tr>
+            <tr><td class="app">Invest</td><td><code>userinfo.email</code></td><td>Même usage que pour Money.</td></tr>
+            <tr><td class="app">Invest</td><td><code>script.external_request</code></td><td>Aller chercher les cours de la Bourse Régionale des Valeurs Mobilières (BRVM) auprès de la source de marché. Aucune donnée te concernant n'est envoyée dans cet appel : seul un identifiant d'action est requis. La lecture assistée, facultative, utilise aussi cette autorisation pour envoyer la synthèse décrite plus bas, et seulement si tu l'as autorisée (voir plus bas).</td></tr>
+            <tr><td class="app">Estate</td><td><code>spreadsheets</code></td><td>Lire et écrire ton propre classeur Estate (biens, coûts, estimations).</td></tr>
+            <tr><td class="app">Estate</td><td><code>userinfo.email</code></td><td>Même usage que pour Money.</td></tr>
+            <tr><td class="app">Estate</td><td><code>drive.file</code></td><td>Stocker les photos et documents que tu ajoutes à un dossier de bien. Cette autorisation limite l'accès aux seuls fichiers créés par STONE lui-même, jamais à l'ensemble de ton Drive.</td></tr>
+            <tr><td class="app">Estate</td><td><code>script.external_request</code></td><td>Envoyer et relire ces mêmes photos/documents vers ton propre espace Drive via son adresse technique.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lede" style="margin-top:16px">Google ne propose pas d'autorisation limitée à un seul fichier : l'autorisation <code>spreadsheets</code> couvre techniquement tous tes classeurs Google Sheets. Chaque application n'ouvre que le sien, c'est une règle du code de STONE et non une barrière posée par Google. Chaque application est un projet Google séparé : accepter Money ne donne aucun accès à
+      Invest ou à Estate, et réciproquement.</p>
+    </section>
+
+    <section>
+      <h2>Analyse assistée par IA (Invest)</h2>
+      <p class="lede">Invest propose une lecture assistée de ton portefeuille. Elle est facultative : l'envoi d'une
+      synthèse à un prestataire d'intelligence artificielle ne se fait que si le service est réglé pour cela et que
+      tu l'autorises toi-même dans l'application. Tant que tu ne l'as pas donnée, rien n'est envoyé.</p>
+      <div class="card">
+        <h3>Ce qui part, et ce qui ne part jamais</h3>
+        <p>Quand tu lances une lecture, STONE envoie à un prestataire d'intelligence artificielle
+        (Anthropic, dont les serveurs sont situés hors de la zone UEMOA) une synthèse chiffrée de ton
+        portefeuille : les symboles boursiers des titres que tu détiens avec leurs quantités exactes, des montants
+        arrondis, le poids de chaque ligne, les totaux et les performances. Jamais ton nom, ton adresse
+        e-mail, le nom de ton portefeuille, tes notes, ni une opération prise une à une.</p>
+        <p>Les phrases que tu lis sont composées par STONE à partir de tes chiffres : le modèle ne fait
+        que classer des constats, il n'écrit rien et ne donne aucun conseil. Le nombre de lectures par
+        jour est limité.</p>
+        <p>Quand le service est réglé pour lire tes chiffres sans le prestataire (lecture « sans envoi »),
+        la lecture se fait entièrement chez STONE, rien ne part et aucune autorisation n'est demandée.</p>
+        <p>Tu peux refuser l'envoi au moment où l'application te le demande, puis retirer ton autorisation quand tu veux
+        avec le lien « Retirer mon autorisation » de STONE Invest : cela supprime les lectures conservées dans ton
+        classeur et empêche tout envoi. Ce que le prestataire conserve ensuite relève de ses propres règles.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Ce que STONE ne fait pas</h2>
+      <ul class="plain">
+        <li>Aucune publicité, aucun tiers publicitaire, aucun revendeur de données.</li>
+        <li>Aucun cookie de suivi, aucun traceur et aucune mesure d'audience de la part de STONE. Pour afficher ses polices, les pages chargent des fichiers depuis Google Fonts : Google reçoit alors ton adresse IP et ton type de navigateur, comme pour tout fichier chargé chez un tiers. Les pages sont hébergées par GitHub, qui garde ses propres journaux d'accès.</li>
+        <li>Aucun conseil en investissement : les écrans affichent des faits (cours, historique, calculs), jamais une recommandation d'achat ou de vente.</li>
+        <li>Aucun mouvement d'argent : STONE ne déplace jamais de fonds, ne se connecte à aucun compte bancaire ou de titres.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Supprimer tes données</h2>
+      <p class="lede">Puisque tes données vivent dans un classeur Google Sheets qui t'appartient, tu
+      n'as besoin de personne pour les supprimer :</p>
+      <ul class="plain">
+        <li>Ouvre <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">le gestionnaire d'accès de ton compte Google</a> et retire l'autorisation à STONE Money, STONE Invest ou STONE Estate.</li>
+        <li>Supprime le classeur correspondant dans ton Google Drive.</li>
+      </ul>
+      <p class="lede">Les deux gestes ensemble effacent tes données financières. Vide aussi la corbeille de Drive (sinon le classeur reste récupérable 30 jours) et supprime les éventuels classeurs de partage créés par Invest, qui sont indépendants. Restent seulement, côté Google, les réglages techniques et journaux d'exécution évoqués plus haut, sans aucun montant.</p>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <div class="contact is-set">
+        <p class="who">Stone Dev Corp</p>
+        <p class="what">Responsable des applications STONE Invest, STONE Money et STONE Estate.</p>
+        <p class="how">Pour toute question sur tes données, ou pour exercer un droit d’accès,
+        de rectification ou d’effacement :<br>
+        <a href="mailto:contact.stonedev@gmail.com">contact.stonedev@gmail.com</a></p>
+        <p class="note">Rappel utile : STONE ne détient aucune copie de tes données. Tes fichiers
+        vivent dans ton propre compte Google, et tu peux les supprimer toi-même à tout
+        moment, sans passer par nous.</p>
+      </div>
+    </section>
+
+    <p class="foot">STONE est un projet indépendant, sans investisseur ni modèle publicitaire. Cette page
+    décrit exactement ce que fait le code des trois applications : elle est mise à jour à chaque
+    changement qui touche tes données.</p>
+  </main>
+</div>
+
+<script>
+(function(){
+  var THEMES=["clair","nuit","sable"];
+  var KEY="STONE_GUIDE_THEME";
+  var buttons=document.querySelectorAll("[data-theme-choice]");
+  function apply(theme,persist){
+    if(THEMES.indexOf(theme)===-1)theme="";
+    if(theme)document.documentElement.setAttribute("data-theme",theme);
+    else document.documentElement.removeAttribute("data-theme");
+    buttons.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.themeChoice===theme))});
+    if(persist){try{if(theme)localStorage.setItem(KEY,theme);else localStorage.removeItem(KEY)}catch(e){}}
+  }
+  buttons.forEach(function(b){b.addEventListener("click",function(){apply(b.dataset.themeChoice,true)})});
+  var saved="";try{saved=localStorage.getItem(KEY)||""}catch(e){}
+  apply(saved,false);
+})();
+</script>
+</body>
+</html>

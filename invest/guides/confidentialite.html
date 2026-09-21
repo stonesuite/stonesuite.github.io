@@ -97,7 +97,7 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
   <header class="hero">
     <p class="eyebrow">Confidentialité · Invest</p>
     <h1>Tes placements restent chez toi.</h1>
-    <p class="updated">Dernière mise à jour : 19 septembre 2026. Cette page décrit STONE Invest seulement. Chaque phrase a été relue contre le code de l'application.</p>
+    <p class="updated">Dernière mise à jour : 21 septembre 2026. Cette page décrit STONE Invest seulement. Chaque phrase a été relue contre le code de l'application.</p>
   </header>
 
   <main>
@@ -173,6 +173,18 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
         ton classeur (analyses et instantanés) et empêche tout envoi. Une lecture réaffichée reste gardée en mémoire temporaire par Google pendant
         6 heures au plus.</p>
       </div>
+      <div class="card">
+        <h3>Importer un relevé par photo ou PDF : là, c'est le document lui-même qui part</h3>
+        <p>L'import d'un relevé (Moi › Aide et données › Importer un relevé) lit deux familles de fichiers. Un relevé d'activité en CSV ou en
+        Excel (.xls) est lu sur ton appareil, par le code de STONE : rien n'en sort, aucune autorisation n'est demandée et l'IA n'intervient pas.
+        Un avis d'opéré en PDF ou en photo (JPEG, PNG, WebP) ne peut pas être lu autrement que par l'IA : STONE envoie alors le document lui-même
+        à Anthropic, pour le transcrire en lignes d'opérations, et rien d'autre. Un tel document peut contenir ton nom, ton numéro de compte et le nom
+        de ta société de bourse : ils partent avec lui.</p>
+        <p>Cet envoi n'a lieu qu'après que tu as autorisé l'IA dans l'application et coché, pour ce fichier, la case qui confirme l'envoi du document.
+        Sans ces deux gestes, aucun fichier ne part. Les lignes transcrites te sont montrées en aperçu avant tout ajout à ton portefeuille, avec les
+        doublons signalés ; STONE ne conserve pas le document une fois l'import terminé ou abandonné. Ce qu'Anthropic garde ensuite relève de ses
+        règles, comme pour la lecture du portefeuille.</p>
+      </div>
     </section>
 
     <section>
@@ -192,7 +204,7 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
         <li><strong>Dans ton navigateur :</strong> aucune donnée financière. Seules de petites préférences sans valeur financière peuvent y rester (dans l'application installée : la visite guidée déjà vue, la barre repliée, les adresses des moteurs ; sur les pages de guides : le thème). Google, lui, garde les mécanismes normaux de sa connexion.</li>
         <li><strong>Polices de caractères :</strong> pour afficher ses polices, la page et l'application chargent des fichiers depuis Google Fonts. Google reçoit alors, comme pour tout fichier chargé chez un tiers, ton adresse IP, ton type de navigateur et l'adresse de la page qui demande la police. STONE n'y joint aucun identifiant et n'en tire aucune statistique, mais il ne contrôle pas ce que Google journalise.</li>
         <li><strong>Hébergement :</strong> les pages et la coque de l'application sont hébergées par GitHub, qui garde des journaux d'accès de son côté. L'application elle-même s'exécute sur Google Apps Script.</li>
-        <li><strong>Qui traite tes données à notre place :</strong> Google (ton classeur Sheets et ton Drive, l'exécution de l'application, sa mémoire temporaire, ses journaux techniques), Anthropic (lecture assistée, seulement si l'envoi est activé et autorisé) et GitHub (hébergement des pages). Leurs serveurs peuvent se trouver hors de la zone UEMOA ; ils appliquent leurs propres règles.</li>
+        <li><strong>Qui traite tes données à notre place :</strong> Google (ton classeur Sheets et ton Drive, l'exécution de l'application, sa mémoire temporaire, ses journaux techniques), Anthropic (lecture assistée et import d'un relevé par photo ou PDF, seulement si l'envoi est activé et si tu l'as autorisé) et GitHub (hébergement des pages). Leurs serveurs peuvent se trouver hors de la zone UEMOA ; ils appliquent leurs propres règles.</li>
       </ul>
     </section>
 
@@ -213,6 +225,7 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
         <li>Ton classeur, sa feuille Audit et les feuilles de sauvegarde : tant que tu ne les supprimes pas.</li>
         <li>Une lecture assistée réaffichée : gardée en mémoire temporaire par Google 6 heures au plus, puis effacée seule.</li>
         <li>Le texte d'une lecture assistée : non conservé par défaut. Les instantanés chiffrés : les derniers de chaque portefeuille, effacés si tu refuses ou retires l'autorisation.</li>
+        <li>Un relevé importé par photo ou PDF : lu, transcrit, montré en aperçu, puis oublié ; STONE n'en garde ni le fichier ni le texte une fois l'import terminé ou abandonné.</li>
         <li>Les réglages techniques liés à ton compte chez Google pour l'application (identifiant de ton classeur, thème, visite guidée vue, compteur de lectures assistées du jour) et les journaux techniques d'exécution d'Apps Script (nom de la fonction, heure, code d'erreur, sans montant ni opération) : tant que Google les garde ; STONE n'y écrit ni montant, ni opération, ni e-mail, ni nom.</li>
       </ul>
     </section>
@@ -226,6 +239,27 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
         <li><strong>Tout supprimer :</strong> ouvre <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">le gestionnaire d'accès de ton compte Google</a> et retire l'autorisation à STONE Invest ; supprime le classeur dans ton Google Drive <strong>et vide la corbeille de Drive</strong> (sinon il reste récupérable 30 jours) ; supprime aussi les éventuels classeurs de partage, qui sont indépendants du classeur principal. Cela efface tes données financières, tes lectures conservées et ton journal.</li>
         <li><strong>Ce qui reste malgré tout :</strong> les réglages techniques et journaux d'exécution décrits ci-dessus, sans aucun montant ni opération, et ce que le prestataire d'IA aurait reçu si tu avais autorisé l'envoi. Pour faire supprimer les réglages techniques liés à ton compte, écris à l'adresse de contact.</li>
         <li><strong>Retirer un consentement, t'opposer à un traitement ou saisir une autorité :</strong> pour la lecture IA, utilise le lien « Retirer mon autorisation » dans l'application ; pour le reste, écris à l'adresse de contact. Tu peux aussi saisir l'autorité de protection des données de ton pays (en Côte d'Ivoire : l'ARTCI).</li>
+      </ul>
+    </section>
+
+    <section id="supprimer">
+      <h2>Supprimer mon espace</h2>
+      <p class="lede">Dans l'application : Moi › Aide et données › « Supprimer mon espace ». STONE te demande de confirmer, puis efface tout ce qu'il
+      tient à ta place. Aucun e-mail, aucune demande à faire : le geste est à toi.</p>
+      <ul class="plain">
+        <li><strong>Ce qui est effacé :</strong> le contenu de toutes les feuilles STONE de ton classeur Invest (Transactions, Portfolios, Favorites, Goals, Alerts, Audit, _STONE_META, AI_Analyses, AI_Snapshots, Shares et les feuilles de sauvegarde masquées), tes simulations et tes analyses gardées, ton autorisation IA, et les réglages techniques liés à ton compte chez Google pour l'application (identifiant du classeur, thème, visite guidée, compteurs de lectures).</li>
+        <li><strong>Ce qui reste à faire dans Drive :</strong> Invest n'a aucune autorisation sur ton Drive, il ne peut donc pas supprimer le fichier lui-même. Supprime le classeur « STONE Invest » dans ton Google Drive et vide la corbeille de Drive (sinon il reste récupérable 30 jours) ; supprime de la même façon les éventuels classeurs de partage ; puis, si tu veux couper tout lien, retire l'autorisation à STONE Invest dans <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">le gestionnaire d'accès de ton compte Google</a>.</li>
+        <li><strong>Ce qui ne dépend pas de nous :</strong> les journaux techniques d'exécution que Google garde de son côté (sans montant ni opération), et ce qu'Anthropic aurait reçu si tu avais autorisé un envoi.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Ce que tu peux nous demander</h2>
+      <ul class="plain">
+        <li><strong>Un export :</strong> tes opérations et tes analyses gardées s'exportent seules depuis l'application, en CSV ou en Excel. Si tu veux autre chose, écris-nous.</li>
+        <li><strong>Une suppression :</strong> tout ce que tu ne peux pas effacer toi-même, par exemple les réglages techniques liés à ton compte si tu n'as plus accès à l'application, sur simple demande.</li>
+        <li><strong>Une explication :</strong> ce que STONE fait d'une donnée précise, avec le code à l'appui.</li>
+        <li><strong>Comment :</strong> un e-mail à <a href="mailto:contact.stonedev@gmail.com">contact.stonedev@gmail.com</a>, envoyé depuis l'adresse Google que tu utilises dans Invest (c'est ainsi que nous savons que c'est bien toi). Réponse sous 7 jours.</li>
       </ul>
     </section>
 
@@ -246,7 +280,8 @@ table.scopes td:last-child,table.scopes th:last-child{width:44%}
     <p class="foot">STONE est un projet indépendant, sans investisseur ni modèle publicitaire. Cette page
     décrit ce que fait le code de STONE Invest : elle est mise à jour, avec sa date en haut, à chaque changement qui touche tes données.
     La page générale de la suite STONE (Money, Invest, Estate) est ici :
-    <a href="confidentialite-suite.html">confidentialité de la suite STONE</a>.</p>
+    <a href="confidentialite-suite.html">confidentialité de la suite STONE</a>. Voir aussi les
+    <a href="conditions-invest.html">conditions d'utilisation</a> et l'<a href="statut.html">état du service</a>.</p>
   </main>
 </div>
 

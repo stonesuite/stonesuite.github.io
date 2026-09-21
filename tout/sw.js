@@ -8,7 +8,7 @@ const SHELL_VERSION = 'v27';
    de CETTE variante. Un fichier de la coque qui change modifie donc sw.js, donc le navigateur installe la
    nouvelle version et le cache change de nom : plus besoin de penser à monter SHELL_VERSION à la main
    (l'oubli qui laissait un téléphone sur une coque périmée). En développement la valeur reste 'source'. */
-const SHELL_BUILD = 'd9847e03e47f';
+const SHELL_BUILD = '838c2f5c5c63';
 
 /* Un cache PAR VARIANTE (19/09/2026, audit Q36). Les quatre coques (`/`, `/tout/`, `/perso/`, `/invest/`)
    vivent sur la même origine et partageaient le nom `stone-pwa-shell-v25` : la première qui montait de
@@ -24,6 +24,11 @@ function scopeTag(scope) {
 const SHELL_SCOPE = (self.registration && self.registration.scope) || new URL('./', self.location.href).href;
 const VARIANT_PREFIX = `${SHELL_PREFIX}${scopeTag(SHELL_SCOPE)}-`;
 const SHELL_CACHE = `${VARIANT_PREFIX}${SHELL_VERSION}-${SHELL_BUILD}`;
+/* Les versions de CETTE variante, et rien d'autre (21/09/2026, univers `/invest-next/`) : le préfixe
+   `stone-pwa-shell-invest-` est aussi le début de `stone-pwa-shell-invest-next-…`. Un simple `startsWith`
+   aurait fait purger le cache de `/invest-next/` par `/invest/` à chaque mise à jour. Le nom complet doit
+   donc être « préfixe + vNN + empreinte », pas seulement commencer par le préfixe. */
+const OWN_CACHE_RE = new RegExp('^' + VARIANT_PREFIX.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + 'v\\d+-[a-z0-9]+$');
 /* Ancien nom commun à toutes les variantes (jusqu'à v25) : chaque variante n'y retire que SES fichiers,
    et le dernier à partir supprime le cache vide. Aucune variante ne vide celui d'une autre. */
 const LEGACY_SHARED_CACHE = /^stone-pwa-shell-v\d+$/;
@@ -54,7 +59,7 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => Promise.all(keys.map((key) => {
-      if (key.startsWith(VARIANT_PREFIX) && key !== SHELL_CACHE) return caches.delete(key);
+      if (OWN_CACHE_RE.test(key) && key !== SHELL_CACHE) return caches.delete(key);
       if (LEGACY_SHARED_CACHE.test(key)) return releaseLegacy(key);
       return null;
     }))).then(() => self.clients.claim()),
@@ -71,8 +76,13 @@ self.addEventListener('fetch', (event) => {
 
   if (request.method !== 'GET' || url.origin !== self.location.origin) return;
 
+  /* Navigation : réseau d'abord. Hors réseau (21/09/2026, préparation Play Store), la COQUE précachée est
+     servie : l'application installée s'ouvre, dit elle-même « Connexion indisponible » et se relance dès que
+     le réseau revient. `offline.html` ne reste que le dernier repli, si le précache de l'index manquait.
+     Toujours aucune donnée financière : la coque ne contient rien, ce sont les moteurs qui exigent le réseau. */
   if (request.mode === 'navigate') {
-    event.respondWith(fetch(request).catch(() => caches.match('./offline.html')));
+    event.respondWith(fetch(request).catch(() => caches.match('./index.html')
+      .then((coque) => coque || caches.match('./offline.html'))));
     return;
   }
 

@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "STONE",
-  "short_name": "STONE",
-  "description": "La suite STONE (bêta) : Invest, Money et Estate dans une application installable.",
+  "name": "STONE Invest (nouveau)",
+  "short_name": "Invest next",
+  "description": "STONE Invest (nouveau) : la prochaine version de STONE Invest, sur son nouveau moteur.",
   "lang": "fr",
   "dir": "ltr",
   "start_url": "./?source=pwa",
@@ -66,7 +66,7 @@
       "name": "Portefeuille",
       "short_name": "Portefeuille",
       "description": "Ouvrir directement ton portefeuille",
-      "url": "./?u=invest&go=portfolio",
+      "url": "./?go=portfolio",
       "icons": [
         {
           "src": "icons/stone-192.png",
@@ -79,7 +79,7 @@
       "name": "Marché",
       "short_name": "Marché",
       "description": "Ouvrir directement le marché BRVM",
-      "url": "./?u=invest&go=market",
+      "url": "./?go=market",
       "icons": [
         {
           "src": "icons/stone-192.png",

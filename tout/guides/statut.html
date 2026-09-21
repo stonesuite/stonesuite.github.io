@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c1119">
+<link rel="icon" href="../icons/stone-192.png" type="image/png">
+<title>État du service · STONE Invest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;600&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;600&display=swap"></noscript>
+<style>
+:root{
+  --paper:#f4f1e9; --paper2:#eae4d7; --ink:#13161d; --ink2:#525a68; --line:#dad2c0;
+  --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;
+  --pos:#1c7a54; --neg:#a1402c;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="clair"]){
+  --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
+  --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347; --pos:#4cc593; --neg:#e2846f;}}
+:root[data-theme="nuit"]{
+  --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
+  --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347; --pos:#4cc593; --neg:#e2846f;}
+:root[data-theme="clair"]{
+  --paper:#f4f1e9; --paper2:#eae4d7; --ink:#13161d; --ink2:#525a68; --line:#dad2c0;
+  --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;
+  --pos:#1c7a54; --neg:#a1402c;
+}
+:root[data-theme="sable"]{--paper:#120d06;--paper2:#1c150a;--ink:#f3e9d6;--ink2:#b9a480;--line:#3c2c14;--card:#1a1309;--accent:#d8b273;--money:#e0c18a;--invest:#c9a567;--estate:#a88347;--pos:#4cc593;--neg:#e2846f}
+
+.theme-switch{display:inline-flex;align-items:center;gap:1px;padding:2px;border:1px solid var(--line);border-radius:999px;background:var(--paper2);margin-left:auto}
+.theme-choice{position:relative;display:grid;place-items:center;min-width:36px;min-height:36px;border-radius:999px;background:transparent;color:var(--ink2);border:0;padding:0;cursor:pointer}
+.theme-choice svg{width:15px;height:15px;display:block;transition:transform .5s cubic-bezier(.34,1.4,.5,1)}
+.theme-choice[aria-pressed="true"]{background:var(--card);color:var(--accent);box-shadow:0 1px 6px rgba(0,0,0,.18)}
+.theme-choice[aria-pressed="true"] svg{transform:rotate(360deg) scale(1.06)}
+.theme-choice:hover{color:var(--ink)}
+.theme-choice:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ctl-label{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  color:var(--ink);font-size:11px;font-weight:600;white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity .18s ease;z-index:20}
+.theme-choice:hover .ctl-label,.theme-choice:focus-visible .ctl-label{opacity:1}
+@media(prefers-reduced-motion:reduce){.theme-choice svg,.ctl-label{transition:none}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Nunito Sans",system-ui,sans-serif;font-size:17px;line-height:1.68}
+h1,h2,h3{font-family:"Sora",system-ui,sans-serif;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:.7em 0 0;max-width:38em}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+a{color:var(--accent)}
+.eyebrow{font-family:"Sora",system-ui,sans-serif;font-weight:700;letter-spacing:.3em;font-size:11px;color:var(--accent);text-transform:uppercase}
+code{font-family:"JetBrains Mono",monospace;font-size:.86em;background:var(--paper2);border-radius:4px;padding:.1em .4em}
+nav.family{background:var(--paper2);border-bottom:1px solid var(--line);font-size:12.5px}
+nav.family .row{display:flex;gap:18px;align-items:center;padding:11px 24px;max-width:760px;margin:0 auto}
+nav.family b{font-family:Sora,system-ui,sans-serif;letter-spacing:.3em;font-size:11px;color:var(--accent)}
+nav.family a{color:inherit;text-decoration:none;font-weight:800}
+header.hero{padding:56px 0 8px}
+header.hero h1{font-size:clamp(32px,6vw,46px);letter-spacing:-.02em;margin-top:14px}
+header.hero .updated{margin-top:14px;color:var(--ink2);font-size:14.5px}
+main{padding:44px 0 90px}
+section{padding-top:40px;border-top:1px solid var(--line);margin-top:40px}
+section:first-of-type{border-top:0;margin-top:0;padding-top:0}
+section h2{font-size:22px;letter-spacing:-.01em}
+section .lede{color:var(--ink2);margin-top:10px}
+ul.plain{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:14px}
+ul.plain li{padding-left:22px;position:relative}
+ul.plain li::before{content:"•";position:absolute;left:0;color:var(--accent);font-weight:700}
+.card{margin-top:18px;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:18px 20px}
+.card h3{font-size:14px;letter-spacing:.02em}
+.card p{color:var(--ink2);font-size:15px}
+.tablewrap{overflow-x:auto}
+table.scopes{width:100%;min-width:560px;border-collapse:collapse;margin-top:18px;font-size:14.5px}
+table.scopes th{text-align:left;font-family:Sora,system-ui,sans-serif;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink2);padding:9px 10px;border-bottom:1px solid var(--line)}
+table.scopes td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink2)}
+table.scopes td.app{color:var(--ink);font-weight:700;font-family:Sora,system-ui,sans-serif;white-space:nowrap}
+table.scopes td:last-child,table.scopes th:last-child{width:44%}
+.contact{margin-top:18px;border:1px dashed var(--line);border-radius:14px;padding:18px 20px;background:var(--paper2)}
+.contact .tag{font-family:Sora,system-ui,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--neg)}
+/* Bloc renseigne : trait plein, plus l'encadre en pointilles d'une mention
+   manquante. */
+.contact.is-set{border-style:solid}
+.contact .who{margin:0;font-family:Sora,system-ui,sans-serif;font-size:17px;font-weight:700;letter-spacing:.01em}
+.contact .what{margin:4px 0 0;color:var(--ink2);font-size:14px}
+.contact .how{margin:14px 0 0;font-size:14.5px;line-height:1.6}
+.contact .how a{font-family:Sora,system-ui,sans-serif;font-weight:700;white-space:nowrap}
+.contact .note{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);color:var(--ink2);font-size:13px;line-height:1.6}
+.foot{margin-top:56px;padding-top:24px;border-top:1px solid var(--line);color:var(--ink2);font-size:13.5px}
+@media(max-width:560px){header.hero{padding:36px 0 4px}main{padding:32px 0 70px}}
+.status{display:flex;align-items:center;gap:12px;margin-top:18px;padding:16px 18px;border:1px solid var(--line);border-radius:14px;background:var(--card);font-family:Sora,system-ui,sans-serif;font-weight:700;font-size:16px}
+.status .dot{width:12px;height:12px;border-radius:50%;background:var(--ink2);flex:0 0 auto}
+.status.is-up .dot{background:var(--pos)}.status.is-down .dot{background:var(--neg)}
+.status.is-wait .dot{animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.status.is-wait .dot{animation:none}}
+.again{min-height:44px;padding:0 18px;border:1px solid var(--line);border-radius:10px;background:var(--paper2);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+.again:hover,.again:focus-visible{border-color:var(--accent);color:var(--accent)}
+</style>
+</head>
+<body>
+<nav class="family"><div class="row"><b><span style="display:inline-flex;vertical-align:-1px"><svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 2 L14.55 7.39 H9.45 Z" fill="currentColor"/><path d="M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z" fill="currentColor"/><path d="M5.55 15.61 H18.45 L21 21 H3 Z" fill="currentColor"/></svg></span> STONE INVEST</b><a href="../">&#8592; Ouvrir l&#8217;application</a><div class="theme-switch" role="group" aria-label="Apparence"><button type="button" class="theme-choice" data-theme-choice="clair" aria-pressed="false" aria-label="Apparence claire" title="Clair"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6"/></svg><span class="ctl-label">Clair</span></button><button type="button" class="theme-choice" data-theme-choice="nuit" aria-pressed="false" aria-label="Apparence nuit" title="Nuit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M20 14.2A8.4 8.4 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2Z"/></svg><span class="ctl-label">Nuit</span></button><button type="button" class="theme-choice" data-theme-choice="sable" aria-pressed="false" aria-label="Apparence sable" title="Sable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 4 20 19H4Z"/><path d="M8.6 13.4h6.8"/></svg><span class="ctl-label">Sable</span></button></div></div></nav>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">État du service · Invest</p>
+    <h1>Est-ce que ça répond ?</h1>
+    <p class="updated">Cette page interroge en direct le moteur de marché de STONE (la source publique des dividendes et des cours) et dit s'il répond. Elle ne stocke rien : aucun cookie, aucun compte, aucun historique.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Moteur de marché</h2>
+      <div class="status" id="statut" role="status" aria-live="polite">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="txt">Vérification en cours…</span>
+      </div>
+      <p class="lede">« En ligne » veut dire que la route publique répond avec des données datées. « Injoignable » veut dire que la route ne répond pas ou répond en erreur : l'application peut alors afficher des cours de la dernière séance connue, et le dit à l'écran.</p>
+      <p><button type="button" class="again" id="again">Vérifier à nouveau</button></p>
+    </section>
+
+    <section>
+      <h2>Ce que cette page ne dit pas</h2>
+      <ul class="plain">
+        <li>Si Google Apps Script, qui exécute l'application, est ralenti : un premier démarrage peut prendre jusqu'à deux minutes, ensuite c'est beaucoup plus rapide.</li>
+        <li>Si la BRVM a publié la séance du jour : la date affichée est celle des données que le moteur détient, pas celle de la dernière séance de bourse.</li>
+        <li>Si ton propre classeur est joignable : cela dépend de ton compte Google, pas de STONE.</li>
+      </ul>
+      <p class="foot">Un problème qui dure ? Écris à <a href="mailto:contact.stonedev@gmail.com">contact.stonedev@gmail.com</a>. Voir aussi la <a href="confidentialite.html">politique de confidentialité</a> et les <a href="conditions-invest.html">conditions d'utilisation</a>.</p>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  /* Route publique LEDGE (lecture seule, cache de six heures côté serveur, jamais d'exception). Le JSON porte
+     `ok` et `generatedAt` (AAAA-MM-JJ). Rien n'est écrit dans le navigateur. */
+  var ROUTE="https://script.google.com/macros/s/AKfycbxnezcY4X7YzwfLy9UcwrSB2-Va2al945lpRVlotqMqfz_64vL2crtqCkf3z4oJlx9M/exec?route=dividends";
+  var boite=document.getElementById("statut");
+  var texte=boite.querySelector(".txt");
+  function dateFr(iso){
+    var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso||""));
+    return m?m[3]+"/"+m[2]+"/"+m[1]:"";
+  }
+  function montrer(etat,phrase){
+    boite.className="status is-"+etat;
+    texte.textContent=phrase;
+  }
+  function verifier(){
+    montrer("wait","Vérification en cours…");
+    var garde=setTimeout(function(){montrer("down","Moteur de marché : injoignable (pas de réponse en 25 secondes)")},25000);
+    fetch(ROUTE,{cache:"no-store",credentials:"omit"}).then(function(r){
+      if(!r.ok)throw new Error("HTTP "+r.status);
+      return r.json();
+    }).then(function(j){
+      clearTimeout(garde);
+      var quand=dateFr(j&&j.generatedAt);
+      if(j&&j.ok===true&&quand)montrer("up","Moteur de marché : en ligne (données du "+quand+")");
+      else montrer("down","Moteur de marché : injoignable (réponse sans données)");
+    }).catch(function(){
+      clearTimeout(garde);
+      montrer("down","Moteur de marché : injoignable");
+    });
+  }
+  document.getElementById("again").addEventListener("click",verifier);
+  verifier();
+})();
+</script>
+
+<script>
+(function(){
+  var THEMES=["clair","nuit","sable"];
+  var KEY="STONE_GUIDE_THEME";
+  var buttons=document.querySelectorAll("[data-theme-choice]");
+  function apply(theme,persist){
+    if(THEMES.indexOf(theme)===-1)theme="";
+    if(theme)document.documentElement.setAttribute("data-theme",theme);
+    else document.documentElement.removeAttribute("data-theme");
+    buttons.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.themeChoice===theme))});
+    if(persist){try{if(theme)localStorage.setItem(KEY,theme);else localStorage.removeItem(KEY)}catch(e){}}
+  }
+  buttons.forEach(function(b){b.addEventListener("click",function(){apply(b.dataset.themeChoice,true)})});
+  var saved="";try{saved=localStorage.getItem(KEY)||""}catch(e){}
+  apply(saved,false);
+})();
+</script>
+</body>
+</html>

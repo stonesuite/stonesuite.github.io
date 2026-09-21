@@ -332,8 +332,17 @@
   "use strict";
 
   /* ---- Constantes du contrat PWA (identiques côté moteurs) ---- */
-  var FRAME_READY_TIMEOUT_MS = 90000;
+  /* 150 s (21/09/2026, audit maturité 1.3) : des démarrages à froid de 100 s sont journalisés ; à 90 s la coque
+     disait « n'a pas pu s'ouvrir » alors que l'application allait s'ouvrir. Passé 20 s, le panneau d'attente
+     prévient que le premier démarrage peut prendre jusqu'à deux minutes. */
+  var FRAME_READY_TIMEOUT_MS = 150000;
+  var FRAME_WAIT_HINT_MS = 20000;
+  var FRAME_WAIT_HINT = "Premier démarrage : jusqu’à deux minutes, ensuite c’est beaucoup plus rapide.";
   var ENGINE_ORIGIN_RE = /^https:\/\/(?:[a-z0-9-]+-)?script\.googleusercontent\.com$/i;
+  /* Une adresse de moteur n'est utilisable que sous cette forme : un marqueur de fabrication non remplacé
+     (`__EXEC_URL_NEXT__` de l'univers /invest-next/) ou une adresse vide mènent à l'écran « Configuration
+     requise », jamais à une exception. */
+  var ENGINE_URL_RE = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec/;
 
   /* Instances (bêta / perso) publiées sur la même origine : chaque instance a
      son propre espace de stockage local pour éviter toute collision. */
@@ -352,8 +361,30 @@
     if (/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec/.test(override)) return override;
     return u.url;
   }
+  function engineUrl(u) {
+    var url = String(effectiveUrl(u) || "");
+    return ENGINE_URL_RE.test(url) ? url : "";
+  }
 
   var UNIVERSES = Array.isArray(window.STONE_PWA_UNIVERSES) ? window.STONE_PWA_UNIVERSES : [];
+
+  /* ---- Bouton ⚙ « Réglages des univers » (21/09/2026, audit maturité 1.4) ----
+     Coller une adresse Apps Script est un geste de développeur : ce ne doit pas être le premier bouton qu'un
+     inconnu voit. Le bouton n'apparaît que si l'adresse porte `?dev=1`, si cet appareil a déjà enregistré un
+     réglage, ou si un univers ouvert n'a pas d'adresse utilisable (coque personnelle : il faut bien la saisir).
+     Fonction pure, testée telle quelle par le banc. Le panneau lui-même reste joignable par « Ouvrir les
+     réglages » de l'écran « Configuration requise ». */
+  function settingsVisible(search, overrides, universes) {
+    var dev = false;
+    try { dev = new URLSearchParams(search || "").get("dev") === "1"; } catch (e) { dev = /[?&]dev=1(&|$)/.test(String(search || "")); }
+    if (dev) return true;
+    var o = overrides || {};
+    for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k) && String(o[k] || "").trim()) return true;
+    return (universes || []).some(function (u) {
+      var adresse = String(o[u.key] || "").trim() || String(u.url || "").trim();
+      return u.enabled === true && !ENGINE_URL_RE.test(adresse);
+    });
+  }
 
   /* ---- Mode d'accueil (19/09/2026, audit section 3 « Coque Invest seul ») ----
      `index.html` est STRICTEMENT identique dans les quatre variantes du site : c'est donc le registre,
@@ -391,8 +422,11 @@
   }
 
   function framedUrl(u, nonce) {
-    var url = new URL(effectiveUrl(u));
+    var url = new URL(engineUrl(u));
     if (u.query) Object.keys(u.query).forEach(function (k) { url.searchParams.set(k, u.query[k]); });
+    /* Raccourci du manifeste (`?go=portfolio`, `?go=market`, 21/09/2026) : transmis tel quel au moteur de
+       l'univers demandé au lancement, qui l'ignore s'il ne le connaît pas. Jamais à un autre univers. */
+    if (GO_TARGET && u.key === GO_UNIVERSE) url.searchParams.set("go", GO_TARGET);
     url.searchParams.set("pwa", "1");
     url.searchParams.set("pwa_origin", window.location.origin);
     url.searchParams.set("pwa_nonce", nonce);
@@ -413,7 +447,17 @@
         '<p class="eyebrow">Connexion sécurisée</p>' +
         "<h1>Ouverture de STONE " + u.label + "</h1>" +
         "<p>Connexion à ton espace " + u.label + "…</p>" +
+        '<p data-wait-hint hidden></p>' +
         '<div class="loading-line" aria-hidden="true"><span></span></div></section>';
+    } else if (kind === "offline") {
+      /* Hors réseau (21/09/2026) : la coque précachée s'ouvre quand même ; l'univers, lui, exige le réseau.
+         Le panneau se retire tout seul au retour de la connexion (écouteur `online` plus bas). */
+      el.setAttribute("role", "status");
+      el.innerHTML =
+        '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
+        "<h1>Connexion indisponible</h1>" +
+        "<p>STONE " + u.label + " a besoin d’une connexion pour afficher tes données. Aucune donnée financière n’est servie depuis le cache : dès que le réseau revient, " + u.label + " s’ouvre tout seul.</p>" +
+        '<button class="primary-button" type="button" data-retry="' + u.key + '">Réessayer</button></section>';
     } else if (kind === "error") {
       el.setAttribute("role", "alert");
       el.innerHTML =
@@ -466,8 +510,9 @@
     return el;
   }
 
+  var PANELS = ["loadingPanel", "errorPanel", "disabledPanel", "offlinePanel"];
   function setPanelVisible(state, kind) {
-    ["loadingPanel", "errorPanel", "disabledPanel"].forEach(function (name) {
+    PANELS.forEach(function (name) {
       if (state[name]) state[name].classList.toggle("is-visible", name === kind);
     });
   }
@@ -481,11 +526,14 @@
       trustedSource: null,
       trustedOrigin: "",
       timeoutId: null,
+      hintId: null,
+      offline: false,
       startedAt: 0,
       iframe: null,
       loadingPanel: panel(u, "loading"),
       errorPanel: panel(u, "error"),
-      disabledPanel: null
+      disabledPanel: null,
+      offlinePanel: null
     };
     frames[u.key] = state;
     startFrame(state);
@@ -494,19 +542,36 @@
 
   function startFrame(state) {
     var u = state.universe;
-    state.nonce = makeNonce();
+    if (state.timeoutId) { clearTimeout(state.timeoutId); state.timeoutId = null; }
+    if (state.hintId) { clearTimeout(state.hintId); state.hintId = null; }
+    if (state.iframe) { stage.removeChild(state.iframe); state.iframe = null; }
     state.loaded = false;
+    /* Hors réseau : aucun iframe, aucun compte à rebours vers « n'a pas pu s'ouvrir ». On attend le réseau. */
+    if (navigator.onLine === false) {
+      state.offline = true;
+      if (!state.offlinePanel) state.offlinePanel = panel(u, "offline");
+      setPanelVisible(state, "offlinePanel");
+      syncVisibility();
+      return;
+    }
+    state.offline = false;
+    state.nonce = makeNonce();
     state.trustedSource = null;
     state.trustedOrigin = "";
     state.startedAt = performance.now();
-    if (state.timeoutId) clearTimeout(state.timeoutId);
+    var hint = state.loadingPanel && state.loadingPanel.querySelector("[data-wait-hint]");
+    if (hint) { hint.hidden = true; hint.textContent = ""; }
+    state.hintId = setTimeout(function () {
+      if (state.loaded || !hint) return;
+      hint.textContent = FRAME_WAIT_HINT;
+      hint.hidden = false;
+    }, FRAME_WAIT_HINT_MS);
     state.timeoutId = setTimeout(function () {
       if (state.loaded) return;
       if (state.errorPanel) state.errorPanel.dataset.shown = "1";
       syncVisibility();
     }, FRAME_READY_TIMEOUT_MS);
 
-    if (state.iframe) { stage.removeChild(state.iframe); state.iframe = null; }
     var iframe = document.createElement("iframe");
     iframe.title = "STONE " + u.label;
     iframe.referrerPolicy = "origin";
@@ -520,14 +585,14 @@
   }
 
   function mountDisabled(u) {
-    var state = { universe: u, disabledPanel: panel(u, "disabled"), loadingPanel: null, errorPanel: null, iframe: null, loaded: false };
+    var state = { universe: u, disabledPanel: panel(u, "disabled"), loadingPanel: null, errorPanel: null, offlinePanel: null, iframe: null, loaded: false };
     frames[u.key] = state;
     setPanelVisible(state, "disabledPanel");
     return state;
   }
 
   function mountConfigure(u) {
-    var state = { universe: u, disabledPanel: panel(u, "configure"), loadingPanel: null, errorPanel: null, iframe: null, loaded: false };
+    var state = { universe: u, disabledPanel: panel(u, "configure"), loadingPanel: null, errorPanel: null, offlinePanel: null, iframe: null, loaded: false };
     frames[u.key] = state;
     setPanelVisible(state, "disabledPanel");
     return state;
@@ -539,14 +604,23 @@
     for (var key in frames) {
       var state = frames[key];
       if (state.timeoutId) clearTimeout(state.timeoutId);
+      if (state.hintId) clearTimeout(state.hintId);
       if (state.iframe) stage.removeChild(state.iframe);
-      ["loadingPanel", "errorPanel", "disabledPanel"].forEach(function (name) {
+      PANELS.forEach(function (name) {
         if (state[name]) stage.removeChild(state[name]);
       });
     }
     frames = {};
     if (activeKey) activate(activeKey, false);
   }
+
+  /* Le réseau revient : chaque univers resté en attente hors ligne repart de lui-même. */
+  window.addEventListener("online", function () {
+    for (var key in frames) {
+      var state = frames[key];
+      if (state && state.offline && state.loadingPanel) startFrame(state);
+    }
+  });
 
   /* ---- Handshake : CHALLENGE (moteur) → ACK (coque) → READY (moteur) ---- */
   window.addEventListener("message", function (event) {
@@ -566,6 +640,7 @@
       if (data.type === prefix + "_READY") {
         if (event.source !== state.trustedSource || event.origin !== state.trustedOrigin) return;
         if (state.timeoutId) { clearTimeout(state.timeoutId); state.timeoutId = null; }
+        if (state.hintId) { clearTimeout(state.hintId); state.hintId = null; }
         state.loaded = true;
         setPanelVisible(state, "");
         if (state.iframe) state.iframe.classList.add("is-visible");
@@ -589,11 +664,12 @@
       var state = frames[key];
       var isActive = key === activeKey;
       if (state.iframe) state.iframe.classList.toggle("is-visible", isActive && state.loaded);
-      ["loadingPanel", "errorPanel", "disabledPanel"].forEach(function (name) {
+      PANELS.forEach(function (name) {
         if (state[name] && !isActive) state[name].classList.remove("is-visible");
       });
       if (isActive && !state.loaded) {
         if (state.disabledPanel) setPanelVisible(state, "disabledPanel");
+        else if (state.offline && state.offlinePanel) setPanelVisible(state, "offlinePanel");
         else if (state.errorPanel && state.errorPanel.dataset.shown === "1") setPanelVisible(state, "errorPanel");
         else if (state.loadingPanel) setPanelVisible(state, "loadingPanel");
       }
@@ -746,7 +822,7 @@
     ["money", "invest", "estate"].forEach(function (key) {
       if (wealthMounted[key]) return;
       var u = universe(key);
-      if (!u || !u.enabled || !effectiveUrl(u)) return;
+      if (!u || !u.enabled || !engineUrl(u)) return;
       wealthMounted[key] = true;
       var state = frames[key];
       if (!state) state = mountUniverse(u);
@@ -782,7 +858,9 @@
       "<h1>STONE " + u.label + "</h1>" +
       '<p class="home-hint">' + u.tagline + ".</p>" +
       '<div class="home-rows">' + homeRow(u) + "</div>" +
-      '<p class="home-guides"><a href="guides/' + u.key + '.html">Le guide ' + u.label + "</a></p>" +
+      '<p class="home-guides"><a href="guides/' + u.key + '.html">Le guide ' + u.label + "</a> " +
+      '<a href="guides/confidentialite.html">Confidentialité</a> ' +
+      '<a href="guides/conditions-' + u.key + '.html">Conditions</a></p>' +
       '<p class="home-trust">Tes chiffres restent dans ton espace privé. STONE ne les conserve jamais.</p>' +
       "</section>";
   }
@@ -830,7 +908,8 @@
         '<div class="home-rows">' + ["money", "invest", "estate"].map(function (key) {
           return homeRow(byKey[key]);
         }).join("") + "</div>" +
-        '<p class="home-guides"><a href="guides/">Découvrir la suite · les guides</a></p>' +
+        '<p class="home-guides"><a href="guides/">Découvrir la suite · les guides</a> ' +
+        '<a href="guides/confidentialite.html">Confidentialité</a></p>' +
         '<p class="home-trust">Tes chiffres restent dans ton espace privé. STONE ne les conserve jamais.</p>' +
         (others.length
           ? '<p style="margin-top:16px">' + others.map(function (u) {
@@ -1006,7 +1085,7 @@
     });
     if (!frames[key]) {
       if (!u.enabled) mountDisabled(u);
-      else if (effectiveUrl(u)) mountUniverse(u);
+      else if (engineUrl(u)) mountUniverse(u);
       else mountConfigure(u);
     }
     syncVisibility();
@@ -1077,8 +1156,8 @@
       /* Consentement Google impossible en iframe : ouvrir le moteur en direct
          (sans paramètres pwa), l'utilisateur accepte, puis réessaie ici. */
       var au = universe(authorize.dataset.authorize);
-      if (au) {
-        var direct = new URL(effectiveUrl(au));
+      if (au && engineUrl(au)) {
+        var direct = new URL(engineUrl(au));
         if (au.query) Object.keys(au.query).forEach(function (k) { direct.searchParams.set(k, au.query[k]); });
         window.open(direct.toString(), "_blank", "noopener");
       }
@@ -1136,6 +1215,7 @@
   settingsButton.setAttribute("aria-haspopup", "dialog");
   settingsButton.setAttribute("aria-expanded", "false");
   settingsButton.addEventListener("click", openSettings);
+  settingsButton.hidden = !settingsVisible(window.location.search, readOverrides(), UNIVERSES);
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape" && settingsSheet.classList.contains("is-open")) {
       event.preventDefault();
@@ -1262,6 +1342,14 @@
   function bootTarget(href) {
     try { return new URL(href).searchParams.get("u") || ""; } catch (e) { return ""; }
   }
+  /* Raccourci du manifeste (`?go=portfolio` / `?go=market`, 21/09/2026) : un mot simple, transmis au moteur
+     de l'univers ouvert au lancement. Sur une coque à un seul univers, `?go=` suffit à l'ouvrir. */
+  function bootGo(href) {
+    try {
+      var go = String(new URL(href).searchParams.get("go") || "").toLowerCase();
+      return /^[a-z][a-z0-9_-]{0,31}$/.test(go) ? go : "";
+    } catch (e) { return ""; }
+  }
   /* Purge unique de l'ancienne clé v8 : les coques déjà installées ne doivent
      pas garder de résidu orphelin sur l'appareil. */
   try { localStorage.removeItem("STONE_PWA_LAST_UNIVERSE::" + INSTANCE); } catch (e) {}
@@ -1274,6 +1362,9 @@
     setTimeout(function () { tourStart(); }, 420);
   });
   var requested = bootTarget(window.location.href);
+  var GO_TARGET = bootGo(window.location.href);
+  if (GO_TARGET && !requested && MODE_ACCUEIL === "solo") requested = UNIVERSES[0].key;
+  var GO_UNIVERSE = universe(requested) ? requested : "";
   if (universe(requested)) activate(requested, false);
   else showHome();
 })();

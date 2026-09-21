@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c1119">
+<link rel="icon" href="../icons/stone-192.png" type="image/png">
+<title>Conditions d'utilisation · STONE Invest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;600&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=JetBrains+Mono:wght@400;600&display=swap"></noscript>
+<style>
+:root{
+  --paper:#f4f1e9; --paper2:#eae4d7; --ink:#13161d; --ink2:#525a68; --line:#dad2c0;
+  --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;
+  --pos:#1c7a54; --neg:#a1402c;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="clair"]){
+  --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
+  --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347; --pos:#4cc593; --neg:#e2846f;}}
+:root[data-theme="nuit"]{
+  --paper:#090d15; --paper2:#0f1521; --ink:#eef1f7; --ink2:#98a3b6; --line:#212b3e;
+  --card:#111823; --accent:#d8b273; --money:#e0c18a; --invest:#c9a567; --estate:#a88347; --pos:#4cc593; --neg:#e2846f;}
+:root[data-theme="clair"]{
+  --paper:#f4f1e9; --paper2:#eae4d7; --ink:#13161d; --ink2:#525a68; --line:#dad2c0;
+  --card:#fffdf7; --accent:#8a6526; --money:#c8a05a; --invest:#a8823f; --estate:#7a5b2a;
+  --pos:#1c7a54; --neg:#a1402c;
+}
+:root[data-theme="sable"]{--paper:#120d06;--paper2:#1c150a;--ink:#f3e9d6;--ink2:#b9a480;--line:#3c2c14;--card:#1a1309;--accent:#d8b273;--money:#e0c18a;--invest:#c9a567;--estate:#a88347;--pos:#4cc593;--neg:#e2846f}
+
+.theme-switch{display:inline-flex;align-items:center;gap:1px;padding:2px;border:1px solid var(--line);border-radius:999px;background:var(--paper2);margin-left:auto}
+.theme-choice{position:relative;display:grid;place-items:center;min-width:36px;min-height:36px;border-radius:999px;background:transparent;color:var(--ink2);border:0;padding:0;cursor:pointer}
+.theme-choice svg{width:15px;height:15px;display:block;transition:transform .5s cubic-bezier(.34,1.4,.5,1)}
+.theme-choice[aria-pressed="true"]{background:var(--card);color:var(--accent);box-shadow:0 1px 6px rgba(0,0,0,.18)}
+.theme-choice[aria-pressed="true"] svg{transform:rotate(360deg) scale(1.06)}
+.theme-choice:hover{color:var(--ink)}
+.theme-choice:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ctl-label{position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  color:var(--ink);font-size:11px;font-weight:600;white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity .18s ease;z-index:20}
+.theme-choice:hover .ctl-label,.theme-choice:focus-visible .ctl-label{opacity:1}
+@media(prefers-reduced-motion:reduce){.theme-choice svg,.ctl-label{transition:none}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Nunito Sans",system-ui,sans-serif;font-size:17px;line-height:1.68}
+h1,h2,h3{font-family:"Sora",system-ui,sans-serif;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:.7em 0 0;max-width:38em}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+a{color:var(--accent)}
+.eyebrow{font-family:"Sora",system-ui,sans-serif;font-weight:700;letter-spacing:.3em;font-size:11px;color:var(--accent);text-transform:uppercase}
+code{font-family:"JetBrains Mono",monospace;font-size:.86em;background:var(--paper2);border-radius:4px;padding:.1em .4em}
+nav.family{background:var(--paper2);border-bottom:1px solid var(--line);font-size:12.5px}
+nav.family .row{display:flex;gap:18px;align-items:center;padding:11px 24px;max-width:760px;margin:0 auto}
+nav.family b{font-family:Sora,system-ui,sans-serif;letter-spacing:.3em;font-size:11px;color:var(--accent)}
+nav.family a{color:inherit;text-decoration:none;font-weight:800}
+header.hero{padding:56px 0 8px}
+header.hero h1{font-size:clamp(32px,6vw,46px);letter-spacing:-.02em;margin-top:14px}
+header.hero .updated{margin-top:14px;color:var(--ink2);font-size:14.5px}
+main{padding:44px 0 90px}
+section{padding-top:40px;border-top:1px solid var(--line);margin-top:40px}
+section:first-of-type{border-top:0;margin-top:0;padding-top:0}
+section h2{font-size:22px;letter-spacing:-.01em}
+section .lede{color:var(--ink2);margin-top:10px}
+ul.plain{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:14px}
+ul.plain li{padding-left:22px;position:relative}
+ul.plain li::before{content:"•";position:absolute;left:0;color:var(--accent);font-weight:700}
+.card{margin-top:18px;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:18px 20px}
+.card h3{font-size:14px;letter-spacing:.02em}
+.card p{color:var(--ink2);font-size:15px}
+.tablewrap{overflow-x:auto}
+table.scopes{width:100%;min-width:560px;border-collapse:collapse;margin-top:18px;font-size:14.5px}
+table.scopes th{text-align:left;font-family:Sora,system-ui,sans-serif;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink2);padding:9px 10px;border-bottom:1px solid var(--line)}
+table.scopes td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink2)}
+table.scopes td.app{color:var(--ink);font-weight:700;font-family:Sora,system-ui,sans-serif;white-space:nowrap}
+table.scopes td:last-child,table.scopes th:last-child{width:44%}
+.contact{margin-top:18px;border:1px dashed var(--line);border-radius:14px;padding:18px 20px;background:var(--paper2)}
+.contact .tag{font-family:Sora,system-ui,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--neg)}
+/* Bloc renseigne : trait plein, plus l'encadre en pointilles d'une mention
+   manquante. */
+.contact.is-set{border-style:solid}
+.contact .who{margin:0;font-family:Sora,system-ui,sans-serif;font-size:17px;font-weight:700;letter-spacing:.01em}
+.contact .what{margin:4px 0 0;color:var(--ink2);font-size:14px}
+.contact .how{margin:14px 0 0;font-size:14.5px;line-height:1.6}
+.contact .how a{font-family:Sora,system-ui,sans-serif;font-weight:700;white-space:nowrap}
+.contact .note{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);color:var(--ink2);font-size:13px;line-height:1.6}
+.foot{margin-top:56px;padding-top:24px;border-top:1px solid var(--line);color:var(--ink2);font-size:13.5px}
+@media(max-width:560px){header.hero{padding:36px 0 4px}main{padding:32px 0 70px}}
+.draft{margin-top:22px;padding:14px 16px;border:1px solid var(--neg);border-radius:12px;background:var(--paper2);color:var(--ink);font-size:14.5px;line-height:1.55}
+.draft .tag{display:inline-block;margin-right:8px;padding:2px 8px;border-radius:999px;background:var(--neg);color:#fff;font-family:Sora,system-ui,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+</style>
+</head>
+<body>
+<nav class="family"><div class="row"><b><span style="display:inline-flex;vertical-align:-1px"><svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 2 L14.55 7.39 H9.45 Z" fill="currentColor"/><path d="M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z" fill="currentColor"/><path d="M5.55 15.61 H18.45 L21 21 H3 Z" fill="currentColor"/></svg></span> STONE INVEST</b><a href="../">&#8592; Ouvrir l&#8217;application</a><div class="theme-switch" role="group" aria-label="Apparence"><button type="button" class="theme-choice" data-theme-choice="clair" aria-pressed="false" aria-label="Apparence claire" title="Clair"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4 17 7M7 17l-1.6 1.6"/></svg><span class="ctl-label">Clair</span></button><button type="button" class="theme-choice" data-theme-choice="nuit" aria-pressed="false" aria-label="Apparence nuit" title="Nuit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M20 14.2A8.4 8.4 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2Z"/></svg><span class="ctl-label">Nuit</span></button><button type="button" class="theme-choice" data-theme-choice="sable" aria-pressed="false" aria-label="Apparence sable" title="Sable"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 4 20 19H4Z"/><path d="M8.6 13.4h6.8"/></svg><span class="ctl-label">Sable</span></button></div></div></nav>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Conditions d'utilisation · Invest</p>
+    <h1>Un outil de suivi, jamais un conseil.</h1>
+    <p class="updated">Version du 21 septembre 2026. Ces conditions s'appliquent à STONE Invest, l'application de suivi de portefeuille BRVM de la suite STONE, en version bêta.</p>
+    <div class="draft" role="note"><span class="tag">Projet</span> Projet de conditions, à faire relire par un juriste avant toute offre payante. Tant que le service est gratuit et en bêta, ce texte dit ce que STONE fait et ne fait pas ; il ne remplace pas une relecture professionnelle.</div>
+  </header>
+
+  <main>
+    <section>
+      <h2>1. Ce que tu acceptes</h2>
+      <p class="lede">En ouvrant STONE Invest avec ton compte Google, tu acceptes ces conditions et la <a href="confidentialite.html">politique de confidentialité</a>. Si tu ne les acceptes pas, n'utilise pas le service : il n'y a rien à résilier, il suffit de ne plus l'ouvrir et, si tu veux, de supprimer ton espace.</p>
+      <ul class="plain">
+        <li>Tu dois avoir 18 ans révolus et être la personne qui utilise le compte Google connecté.</li>
+        <li>Tu es responsable de ce que tu saisis : une opération, un prix, une quantité mal notés donnent un résultat faux, sans que STONE puisse le savoir.</li>
+        <li>Un seul compte Google par personne ; le partage d'un portefeuille à un proche passe par la fonction prévue, pas par le prêt de ton compte.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. Un service en bêta</h2>
+      <p class="lede">STONE Invest est un service en cours de construction, ouvert à un petit nombre de personnes pour être éprouvé. Il peut changer, s'interrompre ou se tromper, et il est livré tel quel.</p>
+      <ul class="plain">
+        <li>Des fonctions peuvent apparaître, changer ou disparaître d'une version à l'autre ; la date en haut de cette page et celle du guide suivent ces changements.</li>
+        <li>Le service peut être indisponible sans préavis : maintenance, panne du fournisseur (Google Apps Script, GitHub), source de cours injoignable. La <a href="statut.html">page d'état du service</a> dit si le moteur de marché répond.</li>
+        <li>Nous pouvons suspendre ou fermer le service, ou ton accès, à tout moment, notamment en cas d'usage abusif (tentative de lire les données d'autrui, charge anormale, contournement des règles). Tes données restent dans ton Drive : une fermeture ne t'en prive pas.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Ce que STONE Invest fait, et ne fait pas</h2>
+      <p class="lede">STONE Invest est un outil de suivi et d'information : il note tes opérations, calcule ta performance réelle (frais et dividendes compris) et affiche des faits de marché. Il n'est ni une société de gestion, ni un intermédiaire, ni un conseiller.</p>
+      <ul class="plain">
+        <li><strong>Jamais un conseil en investissement.</strong> Aucun écran, aucune phrase, aucune lecture assistée par IA ne te dit quoi acheter ou vendre. Les repères affichés (« À observer », zones, moyennes, comparaisons, simulations, machine à remonter le temps) sont des calculs sur des cours passés ; ils ne prévoient rien et n'engagent à rien. Toute décision d'investissement est la tienne, et tu en portes seul le résultat.</li>
+        <li><strong>Aucune transaction n'est passée.</strong> STONE ne se connecte à aucun compte titres, à aucune banque, à aucune société de bourse. Il ne déplace pas d'argent et ne transmet aucun ordre. « Acheter pour de vrai » n'ouvre qu'une fiche de saisie : c'est toi qui passes l'ordre auprès de ta société de bourse, puis le notes.</li>
+        <li><strong>Tes données sont chez toi.</strong> Tout est écrit dans un classeur Google Sheets de ton propre Drive ; STONE n'en détient aucune copie. Tu peux les exporter, les corriger et les supprimer toi-même, comme l'explique la politique de confidentialité.</li>
+        <li><strong>Des cours issus de sources publiques.</strong> Les cours, indices et dividendes affichés viennent de la cote officielle de la BRVM et de relais publics de cette cote. Ils peuvent être erronés, incomplets ou en retard, et n'ont aucune valeur contractuelle : la seule référence est ton relevé de compte titres et les publications officielles de la BRVM.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. Gratuité pendant la bêta</h2>
+      <p class="lede">STONE Invest est gratuit pendant la bêta. Aucun paiement, aucun abonnement, aucune publicité. Si une offre payante voit le jour, elle sera proposée séparément, avec ses propres conditions, et rien ne te sera facturé sans ton accord explicite.</p>
+    </section>
+
+    <section>
+      <h2>5. Ce que tu t'engages à ne pas faire</h2>
+      <ul class="plain">
+        <li>Tenter d'accéder aux données d'une autre personne, de contourner l'identification ou le partage en lecture seule.</li>
+        <li>Solliciter le service de manière anormale (automatisation, envois massifs de documents à la lecture assistée), ou l'utiliser pour un usage illicite.</li>
+        <li>Copier, revendre ou présenter le service, son nom ou ses écrans comme les tiens.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>6. Responsabilité</h2>
+      <p class="lede">Le service est fourni gratuitement, en l'état, pendant sa mise au point. Dans la limite de ce que la loi permet, la responsabilité de STONE est limitée aux fautes prouvées de sa part.</p>
+      <ul class="plain">
+        <li>STONE ne répond pas des pertes ou manques à gagner liés à une décision d'investissement, même prise après avoir consulté l'application.</li>
+        <li>STONE ne répond pas d'un cours faux ou en retard venant d'une source publique, d'une saisie erronée de ta part, ni d'une indisponibilité de Google, de GitHub ou d'Anthropic.</li>
+        <li>STONE ne répond pas d'une perte de données causée par la suppression de ton classeur, de ton compte Google ou de tes autorisations : ces gestes sont les tiens, et le classeur est le tien.</li>
+        <li>En cas de faute prouvée de STONE, la réparation ne peut pas dépasser ce que tu as payé pour le service au cours des douze derniers mois, soit rien pendant la bêta.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>7. Propriété</h2>
+      <p class="lede">Le nom STONE, la pyramide, les écrans et le code de l'application appartiennent à Stone Dev Corp. Tes données t'appartiennent entièrement ; STONE n'acquiert aucun droit dessus et ne les utilise pour rien d'autre que t'afficher ton portefeuille.</p>
+    </section>
+
+    <section>
+      <h2>8. Changements de ces conditions</h2>
+      <p class="lede">Ces conditions peuvent évoluer avec le service. La version en vigueur est celle publiée ici, avec sa date. Un changement important est annoncé dans l'application avant de s'appliquer ; continuer à utiliser STONE Invest après cette date vaut acceptation.</p>
+    </section>
+
+    <section>
+      <h2>9. Loi applicable et litiges</h2>
+      <p class="lede">Ces conditions sont régies par la loi ivoirienne. En cas de désaccord, écris-nous d'abord : nous cherchons une solution amiable sous trente jours. À défaut, les tribunaux compétents sont ceux d'Abidjan, sauf disposition impérative contraire de la loi de ton pays de résidence.</p>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <div class="contact is-set">
+        <p class="who">Stone Dev Corp</p>
+        <p class="what">Éditeur de STONE Invest.</p>
+        <p class="how">Pour toute question sur ces conditions, un signalement ou une réclamation :<br>
+        <a href="mailto:contact.stonedev@gmail.com">contact.stonedev@gmail.com</a></p>
+        <p class="note">Réponse sous 7 jours. Pour tes données, la <a href="confidentialite.html">politique de confidentialité</a> décrit ce que tu peux demander et comment supprimer ton espace.</p>
+      </div>
+    </section>
+
+    <p class="foot">STONE est un projet indépendant, sans investisseur ni modèle publicitaire. Voir aussi la
+    <a href="confidentialite.html">politique de confidentialité</a>, le <a href="invest.html">guide Invest</a> et l'<a href="statut.html">état du service</a>.</p>
+  </main>
+</div>
+
+<script>
+(function(){
+  var THEMES=["clair","nuit","sable"];
+  var KEY="STONE_GUIDE_THEME";
+  var buttons=document.querySelectorAll("[data-theme-choice]");
+  function apply(theme,persist){
+    if(THEMES.indexOf(theme)===-1)theme="";
+    if(theme)document.documentElement.setAttribute("data-theme",theme);
+    else document.documentElement.removeAttribute("data-theme");
+    buttons.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.themeChoice===theme))});
+    if(persist){try{if(theme)localStorage.setItem(KEY,theme);else localStorage.removeItem(KEY)}catch(e){}}
+  }
+  buttons.forEach(function(b){b.addEventListener("click",function(){apply(b.dataset.themeChoice,true)})});
+  var saved="";try{saved=localStorage.getItem(KEY)||""}catch(e){}
+  apply(saved,false);
+})();
+</script>
+</body>
+</html>

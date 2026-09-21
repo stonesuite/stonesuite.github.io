@@ -16,9 +16,9 @@
   "theme_color": "#08090c",
   "orientation": "any",
   "categories": [
-    "finance",
-    "productivity"
+    "finance"
   ],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icons/stone-192.png",
@@ -43,6 +43,50 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icons/screenshot-1.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Portefeuille : la synthèse de ton portefeuille BRVM, gains, dividendes et frais"
+    },
+    {
+      "src": "icons/screenshot-2.png",
+      "sizes": "360x780",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Marché : tes favoris et leur cours du jour"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Portefeuille",
+      "short_name": "Portefeuille",
+      "description": "Ouvrir directement ton portefeuille",
+      "url": "./?go=portfolio",
+      "icons": [
+        {
+          "src": "icons/stone-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Marché",
+      "short_name": "Marché",
+      "description": "Ouvrir directement le marché BRVM",
+      "url": "./?go=market",
+      "icons": [
+        {
+          "src": "icons/stone-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }
