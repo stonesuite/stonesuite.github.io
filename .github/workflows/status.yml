@@ -1,0 +1,26 @@
+name: Etat du service STONE
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Moteur de marche (route publique LEDGE)
+        run: |
+          set -e
+          corps=$(curl -sSL --max-time 60 "https://script.google.com/macros/s/AKfycbxnezcY4X7YzwfLy9UcwrSB2-Va2al945lpRVlotqMqfz_64vL2crtqCkf3z4oJlx9M/exec?route=dividends")
+          echo "$corps" | head -c 200; echo
+          echo "$corps" | grep -q '"ok":true' || { echo "LEDGE : reponse invalide"; exit 1; }
+      - name: Coque STONE Invest (nouveau lien)
+        run: |
+          set -e
+          for u in https://stonesuite.github.io/invest-next/ https://stonesuite.github.io/invest-next/config.js https://stonesuite.github.io/guides/statut.html https://stonesuite.github.io/.well-known/assetlinks.json; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$u"); echo "$u -> $code"; [ "$code" = "200" ] || exit 1
+          done
+      - name: Application STONE Invest (page de connexion Google attendue, jamais une erreur)
+        run: |
+          set -e
+          code=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 60 "https://script.google.com/macros/s/AKfycbwq6N_Pzf9Dyf1AzXKS9zsxR18z9RSyMg25q_yBLPhFfbJYcMfOEgDC6MxVxFkIdxcCgQ/exec?app=invest")
+          echo "exec -> $code"; [ "$code" = "200" ] || exit 1
