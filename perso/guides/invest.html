@@ -45,7 +45,7 @@
 @media(prefers-reduced-motion:reduce){.theme-choice svg,.ctl-label{transition:none}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:"Nunito Sans",system-ui,sans-serif;font-size:17px;line-height:1.68}
-h1,h2,h3{font-family:"Sora",system-ui,sans-serif;line-height:1.12;text-wrap:balance;margin:0}
+h1,h2,h3,h4{font-family:"Sora",system-ui,sans-serif;line-height:1.12;text-wrap:balance;margin:0}
 p{margin:.55em 0 0;max-width:36em}
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
 .num{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
@@ -81,6 +81,11 @@ p{margin:.55em 0 0;max-width:36em}
 .line{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #1b2740}
 .line:last-child{border-bottom:0}
 .fold{display:flex;justify-content:space-between;align-items:center;padding:9px 11px;border:1px solid var(--p-line);border-radius:12px;background:var(--p-card);font-weight:700;font-size:11px}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--p-line);background:#0a0f18;padding:7px 4px 9px;font-size:8.5px;font-weight:700;text-align:center;color:var(--p-mut)}
+.tabs span.on{color:var(--p-gold)}
+.seg{display:flex;gap:4px;flex-wrap:wrap}
+.seg span{font-size:9px;font-weight:700;padding:4px 8px;border-radius:999px;border:1px solid var(--p-line);color:var(--p-mut)}
+.seg span.on{background:#2a2410;border-color:#6b5426;color:var(--p-gold)}
 .band{padding:64px 0;border-top:1px solid var(--line)}
 .band h2{font-size:clamp(26px,3.6vw,38px);letter-spacing:-.015em}
 .lede{font-size:19px;color:var(--ink2);margin-top:14px}
@@ -88,6 +93,15 @@ p{margin:.55em 0 0;max-width:36em}
 .c{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px}
 .c .ico{font-size:22px;color:var(--accent)}
 .c h3{font-size:17px;margin-top:12px}.c p{font-size:15.5px;color:var(--ink2)}
+.c h4{font-size:14.5px;margin-top:16px;color:var(--ink)}
+.c ul{margin:8px 0 0;padding-left:18px;font-size:15px;color:var(--ink2)}
+.c li{margin-top:4px}
+.c li b,.c p b{color:var(--ink)}
+.tab-block{margin-top:34px;padding-top:26px;border-top:1px dashed var(--line)}
+.tab-block:first-of-type{border-top:0;padding-top:0}
+.tab-block h3{font-size:clamp(20px,2.6vw,26px)}
+.tab-block .sub{font-size:16px;color:var(--ink2);margin-top:8px}
+.tab-block .cards{margin-top:20px}
 .feat{display:flex;gap:60px;align-items:center;flex-wrap:wrap;justify-content:space-between;padding:56px 0;border-top:1px solid var(--line)}
 .feat.rev{flex-direction:row-reverse}
 .feat-txt{flex:1 1 420px;min-width:min(320px,100%)}
@@ -106,11 +120,16 @@ p{margin:.55em 0 0;max-width:36em}
 .step{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
 .step .n{flex:0 0 auto;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-family:"Sora",system-ui,sans-serif;font-weight:700;font-size:14px}
 .step h3{font-size:16px}.step p{font-size:15px;color:var(--ink2);margin-top:3px}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:30px}
+.plan .c.premium{border-color:var(--accent);box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 35%,transparent)}
+.plan .price{margin-top:14px;font-family:"Sora",system-ui,sans-serif;font-weight:700;color:var(--ink)}
+.note{margin-top:22px;padding:14px 18px;border:1px solid var(--line);border-radius:14px;background:var(--card);font-size:15px;color:var(--ink2);max-width:44em}
+.note b{color:var(--ink)}
 .cta{padding:66px 0 74px;border-top:1px solid var(--line);text-align:center}
 .cta h2{font-size:clamp(26px,3.6vw,36px)}.cta p{margin:14px auto 0}
 .btn{display:inline-block;margin-top:26px;background:var(--accent);color:var(--card);font-weight:800;padding:15px 30px;border-radius:14px;text-decoration:none;font-size:16px}
 .foot{padding:26px 0 40px;color:var(--ink2);font-size:13px;text-align:center}
-@media(max-width:760px){.feat{gap:34px;padding:44px 0}.phone{width:252px}.screen{height:512px}.hero{padding:52px 0 36px}}
+@media(max-width:760px){.feat{gap:34px;padding:44px 0}.phone{width:252px}.screen{height:512px}.hero{padding:52px 0 36px}.band{padding:48px 0}.c{padding:20px}}
 </style>
 </head>
 <body>
@@ -127,24 +146,23 @@ p{margin:.55em 0 0;max-width:36em}
 <header class="hero"><div class="wrap">
   <div class="hero-txt">
     <p class="eyebrow">STONE Invest</p>
-    <h1>De l'épargne au capital.</h1>
+    <h1>Ce que tu gagnes vraiment.</h1>
     <p class="promise">Ton portefeuille BRVM, sa performance réelle, et le marché, sans jargon et sans flatterie.</p>
-    <p class="sub">Invest est l'étage de ta pyramide patrimoniale : celui qui fait grandir.
-      Il ne te dit pas quoi acheter. Il te montre, honnêtement, ce que tes décisions ont
-      produit, frais et dividendes compris.</p>
+    <p class="sub">Un relevé te donne un solde. Invest te donne ta performance réelle, frais payés et
+      dividendes encaissés compris, sur les cours officiels de la BRVM. Il ne te dit pas quoi acheter :
+      il te montre, honnêtement, ce que tes décisions ont produit.</p>
     <div class="badges">
       <span class="badge">Ton gain, sans flatterie</span>
-      <span class="badge">Plusieurs portefeuilles</span>
       <span class="badge">Cours officiels BRVM</span>
+      <span class="badge">Tes données dans ton Google Drive</span>
     </div>
   </div>
   <div class="phone"><div class="screen">
     <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
-    <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · De l'épargne au capital</div></div><span class="icons">☀☾△ 👁</span></div>
+    <div class="ab"><div><div class="t">STONE</div><div class="s">Invest</div></div><span class="icons">☀☾△ 👁 ＋</span></div>
     <div class="pbody">
       <div class="kick">SYNTHÈSE</div>
       <div style="font-family:Sora,system-ui,sans-serif;font-weight:700;font-size:19px">Mon portefeuille</div>
-      <div class="lab">Cours BRVM · mise à jour 02/09/2026</div>
       <div class="pc" style="border-left:3px solid var(--p-gold)">
         <div class="lab">Ça vaut aujourd'hui</div>
         <div class="num big gold">3 300 000 XOF</div>
@@ -158,7 +176,7 @@ p{margin:.55em 0 0;max-width:36em}
         <div class="pc"><div class="lab">Dividendes reçus</div><div class="num up" style="font-size:13px">82 500</div></div>
       </div>
     </div>
-    <div class="tabs"></div>
+    <div class="tabs"><span class="on">Portefeuille</span><span>Marché</span><span>Activité</span><span>Moi</span></div>
   </div></div>
 </div></header>
 
@@ -183,31 +201,33 @@ p{margin:.55em 0 0;max-width:36em}
 <div class="wrap">
   <section class="feat">
     <div class="feat-txt">
-      <span class="tag">Ton gain</span>
+      <span class="tag">Synthèse</span>
       <h3>Le seul chiffre qui ne te ment pas</h3>
       <p class="what">Invest compare ce que vaut ton portefeuille aujourd'hui à tes apports nets
-        (versements moins retraits) en tenant compte des frais payés et des dividendes encaissés.
-        Trois cartes le disent : <em>J'ai investi</em>, <em>Ça vaut aujourd'hui</em>,
-        <em>Gain sur ce que j’ai investi</em>.</p>
+        (versements moins retraits), frais payés et dividendes encaissés déjà comptés.
+        Trois grandes cartes : <em>J'ai investi</em>, <em>Ça vaut aujourd'hui</em>,
+        <em>Gain sur ce que j'ai investi</em>. En dessous : <em>Plus/moins-value actions</em>,
+        <em>Dividendes reçus</em>, <em>Frais payés</em>, <em>Cash disponible</em>, <em>Actions</em>,
+        et un encadré « Comment c'est calculé » qui donne la formule exacte.</p>
       <div class="why"><p><b>Ce que ça change :</b> tu sais enfin si ton argent travaille.
-        Un +50,0 % chez Invest veut dire quelque chose, parce que les 58 000 XOF de frais sont
-        déjà dedans.</p></div>
+        Un +50,0 % chez Invest veut dire quelque chose, parce que les frais sont déjà dedans.</p></div>
     </div>
     <div class="phone"><div class="screen">
       <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
-      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Synthèse</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Synthèse</div></div><span class="icons">☀☾△ 👁 ＋</span></div>
       <div class="pbody">
         <div class="pc"><div class="lab">J'ai investi</div><div class="num big">2 200 000</div>
           <div class="lab">Mes apports, moins mes retraits</div></div>
         <div class="pc" style="border-left:3px solid var(--p-gold)"><div class="lab">Ça vaut aujourd'hui</div>
           <div class="num big gold">3 300 000</div></div>
-        <div class="pc" style="border-left:3px solid #3dbd8b"><div class="lab">Gain sur ce que j’ai investi</div>
+        <div class="pc" style="border-left:3px solid #3dbd8b"><div class="lab">Gain sur ce que j'ai investi</div>
           <div class="num big up">+50,0 %</div></div>
         <div class="row2">
           <div class="pc"><div class="lab">Frais payés</div><div class="num down" style="font-size:13px">−58 300</div></div>
           <div class="pc"><div class="lab">Cash disponible</div><div class="num gold" style="font-size:13px">3 400</div></div>
         </div>
       </div>
+      <div class="tabs"><span class="on">Portefeuille</span><span>Marché</span><span>Activité</span><span>Moi</span></div>
     </div></div>
   </section>
 
@@ -215,15 +235,16 @@ p{margin:.55em 0 0;max-width:36em}
     <div class="feat-txt">
       <span class="tag">Mes positions</span>
       <h3>Chaque titre, son prix de revient, sa tendance</h3>
-      <p class="what">Pour chaque ligne : la quantité, le prix de revient unitaire, la valeur au
-        cours du jour, la plus ou moins-value, et une mini-courbe des 30 dernières séances.
-        En dessous, la répartition de ton portefeuille et l'évolution de ton patrimoine.</p>
+      <p class="what">Pour chaque ligne : la quantité, le prix de revient (frais d'achat compris, et
+        le prix sans eux), le cours, la plus-value, les dividendes reçus, le poids dans le
+        portefeuille et une mini-courbe des 30 dernières séances. Deux boutons par ligne :
+        <em>Analyser ce titre</em> et <em>Créer une alerte</em>.</p>
       <div class="why"><p><b>Ce que ça change :</b> tu vois d'un coup d'œil quelle ligne porte
         le portefeuille et laquelle pèse dessus, sans ouvrir un tableur, sans faire un calcul.</p></div>
     </div>
     <div class="phone"><div class="screen">
       <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
-      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Mes positions</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Mes positions</div></div><span class="icons">☀☾△ 👁 ＋</span></div>
       <div class="pbody">
         <div class="pc">
           <div class="line"><div><b>SNTS</b><div class="lab">Sonatel · 25 titres</div></div>
@@ -236,67 +257,65 @@ p{margin:.55em 0 0;max-width:36em}
             <svg width="42" height="18" viewBox="0 0 54 18"><polyline points="0,6 9,8 18,7 27,11 36,10 45,13 54,12" fill="none" stroke="#ff8c8c" stroke-width="1.8"/></svg>
             <div style="text-align:right"><div class="num">38 500</div><div class="num down" style="font-size:10px">−1,9 %</div></div></div>
         </div>
-        <div class="kick">RÉPARTITION</div>
-        <div class="pc"><div style="display:flex;height:10px;border-radius:6px;overflow:hidden">
+        <div class="kick">STATISTIQUES DE MON PORTEFEUILLE</div>
+        <div class="pc"><div class="seg"><span class="on">Par titre</span><span>Par secteur</span><span>Par performance</span></div>
+          <div style="display:flex;height:10px;border-radius:6px;overflow:hidden;margin-top:8px">
           <span style="flex:53;background:#d5aa63"></span><span style="flex:33;background:#3dbd8b"></span><span style="flex:14;background:#4a6db3"></span></div>
           <div class="lab" style="margin-top:6px">SNTS 54 % · BOAB 32 % · ETIT + cash 14 %</div></div>
       </div>
+      <div class="tabs"><span class="on">Portefeuille</span><span>Marché</span><span>Activité</span><span>Moi</span></div>
     </div></div>
   </section>
 
   <section class="feat">
     <div class="feat-txt">
-      <span class="tag">Plusieurs portefeuilles</span>
-      <h3>Un projet, un portefeuille</h3>
-      <p class="what">Crée autant de portefeuilles que de projets : Portefeuille principal, Projet long terme,
-        Épargne enfants, chacun avec son cash, ses opérations, sa performance. Une vue consolidée,
-        en lecture seule, montre l'ensemble.</p>
+      <span class="tag">Un portefeuille par projet</span>
+      <h3>Chaque projet a son cash et sa performance</h3>
+      <p class="what">Dans Moi › <em>Mes portefeuilles</em>, tu crées un portefeuille par projet
+        (« Horizon », « Épargne enfants »…), chacun avec son cash, ses opérations, sa SGI et sa
+        performance. Avec plusieurs portefeuilles, une vue <em>Tous mes portefeuilles</em>, en lecture
+        seule, montre l'ensemble : c'est la <em>Vue consolidée</em>. Un portefeuille peut être renommé,
+        archivé, restauré ou supprimé (en retapant son nom).</p>
       <div class="why"><p><b>Ce que ça change :</b> l'argent du projet long cesse d'être noyé dans
-        l'argent courant. Tu vois chaque projet avancer à son rythme, et tu décides pour
-        chacun séparément.</p></div>
+        l'argent courant. Tu vois chaque projet avancer à son rythme.
+        Plusieurs portefeuilles font partie de Premium ; pendant la bêta, tout le monde y a accès.</p></div>
     </div>
     <div class="phone"><div class="screen">
       <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
-      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Portefeuilles</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Mes portefeuilles</div></div><span class="icons">☀☾△ 👁 ＋</span></div>
       <div class="pbody">
         <div class="pc"><div class="lab">Portefeuille suivi</div>
-          <div style="border:1px solid var(--p-line);border-radius:10px;padding:8px 10px;margin-top:5px;background:#0a0f18"><b>Portefeuille principal</b></div>
+          <div style="border:1px solid var(--p-line);border-radius:10px;padding:8px 10px;margin-top:5px;background:#0a0f18"><b>Mon portefeuille</b></div>
           <div class="lab" style="margin-top:6px">Portefeuille actif · XOF</div></div>
         <div class="pc">
-          <div class="line"><span>Portefeuille principal</span><span class="num up">+50,0 %</span></div>
-          <div class="line"><span>Projet long terme</span><span class="num up">+14,8 %</span></div>
-          <div class="line"><span>Objectif retraite</span><span class="num down">−2,6 %</span></div>
+          <div class="line"><span>Mon portefeuille</span><span class="num up">+50,0 %</span></div>
+          <div class="line"><span>Horizon</span><span class="num up">+14,8 %</span></div>
+          <div class="line"><span>Épargne enfants</span><span class="num down">−2,6 %</span></div>
         </div>
         <div class="pc" style="border-left:3px solid var(--p-gold)">
-          <div class="lab">Vue consolidée</div><div class="num gold" style="font-size:15px">6 950 000 XOF</div>
-          <div class="lab">Lecture seule · aucune opération possible ici</div></div>
+          <div class="lab">Tous mes portefeuilles</div><div class="num gold" style="font-size:15px">6 950 000 XOF</div>
+          <div class="lab">Vue d'ensemble, lecture seule</div></div>
       </div>
+      <div class="tabs"><span>Portefeuille</span><span>Marché</span><span>Activité</span><span class="on">Moi</span></div>
     </div></div>
   </section>
 
   <section class="feat rev">
     <div class="feat-txt">
-      <span class="tag">Marché BRVM · Analyse</span>
+      <span class="tag">Marché · Analyse d'une action</span>
       <h3>Le marché, et un titre au microscope</h3>
-      <p class="what">Les plus fortes hausses et baisses de la séance, tes favoris épinglés, et
-        une analyse par action : courbe sur 1 mois à 2 ans, moyennes mobiles, volumes, supports et
-        résistances, plus haut et plus bas sur 52 semaines, RSI.</p>
+      <p class="what">Les indices, les plus fortes hausses et baisses de la séance, tes favoris épinglés,
+        et une analyse par action : courbe de 1 mois à 2 ans (ligne, chandeliers ou Heikin Ashi),
+        moyennes mobiles MM 20 et MM 50, volumes, support et résistance, niveaux 52 semaines,
+        RSI 14, et tes propres opérations posées sur la courbe.</p>
       <div class="why"><p><b>Ce que ça change :</b> tu prépares une décision au lieu de la
-        subir. Et quand tu touches un titre, la courbe apparaît <em>immédiatement</em>,
-        l'historique complet la remplace ensuite.</p></div>
+        subir. Des repères calculés sur les vrais cours, jamais une recommandation.</p></div>
     </div>
     <div class="phone"><div class="screen">
       <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
-      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Marché BRVM</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Marché</div></div><span class="icons">☀☾△ 👁 ＋</span></div>
       <div class="pbody">
-        <div class="row2">
-          <div class="pc"><div class="lab">Plus fortes hausses</div>
-            <div class="line" style="padding:4px 0"><b>PALC</b><span class="num up">+7,4 %</span></div>
-            <div class="line" style="padding:4px 0"><b>SIBC</b><span class="num up">+5,1 %</span></div></div>
-          <div class="pc"><div class="lab">Plus fortes baisses</div>
-            <div class="line" style="padding:4px 0"><b>STBC</b><span class="num down">−4,2 %</span></div>
-            <div class="line" style="padding:4px 0"><b>ONTBF</b><span class="num down">−2,8 %</span></div></div>
-        </div>
+        <div class="seg"><span>Cours</span><span>Favoris</span><span class="on">Analyse</span><span>Simuler</span><span>Comparer</span><span>Mes analyses</span></div>
         <div class="kick">ANALYSE D'UNE ACTION</div>
         <div class="pc">
           <div class="line"><div><b>SNTS</b> <span class="lab">Sonatel</span></div><div class="num gold">23 000 XOF</div></div>
@@ -304,10 +323,12 @@ p{margin:.55em 0 0;max-width:36em}
             <polyline points="0,46 20,42 40,44 60,34 80,36 100,29 120,31 140,21 160,25 180,14 200,17 220,9" fill="none" stroke="#d5aa63" stroke-width="2.2"/>
             <polyline points="0,50 40,47 80,41 120,35 160,28 220,18" fill="none" stroke="#4a6db3" stroke-width="1.2" stroke-dasharray="3 3"/>
             <circle cx="220" cy="9" r="3" fill="#d5aa63"/></svg>
-          <div class="lab">6 mois · MM20 · tendance haussière</div></div>
+          <div class="lab">6M · MM 20 · Volumes</div></div>
         <div class="pc"><div class="line"><span class="lab">RSI 14</span><span class="num">61</span></div>
-          <div class="line"><span class="lab">52 semaines</span><span class="num">17 400 – 23 500</span></div></div>
+          <div class="line"><span class="lab">Niveaux 52 sem.</span><span class="num">17 400 – 23 500</span></div></div>
+        <div class="fold"><span>Machine à remonter le temps</span><span class="lab">▾</span></div>
       </div>
+      <div class="tabs"><span>Portefeuille</span><span class="on">Marché</span><span>Activité</span><span>Moi</span></div>
     </div></div>
   </section>
 
@@ -315,138 +336,360 @@ p{margin:.55em 0 0;max-width:36em}
     <div class="feat-txt">
       <span class="tag">Opérations</span>
       <h3>Tu notes, Invest calcule</h3>
-      <p class="what">Achat, vente, dividende, apport, retrait. Cherche l'entreprise par son nom
-        ou son code (« Sonatel » trouve SNTS), puis la date, la quantité, le prix et les frais.
-        Tout le reste se recalcule : PRU, performance, répartition, courbe.</p>
+      <p class="what">Le bouton « + » ouvre <em>Nouvelle opération</em> : Apport, Achat, Vente, Dividende,
+        Retrait, Frais ou Fractionnement. Cherche l'entreprise par son nom ou son code
+        (« Sonatel » trouve SNTS), puis la date, la quantité, le prix et les frais. Une introduction
+        en bourse pas encore cotée est tenue à ton coût d'achat. Tout le reste se recalcule : prix de
+        revient, performance, répartition, courbe. Une opération peut être annulée, puis restaurée si
+        c'était une erreur.</p>
       <div class="why"><p><b>Ce que ça change :</b> tenir son portefeuille cesse d'être une corvée
         de tableur du dimanche. Trente secondes après l'ordre, c'est enregistré.</p></div>
     </div>
     <div class="phone"><div class="screen">
       <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
-      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Ajouter</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Nouvelle opération</div></div><span class="icons">☀☾△ 👁 ＋</span></div>
       <div class="pbody">
         <div style="font-family:Sora,system-ui,sans-serif;font-weight:700;font-size:16px">Ajouter une opération</div>
-        <div style="display:flex;gap:5px">
-          <span style="flex:1;text-align:center;border-radius:9px;padding:5px 0;font-size:10px;font-weight:700;background:#2a2410;border:1px solid #6b5426;color:var(--p-gold)">Achat</span>
-          <span style="flex:1;text-align:center;border-radius:9px;padding:5px 0;font-size:10px;background:#0d1730;border:1px solid #223252;color:var(--p-mut)">Vente</span>
-          <span style="flex:1;text-align:center;border-radius:9px;padding:5px 0;font-size:10px;background:#0d1730;border:1px solid #223252;color:var(--p-mut)">Dividende</span>
-          <span style="flex:1;text-align:center;border-radius:9px;padding:5px 0;font-size:10px;background:#0d1730;border:1px solid #223252;color:var(--p-mut)">Apport</span>
-        </div>
-        <div class="pc"><div class="lab">Entreprise</div><div><b>SNTS</b> · Sonatel</div>
-          <div class="lab">Dernière clôture 23 000 · +2,9 %</div></div>
+        <div class="seg"><span>Apport</span><span class="on">Achat</span><span>Vente</span><span>Dividende</span><span>Retrait</span><span>Frais</span></div>
+        <div class="pc"><div class="lab">Entreprise ou ticker</div><div><b>SNTS</b> · Sonatel</div>
+          <div class="lab">Dernier cours public 23 000 · pas ton prix d'exécution</div></div>
         <div class="row2">
           <div class="pc"><div class="lab">Date</div><div class="num">15/08/2026</div></div>
           <div class="pc"><div class="lab">Quantité</div><div class="num">15</div></div></div>
         <div class="row2">
-          <div class="pc"><div class="lab">Prix unitaire</div><div class="num">21 500</div></div>
-          <div class="pc"><div class="lab">Frais</div><div class="num">1 050</div></div></div>
+          <div class="pc"><div class="lab">Prix unitaire XOF</div><div class="num">21 500</div></div>
+          <div class="pc"><div class="lab">Frais XOF</div><div class="num">1 050</div></div></div>
         <div style="background:var(--p-gold);color:#161206;font-weight:800;text-align:center;border-radius:11px;padding:9px;font-size:12px">Enregistrer</div>
       </div>
+      <div class="tabs"><span class="on">Portefeuille</span><span>Marché</span><span>Activité</span><span>Moi</span></div>
     </div></div>
   </section>
 
   <section class="feat rev">
     <div class="feat-txt">
-      <span class="tag">Lecture calme</span>
-      <h3>Une page courte, que tu déplies à volonté</h3>
-      <p class="what">À l'ouverture, Invest ne te jette pas tout au visage : la synthèse, puis
-        des sections repliées : positions, répartition, évolution, favoris, marché, analyse,
-        opérations. Tu ouvres ce que tu veux voir.</p>
+      <span class="tag">Quatre onglets</span>
+      <h3>Une barre en bas, quatre repères</h3>
+      <p class="what"><em>Portefeuille</em> : ce que tu possèdes. <em>Marché</em> : les cours de la BRVM.
+        <em>Activité</em> : tes opérations, alertes et objectifs. <em>Moi</em> : tes règles, ton import,
+        le partage et les réglages. Dans chaque onglet, des cartes repliées que tu déplies à volonté.</p>
       <div class="why"><p><b>Ce que ça change :</b> consulter son patrimoine redevient un geste
         calme de trente secondes, au lieu d'une plongée dans un tableau de bord saturé.</p></div>
     </div>
     <div class="phone"><div class="screen">
       <div class="sb"><span>9:41</span><span>▲ ▂▄▆ 🔋</span></div>
-      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Projet long terme</div></div><span class="icons">☀☾△ 👁</span></div>
+      <div class="ab"><div><div class="t">STONE</div><div class="s">Invest · Portefeuille</div></div><span class="icons">☀☾△ 👁 ＋</span></div>
       <div class="pbody">
-        <div class="pc" style="border-left:3px solid #3dbd8b"><div class="lab">Gain sur ce que j’ai investi</div>
+        <div class="pc" style="border-left:3px solid #3dbd8b"><div class="lab">Gain sur ce que j'ai investi</div>
           <div class="num big up">+14,8 %</div></div>
+        <div class="fold"><span>Séance du jour</span><span class="lab">▾</span></div>
+        <div class="fold"><span>Évolution</span><span class="lab">▾</span></div>
         <div class="fold"><span>Mes positions</span><span class="lab">▾</span></div>
-        <div class="fold"><span>Répartition</span><span class="lab">▾</span></div>
-        <div class="fold"><span>Évolution de mon patrimoine</span><span class="lab">▾</span></div>
-        <div class="fold"><span>Mes favoris</span><span class="lab">▾</span></div>
-        <div class="fold"><span>Marché BRVM</span><span class="lab">▾</span></div>
-        <div class="fold"><span>Analyse d'une action</span><span class="lab">▾</span></div>
-        <div class="fold"><span>Ajouter une opération</span><span class="lab">▾</span></div>
+        <div class="fold"><span>Mes dividendes</span><span class="lab">▾</span></div>
+        <div class="fold"><span>Encaisser une plus-value</span><span class="lab">▾</span></div>
+        <div class="fold"><span>Statistiques de mon portefeuille</span><span class="lab">▾</span></div>
+        <div class="fold"><span>Évolution de mon portefeuille</span><span class="lab">▾</span></div>
       </div>
+      <div class="tabs"><span class="on">Portefeuille</span><span>Marché</span><span>Activité</span><span>Moi</span></div>
     </div></div>
   </section>
 </div>
-
-<section class="story"><div class="wrap">
-  <p class="eyebrow">Cas d'usage réels</p>
-  <h2>Trois questions auxquelles Invest répond enfin</h2>
-  <div class="cases">
-    <div class="case"><div class="who">Le bilan honnête</div>
-      <h3>« Est-ce que je gagne vraiment de l'argent ? »</h3>
-      <p>Apports nets, valeur du jour, frais, dividendes : la performance réelle est calculée
-        avec tout dedans.</p>
-      <div class="out">→ Plus d'illusion d'optique.</div></div>
-    <div class="case"><div class="who">Avant d'acheter</div>
-      <h3>« À quel moment j'entre sur ce titre ? »</h3>
-      <p>Courbe sur deux ans, moyennes mobiles, plus haut et plus bas sur 52 semaines, volumes.</p>
-      <div class="out">→ Tu décides avec des repères, pas avec une rumeur.</div></div>
-    <div class="case"><div class="who">Le projet long</div>
-      <h3>« Où en est mon projet long terme ? »</h3>
-      <p>Un portefeuille dédié, avec son cash et sa propre courbe de patrimoine.</p>
-      <div class="out">→ Le projet existe, séparément.</div></div>
-  </div>
-</div></section>
 
 <section class="band"><div class="wrap">
   <p class="eyebrow">Commencer</p>
   <h2>Ton premier portefeuille en cinq minutes</h2>
   <div class="steps">
-    <div class="step"><div class="n">1</div><div><h3>Ouvre Invest dans STONE</h3>
-      <p>Depuis la pyramide d'accueil, touche l'étage du milieu.</p></div></div>
-    <div class="step"><div class="n">2</div><div><h3>Nomme ton portefeuille</h3>
-      <p>« Portefeuille principal », « Projet long terme »… Le nom compte : c'est ton projet, pas un numéro de compte.</p></div></div>
-    <div class="step"><div class="n">3</div><div><h3>Enregistre ton apport puis tes achats</h3>
+    <div class="step"><div class="n">1</div><div><h3>Ouvre le lien et connecte-toi avec ton compte Google</h3>
+      <p>Invest s'ouvre dans le navigateur, sans rien télécharger. Le premier démarrage peut prendre
+        jusqu'à deux minutes ; ensuite c'est beaucoup plus rapide. Une courte animation « Commence avec ce que tu as » :
+        touche l'écran pour la passer.</p></div></div>
+    <div class="step"><div class="n">2</div><div><h3>Écris ton prénom et nomme ton portefeuille</h3>
+      <p>L'accueil « Bienvenue · Créer mon portefeuille » te demande <em>Mon prénom ou nom</em> et le
+        <em>Nom du portefeuille</em> (« Mon portefeuille » par défaut). Le nom compte : c'est ton projet,
+        pas un numéro de compte.</p></div></div>
+    <div class="step"><div class="n">3</div><div><h3>« Créer mon portefeuille vide » ou « Voir avec un portefeuille d'exemple »</h3>
+      <p>Pas encore d'opération à saisir ? Le portefeuille d'exemple montre l'application avec des chiffres
+        fictifs : neuf lignes BRVM, valorisées aux cours du jour quand ils sont chargés. Rien n'est enregistré, un bandeau le rappelle, et
+        « Créer mon vrai portefeuille » te ramène à l'accueil.</p></div></div>
+    <div class="step"><div class="n">4</div><div><h3>Suis la visite guidée</h3>
+      <p>Huit étapes, de l'apparence aux règles. Elle démarre d'elle-même la première fois ; tu la
+        retrouves avec le bouton <em>Visite guidée</em> en haut, ou dans Moi › Aide et données.</p></div></div>
+    <div class="step"><div class="n">5</div><div><h3>Enregistre ton apport puis tes achats</h3>
       <p>D'abord ce que tu as versé, ensuite les titres achetés. L'ordre importe : c'est ce
-        qui rend la performance juste.</p></div></div>
-    <div class="step"><div class="n">4</div><div><h3>Sauvegarde</h3>
-      <p>Un fichier que tu gardes. Sur un nouveau téléphone, <em>Restaurer</em> et tout revient.</p></div></div>
+        qui rend la performance juste. Ou importe d'un coup ton relevé de SGI (voir plus bas).</p></div></div>
+  </div>
+  <div class="note"><b>Où vivent tes données.</b> À la création, Invest écrit un fichier Google Sheets, nommé
+    « STONE Invest » suivi de ton prénom, dans <b>ton</b> Google Drive. Tout y est : portefeuilles, opérations, favoris,
+    alertes, règles, analyses gardées. STONE n'en garde aucune copie et n'enregistre aucun montant dans ton
+    navigateur. Sur un nouveau téléphone, ouvre le lien avec le même compte Google : tout est là.</div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <p class="eyebrow">Onglet par onglet</p>
+  <h2>Tout ce qu'Invest fait</h2>
+  <p class="lede">Les noms ci-dessous sont ceux de l'écran. Tout obéit à la même règle : des calculs sur tes
+    chiffres et sur les vrais cours, jamais un conseil, jamais une opération créée à ta place.</p>
+
+  <div class="tab-block">
+    <h3>Portefeuille</h3>
+    <p class="sub">Ce que tu possèdes, ce que ça vaut, ce que ça a produit.</p>
+    <div class="cards">
+      <div class="c"><div class="ico">◈</div><h4>Portefeuille suivi</h4>
+        <p>Le nom du portefeuille affiché, un crayon pour le renommer, et <b>Changer de portefeuille</b>
+        quand tu en as plusieurs. En haut de tout : <b>+ Opération</b> et <b>Actualiser</b>.</p></div>
+      <div class="c"><div class="ico">◐</div><h4>Synthèse</h4>
+        <p>J'ai investi, Ça vaut aujourd'hui, Gain sur ce que j'ai investi, Plus/moins-value actions,
+        Dividendes reçus, Frais payés, Cash disponible, Actions. La date de la dernière séance BRVM
+        d'où viennent les cours est affichée. Si tu n'as rien saisi depuis longtemps, une phrase te le
+        rappelle : « Ton portefeuille a peut-être bougé. Une pierre de plus à noter ? »</p></div>
+      <div class="c"><div class="ico">▲</div><h4>Séance du jour</h4>
+        <p>Combien de tes lignes montent, baissent ou restent stables depuis l'ouverture, et l'effet de
+        la séance sur chacune en francs : quantité × (clôture − ouverture), jamais une estimation.</p></div>
+      <div class="c"><div class="ico">◰</div><h4>Évolution</h4>
+        <p>Deux courbes : ce que ça vaut et ce que tu as investi, avec le plus haut, le plus bas et
+        aujourd'hui. Touche la courbe pour lire la valeur à chaque date. <b>Voir le détail</b> ouvre la
+        carte complète.</p></div>
+      <div class="c"><div class="ico">▤</div><h4>Mes positions</h4>
+        <p>Quantité, prix de revient (frais d'achat compris), cours, plus-value, dividendes reçus, poids,
+        mini-courbe 30 séances, <b>Analyser ce titre</b>, <b>Créer une alerte</b>. Puis
+        <b>Ce qui fait ta performance</b> : le gain ou la perte latents de chaque ligne, du plus gros au
+        plus lourd.</p></div>
+      <div class="c"><div class="ico">◎</div><h4>Mes dividendes</h4>
+        <p>Reçus depuis le début, 12 derniers mois, rendement sur ton coût et sur la valeur, le
+        <b>Calendrier de l'année</b> (Reçu, À enregistrer, Annoncé, Estimé), année par année, ligne par
+        ligne, et tous les versements. Nets de retenue.</p></div>
+      <div class="c"><div class="ico">◈</div><h4>Encaisser une plus-value</h4>
+        <p>Tu vises <b>Un gain de</b> ou <b>Une somme reçue de</b> tant : Invest calcule trois façons d'y
+        arriver, avec le nombre de titres à vendre sur chaque ligne, frais estimés d'après ta SGI.
+        Des scénarios de calcul, pas un conseil : rien n'est enregistré.</p></div>
+      <div class="c"><div class="ico">◔</div><h4>Statistiques de mon portefeuille</h4>
+        <p>Dans quoi ton argent est réparti aujourd'hui : <b>Par titre</b>, <b>Par secteur</b> (quand
+        chaque titre a un secteur connu) ou <b>Par performance</b>.</p></div>
+      <div class="c"><div class="ico">◰</div><h4>Évolution de mon portefeuille</h4>
+        <p>La valeur réelle dans le temps, actions aux cours d'alors et cash inclus, sur 1J, 1S, 1M, 3M,
+        6M, 1A ou Tout. <b>＋ Comparer à un indice BRVM</b> pose l'indice sur la même période.</p></div>
+      <div class="c"><div class="ico">✧</div><h4>Analyser avec l'IA</h4>
+        <p>Quand le service est ouvert sur ton compte : une lecture de tes chiffres en quelques constats,
+        après ton accord explicite (« J'autorise »). Seule une synthèse chiffrée part chez le prestataire,
+        Anthropic : jamais ton nom, ton e-mail ni le détail de tes opérations. Tu peux retirer ton
+        autorisation à tout moment. Aucune opération n'est passée.</p></div>
+    </div>
+  </div>
+
+  <div class="tab-block">
+    <h3>Marché</h3>
+    <p class="sub">Six vues : <b>Cours</b>, <b>Favoris</b>, <b>Analyse</b>, <b>Simuler</b>, <b>Comparer</b>, <b>Mes analyses</b>.</p>
+    <div class="cards">
+      <div class="c"><div class="ico">◎</div><h4>Cours · Marché BRVM</h4>
+        <p>Cours officiels, mis à jour à chaque séance : titres cotés, hausses / baisses, variation moyenne,
+        les indices de la BRVM, une carte de chaleur, les <b>Plus fortes hausses</b> et <b>Plus fortes
+        baisses</b>, puis la liste complète avec <b>Chercher un titre</b> et des filtres (Tous, Favoris,
+        Hausses, Baisses, Volumes). Touche une action pour l'analyser.</p></div>
+      <div class="c"><div class="ico">☆</div><h4>Favoris · Mes favoris</h4>
+        <p>Touche l'étoile d'une entreprise pour la retrouver ici et suivre son cours.</p></div>
+      <div class="c"><div class="ico">↗</div><h4>Analyse · Analyse d'une action</h4>
+        <p>Une action, une période (1M, 3M, 6M, 1A, 2A), un type de graphique (Ligne, Chandeliers, Heikin
+        Ashi) et des indicateurs à la demande : Mes opérations, MM 20, MM 50, Volumes, Support / Résistance,
+        Niveaux 52 sem., RSI 14. En mode expert s'ajoutent Fibonacci et Bollinger. Un « ? » explique
+        chaque terme. <b>Garder cette analyse</b> la range dans Mes analyses.</p></div>
+      <div class="c"><div class="ico">⟲</div><h3>Machine à remonter le temps</h3>
+        <p>Sous la courbe d'analyse. « Et si tu avais investi dans ce titre ? » Un montant, un point de
+        départ (il y a 3 mois, 6 mois, 1 an, 2 ans, ou au début de l'historique), dividendes encaissés
+        ou réinvestis : deux scénarios côte à côte, <b>Tout d'un coup</b> et <b>Réparti chaque mois</b>,
+        frais estimés, pire creux en chemin, et le BRVM Composite sur la même période. Le résultat se garde
+        dans Mes analyses ou comme simulation.</p></div>
+      <div class="c"><div class="ico">◇</div><h3>Simuler</h3>
+        <p><b>Mes simulations</b>, ton portefeuille virtuel. Un titre, un montant, une date (vide =
+        aujourd'hui) : Invest suit la valeur sur les vrais cours, frais estimés d'après ta SGI. Jamais une
+        opération : rien n'entre dans ton portefeuille ni dans ton cash. Sur chaque simulation :
+        <b>Acheter pour de vrai</b> (ouvre la saisie déjà remplie ; l'ordre, c'est toi qui le passes),
+        <b>Analyser</b>, <b>Comparer</b>, <b>Supprimer</b>.</p></div>
+      <div class="c"><div class="ico">⇄</div><h3>Comparer</h3>
+        <p><b>Comparer des titres</b> : même période, même mise, jusqu'à 6 titres (tes lignes, tes
+        simulations ou n'importe quelle action), face au <b>BRVM Composite</b> et au
+        <b>Composite + dividendes</b>. Trois mesures séparées : évolution du cours, dividendes nets
+        reçus (encaissés ou réinvestis), enrichissement total frais estimés compris. Ce qui s'est passé,
+        pas ce qui va se passer.</p></div>
+      <div class="c"><div class="ico">▤</div><h3>Mes analyses</h3>
+        <p>Le carnet de ce que tu as gardé : Actions, Comparaisons, Machine à remonter le temps,
+        Analyses STONE. Chaque analyse est une photo datée, avec « depuis » recalculé au cours du jour,
+        ta note, tes étiquettes, des filtres par type, sens, étiquette et titre, un tri, un export CSV ou
+        Excel, et <b>Me prévenir si ça bouge de X %</b> qui crée les alertes correspondantes.</p></div>
+    </div>
+  </div>
+
+  <div class="tab-block">
+    <h3>Activité</h3>
+    <p class="sub">Trois vues : <b>Fil</b>, <b>Alertes</b>, <b>Opérations</b>. Tout ce qui demande ton attention arrive ici.</p>
+    <div class="cards">
+      <div class="c"><div class="ico">≡</div><h4>Fil</h4>
+        <p>Un fil daté : tes opérations, les alertes déclenchées, les seuils proches, les règles
+        atteintes, les dividendes à enregistrer, les gros mouvements de tes titres et « Depuis ton
+        analyse » quand un titre gardé a bougé d'au moins ton seuil.</p></div>
+      <div class="c"><div class="ico">◐</div><h4>Alertes · Mes alertes</h4>
+        <p>Une entreprise, puis <b>Me prévenir quand…</b> : Un prix, Une variation (en % ou en XOF), Mon
+        prix de revient, Ma ligne, Mon portefeuille ; dans quel sens ; à chaque franchissement ou une
+        seule fois ; des réglages avancés (marge et délai de réarmement) et une note. Vérification chaque
+        soir de séance, vers 20h15.</p></div>
+      <div class="c"><div class="ico">≡</div><h4>Opérations · Mes opérations</h4>
+        <p>L'historique complet : apports, achats, ventes, dividendes, frais, avec des filtres par type
+        et « Doublons probables ». Annuler une opération, la restaurer, et <b>Exporter mes données</b>
+        en CSV ou Excel (.xlsx) : le fichier reste sur ton appareil.</p></div>
+    </div>
+  </div>
+
+  <div class="tab-block">
+    <h3>Moi</h3>
+    <p class="sub">Ton espace : portefeuilles, objectifs, partage, affichage, règles, aide.</p>
+    <div class="cards">
+      <div class="c"><div class="ico">◍</div><h4>Mes portefeuilles</h4>
+        <p>Choisir le portefeuille affiché, <b>Réglages du portefeuille affiché</b> (nom, SGI de ce
+        portefeuille, archiver), <b>Nouveau portefeuille</b>, <b>Portefeuilles archivés</b> (restaurer,
+        supprimer en retapant le nom).</p></div>
+      <div class="c"><div class="ico">◎</div><h4>Objectifs · Ce que je vise</h4>
+        <p><b>+ Objectif</b> : un nom, un montant visé, une échéance facultative. Un rappel de
+        progression apparaît aussi dans Portefeuille.</p></div>
+      <div class="c"><div class="ico">◔</div><h4>Partage</h4>
+        <p>Donne à un proche un accès en lecture seule à ce portefeuille : son adresse Gmail, un nom affiché,
+        <b>Partager en lecture seule</b>. Il ne peut rien modifier.</p></div>
+      <div class="c"><div class="ico">◑</div><h4>Faire connaître STONE</h4>
+        <p><b>Envoyer par WhatsApp</b> ou <b>Copier le lien</b>. Aucun portefeuille n'est partagé :
+        ton ami crée le sien.</p></div>
+      <div class="c"><div class="ico">☀</div><h4>Affichage</h4>
+        <p>Nuit, Clair ou Sable. <b>Mode discret</b> masque les montants à l'écran (c'est aussi l'œil en
+        haut). <b>Mode expert</b> : repères d'analyse avancés (Fibonacci, Bollinger) et la carte
+        <b>Documents du marché</b>, sur invitation pour le moment.</p></div>
+      <div class="c"><div class="ico">⌗</div><h4>Mes règles</h4>
+        <p>Tes propres critères, portefeuille par portefeuille : Poids maximal d'une ligne, Gain à réexaminer,
+        Perte tolérée, avec un seuil en %. Invest te dit quand une ligne les atteint, ici et dans Activité.
+        C'est toi qui décides, Invest ne recommande rien.</p></div>
+      <div class="c"><div class="ico">✦</div><h4>Passer à Premium</h4>
+        <p>Ce que comprend le gratuit, ce que débloque Premium, le prix indicatif. Détail dans la section
+        suivante.</p></div>
+      <div class="c"><div class="ico">⇪</div><h4>Aide et données</h4>
+        <p><b>Importer un relevé</b>, <b>Revoir la visite guidée</b>, <b>Exporter mes données</b>,
+        <b>Un problème ?</b> avec <b>Signaler par e-mail</b> (réponse sous 7 jours ; le message ne contient
+        ni tes opérations ni tes montants), et <b>Supprimer mon espace STONE</b>. En bas : Confidentialité,
+        Conditions, État du service, Contact.</p></div>
+    </div>
   </div>
 </div></section>
 
 <section class="band"><div class="wrap">
-  <p class="eyebrow">Depuis septembre 2026</p>
-  <h2>Ce qu'Invest fait aussi</h2>
-  <p class="lede">Sept fonctions arrivées avec les dernières versions. Toutes obéissent à la même règle : des calculs sur tes
-    chiffres et sur les vrais cours, jamais un conseil, jamais une opération créée à ta place.</p>
+  <p class="eyebrow">Gratuit et Premium</p>
+  <h2>Un seul niveau payant, et jamais de perte de données</h2>
+  <p class="lede">Pendant la bêta, tout le monde est en essai : toutes les fonctions, sans date de fin.
+    Le bouton Premium dit « Bientôt disponible » tant qu'aucun paiement n'est branché.</p>
+  <div class="plan">
+    <div class="c"><div class="ico">○</div><h3>Gratuit</h3><p>Comprendre et tenir ton portefeuille.</p>
+      <ul>
+        <li>Un portefeuille ; opérations, cash, apports et frais sans limite</li>
+        <li>Cours BRVM du jour, Marché, Favoris, indices</li>
+        <li>Positions, PRU, gains latents et réalisés, répartition, courbe d'historique</li>
+        <li>Mes dividendes (reçus, historique) et le calendrier de l'année</li>
+        <li>Analyse d'une action : courbe de 1 mois à 2 ans, moyennes mobiles, RSI, support et résistance</li>
+        <li>Import de relevé CSV et Excel ; export CSV de tes opérations, jamais payant</li>
+        <li>Un objectif, le fil d'activité, 3 alertes de prix</li>
+        <li>Une simulation à la fois ; comparaison de 2 titres</li>
+        <li>5 analyses gardées ; partage en lecture avec 1 personne</li>
+      </ul></div>
+    <div class="c premium"><div class="ico">✦</div><h3>Premium</h3><p>Ce qui fait gagner de l'argent ou du temps.</p>
+      <ul>
+        <li>Plusieurs portefeuilles et la vue consolidée</li>
+        <li>Import par IA (photo, PDF) ; analyse STONE par IA, 5 par jour</li>
+        <li>Alertes jusqu'à 20, avec les rappels par e-mail (prix, dividendes, « depuis ton analyse »)</li>
+        <li>Machine à remonter le temps complète : dividendes réinvestis, comparaison au Composite</li>
+        <li>Comparateur jusqu'à 6 titres, avec les indices de référence</li>
+        <li>Simulations jusqu'à 20, portefeuille virtuel, « Garder comme simulation »</li>
+        <li>Analyses gardées jusqu'à 60, étiquettes, export CSV et Excel</li>
+        <li>Dividendes avancés ; mode expert (Bollinger, Fibonacci, instantanés)</li>
+        <li>Plusieurs lecteurs de partage ; export Excel ; objectifs multiples et suivi de règles</li>
+      </ul>
+      <p class="price">2 500 FCFA/mois ou 25 000 FCFA/an <span style="font-weight:400;color:var(--ink2)">(indicatif, à confirmer)</span></p></div>
+  </div>
+  <div class="note"><b>Tes données restent à toi, quel que soit ton niveau : rien n'est jamais supprimé.</b>
+    Si un jour tu repasses en gratuit avec plus de portefeuilles, d'alertes ou d'analyses que le gratuit
+    n'en permet, tout reste lisible ; seule la création d'un élément de plus est refusée, avec un message
+    clair et un lien vers Passer à Premium. Consulter tes données, exporter en CSV et supprimer ton espace
+    ne sont jamais payants.</div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <p class="eyebrow">Au quotidien</p>
+  <h2>Importer, être prévenu, partager</h2>
   <div class="cards">
     <div class="c"><div class="ico">⇪</div><h3>Importer un relevé</h3>
-      <p>Moi › Aide et données. Un relevé d'activité de ta société de bourse en CSV ou en Excel (.xls) est lu
-      sur ton appareil, avec un contrôle du solde. Un avis d'opéré en PDF ou en photo est transcrit par l'IA,
-      seulement après ton accord et une case cochée pour ce fichier. Dans les deux cas : un aperçu, les doublons
-      signalés, puis tu confirmes ligne par ligne ; un import s'annule d'un geste.</p></div>
-    <div class="c"><div class="ico">◌</div><h3>Simuler</h3>
-      <p>Marché › Simuler, ton portefeuille virtuel. Un achat fictif (titre, date, quantité, cours de ce jour-là,
-      frais estimés de ta société de bourse), suivi au dernier cours, dividendes nets comptés, avec la durée
-      depuis laquelle tu l'observes. Jamais une opération : rien n'entre dans ton cash ni dans ta performance.
-      « Acheter pour de vrai » ouvre la saisie déjà remplie ; l'ordre, c'est toi qui le passes.</p></div>
-    <div class="c"><div class="ico">⟲</div><h3>Machine à remonter le temps</h3>
-      <p>Marché › Analyse, sous la courbe. Un montant, un point de départ (3 mois à tout l'historique) : deux
-      scénarios côte à côte, tout d'un coup ou réparti chaque mois, frais estimés, dividendes nets, pire creux,
-      et le BRVM Composite sur la même période. Un résultat se garde comme simulation ou dans Mes analyses.</p></div>
-    <div class="c"><div class="ico">⇄</div><h3>Comparer</h3>
-      <p>Marché › Comparer. Même mise, même période, plusieurs titres : ce que chacun aurait donné en cours, en
-      dividendes (encaissés ou réinvestis) et en enrichissement total, frais estimés compris, à côté de l'indice.
-      Les trois mesures restent séparées, et la phrase de mise en garde reste affichée : le passé ne prévoit rien.</p></div>
-    <div class="c"><div class="ico">▤</div><h3>Mes analyses</h3>
-      <p>Marché › Mes analyses : le classeur de ce que tu as gardé (analyse d'un titre, comparaison, lecture STONE,
-      machine à remonter le temps), 60 au plus. Chaque analyse est une photo datée, avec « depuis » recalculé au
-      cours du jour, ta note, tes étiquettes, des filtres par type, sens et titre, un export CSV ou Excel, et une
-      alerte « me prévenir si ça bouge de X % ».</p></div>
+      <p>Moi › Aide et données, ou depuis « + » › Importer un relevé. Le plus fiable : ton relevé d'activité
+      en CSV ou en Excel, téléchargé chez ta SGI. Il est lu sur ton appareil, rien n'est envoyé, et Invest
+      contrôle que le total retombe sur le solde du relevé. Un avis d'opéré en PDF ou en photo est transcrit par l'IA,
+      seulement après ton accord (« J'autorise » dans Analyser avec l'IA) et une case cochée pour ce fichier ;
+      STONE ne conserve pas le document. Dans les deux cas : un aperçu, les doublons et les lignes refusées
+      signalés, puis tu coches ce que tu ajoutes ; « Annuler cet import » défait tout d'un geste.</p></div>
+    <div class="c"><div class="ico">◔</div><h3>Alertes et rappels par e-mail</h3>
+      <p>Activité › Alertes. Un seuil de cours, une variation en % ou en XOF, un écart à ton prix de revient,
+      une valeur de ligne ou de portefeuille, récurrente ou non. Le fil dit quand elle se déclenche, et un
+      e-mail te le rappelle le soir de la séance quand la remise par e-mail est active sur ton espace ; sinon
+      l'application te le dit et tu vois le déclenchement dans Activité. Le même e-mail du soir rappelle un
+      dividende annoncé dans les dix jours sur une ligne que tu détiens, ou versé et pas encore enregistré.
+      Aucun temps réel : la BRVM cote une fois par jour.</p></div>
     <div class="c"><div class="ico">◎</div><h3>Mes dividendes</h3>
       <p>Portefeuille, carte repliée. Pour chaque titre détenu : reçu, à enregistrer, annoncé ou estimé, en montants
       nets de retenue d'après les avis officiels de la BRVM. STONE n'écrit jamais un dividende à ta place : tant que
-      tu ne l'as pas saisi, il reste « à enregistrer », avec un rappel dans ton fil d'activité.</p></div>
-    <div class="c"><div class="ico">◔</div><h3>Alertes et rappels par e-mail</h3>
-      <p>Activité › Alertes. Un seuil de cours ou une variation en % sur un titre, récurrente ou non ; le fil dit
-      quand elle se déclenche, et un e-mail te le rappelle le soir de la séance quand la remise par e-mail est
-      active sur ton espace. Le même e-mail rappelle un dividende annoncé dix jours avant, ou versé et pas encore
-      enregistré. Aucun temps réel : la BRVM cote une fois par jour.</p></div>
+      tu ne l'as pas saisi, il reste « À enregistrer », avec un rappel dans ton fil d'activité.</p></div>
+    <div class="c"><div class="ico">◑</div><h3>Partager en lecture seule</h3>
+      <p>Moi › Partage. Ton proche ouvre Invest avec son propre compte Gmail et voit ce portefeuille en lecture
+      seule : ni saisie, ni alerte, ni import. Le bouton <b>Retirer</b> coupe l'accès à tout moment. Une personne
+      en gratuit, plusieurs en Premium.</p></div>
+    <div class="c"><div class="ico">▣</div><h3>Installer sur ton téléphone</h3>
+      <p>Ouvre le lien, puis sur Android : menu ⋮ › « Ajouter à l'écran d'accueil » ; sur iPhone : Partager ›
+      « Sur l'écran d'accueil ». Invest s'ouvre ensuite comme une application, en plein écran. Hors réseau,
+      elle te dit « Connexion indisponible » : tes chiffres ne sont jamais gardés dans le téléphone.</p></div>
+    <div class="c"><div class="ico">👁</div><h3>Discrétion et apparences</h3>
+      <p>L'œil en haut masque tous tes montants d'un geste. Trois apparences, Clair, Nuit et Sable,
+      s'adaptent à la lumière. Le bouton « + » enregistre une opération depuis n'importe quel onglet.</p></div>
+  </div>
+</div></section>
+
+<section class="story"><div class="wrap">
+  <p class="eyebrow">Confidentialité</p>
+  <h2>Tes données sont chez toi, pas chez STONE</h2>
+  <div class="cases">
+    <div class="case"><div class="who">Où elles vivent</div>
+      <h3>Un fichier Google Sheets dans ton Drive</h3>
+      <p>Invest le crée à ton nom et y écrit tout. STONE n'en garde aucune copie, ne lit aucun autre fichier
+        de ton Drive, et n'enregistre aucun montant dans ton navigateur.</p>
+      <div class="out">→ Tu peux l'ouvrir, l'exporter, le supprimer.</div></div>
+    <div class="case"><div class="who">Tout effacer</div>
+      <h3>« Supprimer mon espace STONE »</h3>
+      <p>Moi › Aide et données. Tape SUPPRIMER : portefeuilles, opérations, favoris, objectifs, alertes,
+        règles, simulations, analyses, historique de l'IA et partages sont effacés tout de suite, sans
+        retour. Il te reste à supprimer le fichier dans ton Google Drive.</p>
+      <div class="out">→ Un espace neuf si tu recommences.</div></div>
+    <div class="case"><div class="who">Un problème ?</div>
+      <h3>« Signaler par e-mail »</h3>
+      <p>Moi › Aide et données. Un e-mail avec un identifiant d'incident, sans tes opérations ni tes montants.
+        Réponse sous 7 jours. Le détail : <a href="confidentialite-invest.html" style="color:inherit">Confidentialité</a>
+        et <a href="conditions-invest.html" style="color:inherit">Conditions</a>.</p>
+      <div class="out">→ Tu sais toujours à qui parler.</div></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2>Ce qu'Invest ne fait pas</h2>
+  <div class="cards">
+    <div class="c"><div class="ico">✕</div><h3>Pas de conseil</h3>
+      <p>Aucune recommandation d'achat ou de vente, ni par un écran, ni par l'IA. Les repères (moyennes,
+      support, machine à remonter le temps, comparaisons) sont des calculs sur des cours passés : ils ne
+      prévoient rien.</p></div>
+    <div class="c"><div class="ico">✕</div><h3>Pas d'ordre en bourse</h3>
+      <p>Invest ne passe aucun ordre et ne touche pas à ton compte titres. Tu notes ce que tu as fait chez
+      ta SGI ; « Acheter pour de vrai » ne fait qu'ouvrir la saisie.</p></div>
+    <div class="c"><div class="ico">✕</div><h3>Pas de temps réel</h3>
+      <p>Les cours sont ceux de la dernière séance publiée par la BRVM, une fois par jour, non ajustés des
+      dividendes et des opérations sur titres, et l'application le dit. La date de cette séance est affichée
+      au-dessus de la Synthèse.</p></div>
+    <div class="c"><div class="ico">✕</div><h3>Pas d'impôt, pas de garantie</h3>
+      <p>Les scénarios et frais estimés ne calculent aucun impôt. Sur la BRVM, on ne vend pas toujours au
+      dernier cours : la liquidité peut manquer.</p></div>
   </div>
 </div></section>
 
@@ -454,14 +697,14 @@ p{margin:.55em 0 0;max-width:36em}
   <h2>Aller plus loin</h2>
   <div class="cards">
     <div class="c"><div class="ico">▁</div><h3>Combien puis-je investir ce mois-ci ?</h3>
-      <p>C'est Money, la base de la pyramide, qui répond, en séparant ce qui part en dépenses de
-      ce qui reste vraiment disponible.</p></div>
+      <p>C'est Money qui répondra, en séparant ce qui part en dépenses de ce qui reste vraiment
+      disponible. <a href="money.html" style="color:inherit">Le guide Money</a>.</p></div>
     <div class="c"><div class="ico">▲</div><h3>Et après le capital ?</h3>
-      <p>Estate couronne la pyramide : le capital devient pierre, avec son coût réel, ses papiers
-      et sa valeur.</p></div>
-    <div class="c"><div class="ico">👁</div><h3>Discrétion et sauvegarde</h3>
-      <p>L'œil masque tous tes montants d'un geste. Trois apparences s'adaptent à la lumière.
-      Et tes données restent dans ton espace privé.</p></div>
+      <p>Estate : le capital devient pierre, avec son coût réel, ses papiers et sa valeur.
+      <a href="estate.html" style="color:inherit">Le guide Estate</a>.</p></div>
+    <div class="c"><div class="ico">◈</div><h3>La suite STONE</h3>
+      <p>Money, Invest, Estate : trois manières de regarder le même patrimoine.
+      <a href="index.html" style="color:inherit">La suite entière</a>.</p></div>
   </div>
 </div></section>
 
@@ -470,9 +713,9 @@ p{margin:.55em 0 0;max-width:36em}
   <h2>Invest montre les faits. Les décisions restent les tiennes.</h2>
   <p>Aucune recommandation d'achat ou de vente. Les cours sont ceux de la BRVM, non ajustés des
     dividendes et opérations sur titres, et l'application le dit. Tes données vivent dans ton
-    espace privé, jamais chez STONE.</p>
-  <a class="btn" href="https://stonesuite.github.io/?u=invest">Ouvrir STONE Invest</a>
-  <div class="foot">STONE Invest · De l'épargne au capital · Guide utilisateur, mis à jour le 21 septembre 2026 ·
+    Google Drive, jamais chez STONE.</p>
+  <a class="btn" href="https://stonesuite.github.io/invest-next/">Ouvrir STONE Invest</a>
+  <div class="foot">STONE Invest · De l'épargne au capital · Guide utilisateur, mis à jour le 22 septembre 2026 ·
     <a href="confidentialite-invest.html" style="color:inherit">Confidentialité</a> · <a href="conditions-invest.html" style="color:inherit">Conditions</a> · <a href="statut.html" style="color:inherit">État du service</a></div>
 </div></section>
 
