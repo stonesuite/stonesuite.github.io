@@ -1,6 +1,6 @@
-/* STONE PWA — registre des univers · COQUE INVEST SEUL, PROCHAIN MOTEUR (/invest-next/).
-   GÉNÉRÉ par site-build.mjs depuis config.beta.js — ne pas éditer.
-   Adresse posée par : node STONE_PWA/tools/next-url.mjs <url>. */
+/* STONE PWA — registre des univers · COQUE INVEST SEUL, PROCHAIN MOTEUR (/invest-next/)
+   Adresse posée par : node STONE_PWA/tools/next-url.mjs <url>.
+   GÉNÉRÉ par site-build.mjs depuis config.beta.js — ne pas éditer. */
 window.STONE_PWA_INSTANCE = "invest-next";
 window.STONE_PWA_UNIVERSES = [
   {
