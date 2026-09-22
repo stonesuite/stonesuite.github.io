@@ -157,6 +157,7 @@
       .home-panel .pyr .pyr-glow,.home-panel .pyr .pyr-plinth,
       .home-panel .mark,.home-row,.home-guides a{animation:none}
       .home-panel .pyr .pyr-sheen{display:none}
+      .loading-mark .p1,.loading-mark .p2,.loading-mark .p3{animation:none;opacity:1;transform:none}
     }
     .home-panel .pyr [data-go]{cursor:pointer;transition:transform .18s ease,filter .18s ease}
     .home-panel .pyr [data-go]:hover,.home-panel .pyr [data-go]:focus-visible{transform:translateY(-3px);filter:brightness(1.08)}
@@ -260,6 +261,17 @@
     .loading-line{width:180px;height:2px;margin:20px auto 0;border-radius:2px;background:var(--line);overflow:hidden}
     .loading-line span{display:block;width:40%;height:100%;background:var(--u-accent,var(--gold));animation:slide 1.4s ease-in-out infinite}
     @keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(350%)}}
+    /* Attente du premier démarrage (22/09/2026) : la pyramide se construit en boucle, base d'abord,
+       pointe ensuite — le même geste que la cinématique d'accueil, mais en boucle et discret, pour que
+       l'attente (jusqu'à deux minutes au tout premier lancement) se voie comme un vrai travail plutôt
+       qu'un signe figé. `transform-box:fill-box` recentre chaque triangle sur lui-même, pas sur le SVG
+       entier, sinon la pointe pivote autour du coin de la base. */
+    .loading-mark svg{overflow:visible}
+    .loading-mark svg path{transform-origin:center;transform-box:fill-box}
+    .loading-mark .p1,.loading-mark .p2,.loading-mark .p3{animation:loading-pulse 1.5s ease-in-out infinite}
+    .loading-mark .p2{animation-delay:.16s}
+    .loading-mark .p1{animation-delay:.32s}
+    @keyframes loading-pulse{0%,100%{opacity:.38;transform:translateY(2px) scale(.94)}50%{opacity:1;transform:translateY(0) scale(1)}}
     .primary-button{margin-top:18px;border:1px solid var(--gold);border-radius:10px;padding:9px 18px;background:var(--gold);color:#171109;font-size:12px;font-weight:800;cursor:pointer}
     /* `visibility:hidden` en plus du glissement (19/09/2026, audit Q34) : sans elle, le panneau fermé
        reste dans l'ordre de tabulation et le clavier partait se perdre dans des champs hors écran.
@@ -337,7 +349,10 @@
      prévient que le premier démarrage peut prendre jusqu'à deux minutes. */
   var FRAME_READY_TIMEOUT_MS = 150000;
   var FRAME_WAIT_HINT_MS = 20000;
-  var FRAME_WAIT_HINT = "Premier démarrage : jusqu’à deux minutes, ensuite c’est beaucoup plus rapide.";
+  /* 22/09/2026 : la phrase annonçait seulement le délai. Un utilisateur qui atterrissait entre-temps sur
+     l'écran de consentement Google (première visite sur cet appareil) croyait l'ouverture cassée. La
+     phrase couvre maintenant les deux : le délai, et le geste Google possible. */
+  var FRAME_WAIT_HINT = "Premier démarrage : jusqu’à deux minutes, ensuite c’est beaucoup plus rapide. Si Google te demande une autorisation, c’est normal la première fois sur cet appareil : accepte-la pour continuer.";
   var ENGINE_ORIGIN_RE = /^https:\/\/(?:[a-z0-9-]+-)?script\.googleusercontent\.com$/i;
   /* Une adresse de moteur n'est utilisable que sous cette forme : un marqueur de fabrication non remplacé
      (`__EXEC_URL_NEXT__` de l'univers /invest-next/) ou une adresse vide mènent à l'écran « Configuration
@@ -443,7 +458,10 @@
     if (kind === "loading") {
       el.setAttribute("role", "status");
       el.innerHTML =
-        '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
+        '<section><div class="mark loading-mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true">' +
+        '<path class="p3" d="M5.55 15.61 H18.45 L21 21 H3 Z" fill="currentColor"/>' +
+        '<path class="p2" d="M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z" fill="currentColor"/>' +
+        '<path class="p1" d="M12 2 L14.55 7.39 H9.45 Z" fill="currentColor"/></svg></div>' +
         '<p class="eyebrow">Connexion sécurisée</p>' +
         "<h1>Ouverture de STONE " + u.label + "</h1>" +
         "<p>Connexion à ton espace " + u.label + "…</p>" +
