@@ -22,5 +22,5 @@ jobs:
       - name: Application STONE Invest (page de connexion Google attendue, jamais une erreur)
         run: |
           set -e
-          code=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 60 "https://script.google.com/macros/s/AKfycbwq6N_Pzf9Dyf1AzXKS9zsxR18z9RSyMg25q_yBLPhFfbJYcMfOEgDC6MxVxFkIdxcCgQ/exec?app=invest")
+          code=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 60 "https://script.google.com/macros/s/AKfycbzDRyB_5J65k1xOF9M_OuCUBNoIhCyRsClauSxfoiZliD4LLjcXKJZj09Tzk5erdOBESA/exec?app=invest")
           echo "exec -> $code"; [ "$code" = "200" ] || exit 1
