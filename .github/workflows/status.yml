@@ -13,11 +13,16 @@ jobs:
           corps=$(curl -sSL --max-time 60 "https://script.google.com/macros/s/AKfycbxnezcY4X7YzwfLy9UcwrSB2-Va2al945lpRVlotqMqfz_64vL2crtqCkf3z4oJlx9M/exec?route=dividends")
           echo "$corps" | head -c 200; echo
           echo "$corps" | grep -q '"ok":true' || { echo "LEDGE : reponse invalide"; exit 1; }
+      # Le domaine publie est celui du CNAME (stoneinvest.ci). stonesuite.github.io ne sert
+      # plus les pages : il repond 301 vers le domaine. Le controle interrogeait l'ancien
+      # hote et exigeait 200 sans suivre la redirection, donc il echouait a chaque passage
+      # alors que le site etait en ligne (23/09/2026). On interroge le domaine reel, et -L
+      # suit les redirections qui restent legitimes (http -> https, barre finale).
       - name: Coque STONE Invest (nouveau lien)
         run: |
           set -e
-          for u in https://stonesuite.github.io/invest-next/ https://stonesuite.github.io/invest-next/config.js https://stonesuite.github.io/guides/statut.html https://stonesuite.github.io/.well-known/assetlinks.json; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$u"); echo "$u -> $code"; [ "$code" = "200" ] || exit 1
+          for u in https://stoneinvest.ci/invest-next/ https://stoneinvest.ci/invest-next/config.js https://stoneinvest.ci/guides/statut.html https://stoneinvest.ci/.well-known/assetlinks.json; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 30 "$u"); echo "$u -> $code"; [ "$code" = "200" ] || exit 1
           done
       - name: Application STONE Invest (page de connexion Google attendue, jamais une erreur)
         run: |
