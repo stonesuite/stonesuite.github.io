@@ -114,6 +114,78 @@
     .home-row .r-value .rv-partial::before{content:"\2248 ";font-weight:800}
     .home-row .r-value.is-empty{color:var(--muted);font-weight:600}
     .home-row .r-go{color:var(--muted);font-size:15px}
+    /* ---- Accueil « hall à cartes » (08/11/2026) : modes liste et solo seulement (classe .home-v2).
+       Le mode pyramide garde ses rangées. Jetons de :root uniquement + accent de l'univers. ---- */
+    .home-v2{background:radial-gradient(120% 55% at 50% 0%,rgba(201,165,103,.11),transparent 62%),var(--bg)}
+    .home-v2.home-panel{padding-top:26px;padding-bottom:52px;--muted:#a9aebb}
+    .home-v2 .home-status{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:10px auto 0;
+      padding:5px 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel);
+      color:var(--muted);font-size:11.5px;font-weight:600;line-height:1.4}
+    .home-v2 .home-status i{width:6px;height:6px;border-radius:50%;background:var(--green);display:block}
+    .home-v2 .hero-fig{display:grid;gap:3px;max-width:380px;margin:18px auto 0;padding:16px 18px;text-align:left;
+      border:1px solid var(--line);border-radius:18px;background:var(--panel2);
+      background:linear-gradient(135deg,rgba(201,165,103,.16),transparent 70%),var(--panel2);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 12px 28px rgba(0,0,0,.3);animation:hero-in .5s ease}
+    .home-v2 .hero-fig .hf-label{color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+    .home-v2 .hero-fig .hf-amount{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.15;
+      font-variant-numeric:tabular-nums;color:var(--text)}
+    .home-v2 .hero-fig .hf-amount small{font-size:14px;font-weight:700;color:var(--muted);letter-spacing:0}
+    .home-v2 .hero-fig .hf-note{color:var(--muted);font-size:11.5px;line-height:1.4}
+    @keyframes hero-in{from{opacity:0;transform:translateY(8px)}}
+    .home-v2 .home-rows{max-width:380px;gap:10px;margin-top:16px}
+    .home-v2 .home-row,.home-v2 .home-row.has-value{position:relative;overflow:hidden;
+      grid-template-columns:48px minmax(0,1fr) auto auto;
+      grid-template-areas:"mark copy state go" ". value value value" ". note note note";
+      column-gap:12px;row-gap:0;min-height:78px;padding:15px 14px 15px 18px;border-radius:18px;
+      background:var(--panel2);
+      background:linear-gradient(120deg,color-mix(in srgb,var(--u-accent,var(--gold)) 16%,transparent),transparent 62%),var(--panel2);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 10px 24px rgba(0,0,0,.28);
+      transition:transform .18s ease,border-color .18s ease;
+      animation:stone-row .55s cubic-bezier(.22,1,.36,1) both}
+    .home-v2 .home-row::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:3px;
+      border-radius:0 3px 3px 0;background:var(--u-accent,var(--gold))}
+    .home-v2 .home-row:nth-child(1){animation-delay:.12s}
+    .home-v2 .home-row:nth-child(2){animation-delay:.2s}
+    .home-v2 .home-row:nth-child(3){animation-delay:.28s}
+    .home-v2 .home-row:nth-child(4){animation-delay:.36s}
+    .home-v2 .home-row:hover,.home-v2 .home-row:focus-visible{transform:translateY(-2px)}
+    .home-v2 .home-row .r-mark{grid-area:mark;width:48px;height:48px;border-radius:14px;font-size:22px;
+      background:var(--panel);
+      background:color-mix(in srgb,var(--u-accent,var(--gold)) 15%,var(--panel))}
+    .home-v2 .home-row .r-copy{grid-area:copy}
+    .home-v2 .home-row .r-name{font-size:15px;line-height:1.3}
+    .home-v2 .home-row .r-sub{font-size:12px;line-height:1.4}
+    .home-v2 .home-row .r-state{grid-area:state;display:inline-flex;align-items:center;gap:6px;padding:4px 10px;
+      border:1px solid var(--line);border-radius:999px;color:var(--text);font-size:10.5px;font-weight:700;white-space:nowrap}
+    .home-v2 .home-row .r-state::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--u-accent,var(--gold))}
+    .home-v2 .home-row .r-go{grid-area:go}
+    /* Le montant, quand l'univers répond : grand, sous la carte, séparé par un filet. */
+    .home-v2 .home-row.has-value .r-value{grid-area:value;display:block;margin-top:12px;padding-top:11px;
+      border-top:1px solid var(--line);text-align:left;font-size:22px;font-weight:800;letter-spacing:-.01em}
+    .home-v2 .home-row .r-note{display:none;grid-area:note;color:var(--muted);font-size:11.5px;line-height:1.4}
+    .home-v2 .home-row.has-value .r-note:not(:empty){display:block}
+    .home-v2 .home-row .r-sub{white-space:nowrap}
+    /* Le chiffre est déjà en tête : la carte ne le répète pas (le texte reste dans le DOM). */
+    .home-v2 .home-row.in-hero.has-value .r-value,.home-v2 .home-row.in-hero.has-value .r-note:not(:empty){display:none}
+    .home-v2 .home-row .r-value .rv-unit{font-size:12px;font-weight:700;color:var(--muted)}
+    .home-v2 .home-row.has-value .r-value.is-empty{font-size:13px;font-weight:600}
+    /* Univers fermé : la pastille « Bientôt » occupe la place de l'état (c'est la colonne du montant, le texte
+       est le même que celui posé par markSoonUniverses), pointillé et sans lueur. */
+    .home-v2 .home-row.is-soon .r-state{display:none}
+    .home-v2 .home-row.is-soon.has-value .r-value{grid-area:state;margin:0;padding:4px 10px;border:1px dashed var(--line);
+      border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.02em;color:var(--muted);white-space:nowrap}
+    .home-v2 .home-row.is-soon{background:var(--panel)}
+    .home-v2 .home-row.is-soon .r-go{display:none}
+    .home-v2 .home-row.is-soon .r-mark{background:var(--panel2);filter:saturate(.25);opacity:.8}
+    .home-v2 .home-row.is-soon::before{filter:saturate(.25)}
+    /* Très petits écrans (≤ 350 px) : la flèche s'efface et le rôle peut passer sur deux lignes plutôt que de chevaucher la pastille. */
+    @media(max-width:350px){.home-v2 .home-row .r-go{display:none}.home-v2 .home-row .r-sub{white-space:normal}}
+    @media(min-width:900px){.home-v2 .home-rows,.home-v2 .hero-fig{max-width:540px}}
+    .home-v2 .home-row.is-soon::before{opacity:.45}
+    .home-v2[data-mode="solo"] .home-row{min-height:92px}
+    .home-v2[data-mode="solo"] .home-row .r-name{font-size:17px}
+    .home-v2 .mark{animation:stone-gem .9s ease .3s}
+    .home-v2 .home-guides a{animation-delay:.45s}
     .home-guides{margin-top:18px}
     .home-guides a{display:inline-block;padding:9px 16px;border:1px solid var(--line);border-radius:999px;
       background:var(--panel2);color:var(--text);font-size:11.5px;font-weight:700;text-decoration:none;
@@ -155,8 +227,9 @@
     @media(prefers-reduced-motion:reduce){
       .home-panel .pyr [data-go],.home-panel .pyr text,.home-panel .pyr .detail,
       .home-panel .pyr .pyr-glow,.home-panel .pyr .pyr-plinth,
-      .home-panel .mark,.home-row,.home-guides a{animation:none}
+      .home-panel .mark,.home-v2 .hero-fig,.home-row,.home-guides a{animation:none}
       .home-panel .pyr .pyr-sheen{display:none}
+      .home-v2 .home-row,.home-v2 .home-row.has-value,.home-v2 .mark,.home-v2 .home-guides a{animation:none}
       .loading-mark .p1,.loading-mark .p2,.loading-mark .p3{animation:none;opacity:1;transform:none}
     }
     .home-panel .pyr [data-go]{cursor:pointer;transition:transform .18s ease,filter .18s ease}
@@ -729,6 +802,41 @@
     catch (e) { return String(value) + " XOF"; }
   }
 
+  /* Même texte que moneyFormat, mais l'unité est dans un <small> : le chiffre prime, l'unité accompagne.
+     textContent reste identique (« 1 234 567 XOF »). Le nombre ne contient que des chiffres et espaces. */
+  function moneyHtml(value) {
+    var t = moneyFormat(value), i = t.lastIndexOf(" ");
+    if (i < 1) return t;
+    return t.slice(0, i) + '<small class="rv-unit"> ' + t.slice(i + 1) + "</small>";
+  }
+
+  /* « Chiffre en tête » de l'accueil riche : le montant du premier univers (ordre du registre) qui en remonte un
+     vrai. Jamais de somme entre univers. Caché si aucun montant, ou si un univers est masqué à la demande de
+     l'utilisateur (PRIVACY) : on ne montre pas un chiffre qu'il a choisi de cacher. */
+  var HERO_LABELS = { invest: "Valeur de ton portefeuille", money: "Soldes de tes comptes", estate: "Estimation de tes biens" };
+  function refreshHero() {
+    if (!homeEl) return;
+    var fig = homeEl.querySelector("[data-hero]");
+    if (!fig) return;
+    var pick = null, masque = false;
+    UNIVERSES.forEach(function (u) {
+      var s = wealth[u.key];
+      if (!s || s.ok !== true) return;
+      if (s.state === "PRIVACY") { masque = true; return; }
+      if (!pick && s.state !== "UNAVAILABLE" && s.state !== "EMPTY" && s.amountXOF != null &&
+          isFinite(Number(s.amountXOF))) pick = { u: u, s: s };
+    });
+    Array.prototype.forEach.call(homeEl.querySelectorAll(".home-row.in-hero"), function (r) { r.classList.remove("in-hero"); });
+    if (!pick || masque) { fig.hidden = true; return; }
+    var carte = homeEl.querySelector('.home-row[data-go="' + pick.u.key + '"]');
+    if (carte) carte.classList.add("in-hero");
+    var partiel = pick.s.proof === "PARTIEL";
+    fig.querySelector(".hf-label").textContent = HERO_LABELS[pick.u.key] || (pick.u.label + " · " + pick.u.tagline);
+    fig.querySelector(".hf-amount").innerHTML = (partiel ? "≈ " : "") + moneyHtml(Number(pick.s.amountXOF));
+    fig.querySelector(".hf-note").textContent = wealthNote(pick.u.key, pick.s, partiel);
+    fig.hidden = false;
+  }
+
   /* « aujourd'hui », « hier », sinon la date courte : l'ISO brut n'atteint
      jamais l'ecran, ici comme dans les applications. */
   function wealthFreshness(iso) {
@@ -767,6 +875,18 @@
   }
 
   function applyWealth(key, snapshot) {
+    applyWealthCard(key, snapshot);
+    refreshHero();
+  }
+
+  /* Le sous-titre d'une carte riche (le rôle de l'univers) ne change jamais : la note de provenance du chiffre
+     vit dans son propre élément `.r-note`, sous le montant. Seules les rangées de la pyramide réécrivent leur sous-titre. */
+  function restoreNote(noteEl, u) {
+    if (!noteEl) return;
+    noteEl.textContent = noteEl.classList.contains("r-note") ? "" : (u ? u.tagline : "");
+  }
+
+  function applyWealthCard(key, snapshot) {
     wealth[key] = snapshot || null;
     if (!homeEl) return;
     var valueEl = homeEl.querySelector('[data-wealth-value="' + key + '"]');
@@ -782,7 +902,7 @@
          reste ce qu'elle etait. */
       row.classList.remove("has-value");
       valueEl.textContent = "";
-      if (noteEl && u) noteEl.textContent = u.tagline;
+      restoreNote(noteEl, u);
       return;
     }
 
@@ -798,7 +918,7 @@
       row.classList.add("has-value");
       valueEl.className = "r-value is-empty";
       valueEl.textContent = "Non renseigné";
-      if (noteEl && u) noteEl.textContent = u.tagline;
+      restoreNote(noteEl, u);
       return;
     }
 
@@ -806,7 +926,7 @@
     row.classList.add("has-value");
     valueEl.className = "r-value";
     valueEl.innerHTML = '<span class="' + (partiel ? "rv-partial" : "") + '">' +
-      moneyFormat(Number(snapshot.amountXOF)) + "</span>";
+      moneyHtml(Number(snapshot.amountXOF)) + "</span>";
     if (noteEl) noteEl.textContent = wealthNote(key, snapshot, partiel);
   }
 
@@ -863,15 +983,29 @@
       '<text x="' + labelX + '" y="' + labelY + '" text-anchor="middle" font-size="' + labelSize + '">' + u.label.toUpperCase() + "</text></g>";
   }
   /* Rangée d'un univers : le nom, sa promesse, et la place de son montant quand il répond. */
-  function homeRow(u) {
+  function homeRow(u, rich) {
     if (!u) return "";
     return '<button class="home-row" type="button" data-go="' + u.key + '" style="--u-accent:' + u.accent + '">' +
       '<span class="r-mark" aria-hidden="true">' + u.glyph + "</span>" +
       '<span class="r-copy"><span class="r-name">' + u.label + '</span>' +
-      '<span class="r-sub" data-wealth-note="' + u.key + '">' + u.tagline + "</span></span>" +
+      (rich ? '<span class="r-sub">' : '<span class="r-sub" data-wealth-note="' + u.key + '">') + u.tagline + "</span></span>" +
+      (rich ? '<span class="r-state">' + (u.enabled ? "Ouvert" : "Bientôt") + "</span>" : "") +
       '<span class="r-value" data-wealth-value="' + u.key + '"></span>' +
+      (rich ? '<span class="r-note" data-wealth-note="' + u.key + '"></span>' : "") +
       '<span class="r-go" aria-hidden="true">→</span></button>';
   }
+
+  /* Ligne d'état de l'accueil riche : uniquement ce que dit le registre (ouverts / bientôt). */
+  function homeStatus(universes) {
+    var ouverts = universes.filter(function (u) { return u.enabled; }).length;
+    var bientot = universes.length - ouverts;
+    var txt = ouverts + (ouverts > 1 ? " univers ouverts" : " univers ouvert") + (bientot ? " · " + bientot + " bientôt" : "");
+    return '<p class="home-status"><i aria-hidden="true"></i>' + txt + "</p>";
+  }
+
+  /* Emplacement du « chiffre en tête » : caché tant qu'aucun univers n'a remonté un montant réel. */
+  var HERO_FIG = '<div class="hero-fig" data-hero hidden aria-live="polite">' +
+    '<span class="hf-label"></span><span class="hf-amount"></span><span class="hf-note"></span></div>';
 
   /* Accueil d'une coque à un seul univers : sa porte, son guide, la même promesse de confidentialité.
      Aucune trace des univers qu'elle n'ouvre pas. */
@@ -879,8 +1013,7 @@
     return '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
       '<p class="eyebrow">La suite STONE</p>' +
       "<h1>STONE " + u.label + "</h1>" +
-      '<p class="home-hint">' + u.tagline + ".</p>" +
-      '<div class="home-rows">' + homeRow(u) + "</div>" +
+      '<div class="home-rows">' + homeRow(u, true) + "</div>" +
       '<p class="home-guides"><a href="guides/' + u.key + '.html">Le guide ' + u.label + "</a> " +
       '<a href="guides/confidentialite.html">Confidentialité</a> ' +
       '<a href="guides/conditions-' + u.key + '.html">Conditions</a></p>' +
@@ -894,8 +1027,8 @@
     return '<section><div class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 2 L14.55 7.39 H9.45 Z" fill="currentColor"/><path d="M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z" fill="currentColor"/><path d="M5.55 15.61 H18.45 L21 21 H3 Z" fill="currentColor"/></svg></div>' +
       '<p class="eyebrow">La suite STONE</p>' +
       "<h1>Ta suite STONE</h1>" +
-      '<p class="home-hint">' + (universes.length > 1 ? "Choisis l’univers à ouvrir." : universes[0].tagline + ".") + "</p>" +
-      '<div class="home-rows">' + universes.map(homeRow).join("") + "</div>" +
+      homeStatus(universes) + HERO_FIG +
+      '<div class="home-rows">' + universes.map(function (u) { return homeRow(u, true); }).join("") + "</div>" +
       '<p class="home-guides"><a href="guides/">Découvrir la suite · les guides</a> ' +
       '<a href="guides/confidentialite.html">Confidentialité</a></p>' +
       '<p class="home-trust">Tes chiffres restent dans ton espace privé. STONE ne les conserve jamais.</p>' +
@@ -910,7 +1043,7 @@
         return u.enabled && u.key !== "money" && u.key !== "invest" && u.key !== "estate";
       });
       homeEl = document.createElement("div");
-      homeEl.className = "stage-panel home-panel";
+      homeEl.className = "stage-panel home-panel" + (MODE_ACCUEIL === "pyramide" ? "" : " home-v2");
       homeEl.dataset.kind = "home";
       homeEl.dataset.mode = MODE_ACCUEIL;
       homeEl.innerHTML = MODE_ACCUEIL === "solo" ? soloHome(UNIVERSES[0]) :
@@ -968,7 +1101,7 @@
     }
     activeKey = "";
     tagline.textContent = MODE_ACCUEIL === "solo"
-      ? UNIVERSES[0].label + " · " + UNIVERSES[0].tagline
+      ? UNIVERSES[0].label
       : MODE_ACCUEIL === "liste" ? "Tes univers STONE"
       : "Chaque tranche porte la suivante";
     Array.prototype.forEach.call(nav.querySelectorAll("button[data-universe]"), function (btn) {
@@ -983,6 +1116,7 @@
     });
     homeEl.classList.add("is-visible");
     markSoonUniverses();
+    refreshHero();
     /* L'inventaire demarre APRES la peinture de l'accueil : il ne doit jamais
        en retarder l'affichage ni ses portes. */
     if (window.requestAnimationFrame) requestAnimationFrame(ensureWealthFrames);
