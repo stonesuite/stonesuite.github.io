@@ -3,10 +3,10 @@
    Ce fichier est PUBLIC. La regle n'est donc pas « aucune adresse », elle est
    « aucune adresse qui ouvre quelque chose sans authentification ».
 
-   Invest et Money sont des deploiements Apps Script qui exigent une
-   connexion Google : leur adresse est deja publique dans les deux autres coques
-   et ne donne acces a rien sans le compte. Elles sont donc renseignees ici, et
-   la coque personnelle s'ouvre sans reglage.
+   Invest est un deploiement Apps Script qui exige une connexion Google : son
+   adresse est deja publique dans les autres coques et ne donne acces a rien
+   sans le compte. Elle est donc renseignee ici, et la coque personnelle
+   s'ouvre sans reglage.
 
    Ledge repond SANS authentification. Publier son adresse la rendrait
    accessible a tous : elle reste vide et se renseigne une seule fois dans les
@@ -24,17 +24,6 @@ window.STONE_PWA_UNIVERSES = [
     msgPrefix: "STONE_LEDGE_PWA",
     enabled: true
   },
-  {
-    key: "money",
-    label: "Money",
-    tagline: "Du revenu à l’épargne",
-    glyph: "<svg width='1.15em' height='1.15em' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round' style='vertical-align:-0.15em'><path d='M4.75 17.5 H19.25 L21 21 H3 Z'/><path d='M6.4 19.3 H17.6'/></svg>",
-    accent: "#e0c18a",
-    url: "https://script.google.com/macros/s/AKfycbxPNnyqKv1IiSclCvDSQKPYx2ZUEm4guXz-2FXXn_wYWskXN5VA-rCrJ66KkvvIlu34bg/exec",
-    query: { app: "money" },
-    msgPrefix: "STONE_MONEY_PWA",
-    enabled: true
-  },
   /* Invest perso (24/09/2026) : déploiement dédié au conseiller de portefeuille réservé à Stan (@79).
      Préfixe STONE_STARTER_PWA : c'est celui qu'émet l'application ; STONE_INVEST_PWA empêchait Invest de s'ouvrir ici depuis le 06/09. */
   {
@@ -48,9 +37,9 @@ window.STONE_PWA_UNIVERSES = [
     msgPrefix: "STONE_STARTER_PWA",
     enabled: true
   },
-  /* Estate retiré de la coque personnelle le 08/11/2026, à la demande de Stan :
-     « je n'en ai pas besoin maintenant ; on remplacera par Trade ».
-     La coque des amis (config.beta.js) n'est pas concernée. */
+  /* Estate et Money retirés de la coque personnelle le 08/11/2026, à la demande de Stan :
+     « je n'en ai pas besoin pour le moment ». Ils reviendront en rajoutant leur entrée ici.
+     La source des amis (config.beta.js) les garde, mais site-build.mjs ne les publie plus. */
   {
     key: "trade",
     label: "Trade",
@@ -59,6 +48,10 @@ window.STONE_PWA_UNIVERSES = [
     accent: "#5b8def",
     url: "",
     msgPrefix: "STONE_TRADE_PWA",
-    enabled: false
+    enabled: false,
+    /* Écran « Bientôt » : sobre et vrai, sans capture ni guide (il n'y en a pas). */
+    preview: {
+      lead: "Trade : une équipe de gérants fictifs qui investissent chaque soir sur la BRVM, pour te comparer. Bientôt."
+    }
   }
 ];

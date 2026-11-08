@@ -411,7 +411,12 @@
     var etages = ["money", "invest", "estate"].filter(function (key) {
       return universes.some(function (u) { return u.key === key; });
     });
-    return (universes.length === 1 && etages.length === 1) ? "solo" : "pyramide";
+    if (universes.length === 1 && etages.length === 1) return "solo";
+    /* « liste » (08/11/2026) : plusieurs univers, mais moins de deux étages de la pyramide présents
+       (cas de la coque perso : Ledge, Invest, Trade). Une pyramide à un seul étage serait tronquée :
+       on montre une liste propre. Un registre vide ou Ledge seul reste en « pyramide » (inchangé). */
+    if (universes.length > 1 && etages.length < 2) return "liste";
+    return "pyramide";
   }
   var MODE_ACCUEIL = homeMode(UNIVERSES);
   var stage = document.getElementById("stage");
@@ -883,6 +888,20 @@
       "</section>";
   }
 
+  /* Accueil « liste » (08/11/2026) : plusieurs univers sans pyramide. Même style de rangées que les autres
+     accueils, aucune mention d'un univers absent du registre (tout vient de UNIVERSES). */
+  function listHome(universes) {
+    return '<section><div class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true"><path d="M12 2 L14.55 7.39 H9.45 Z" fill="currentColor"/><path d="M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z" fill="currentColor"/><path d="M5.55 15.61 H18.45 L21 21 H3 Z" fill="currentColor"/></svg></div>' +
+      '<p class="eyebrow">La suite STONE</p>' +
+      "<h1>Ta suite STONE</h1>" +
+      '<p class="home-hint">' + (universes.length > 1 ? "Choisis l’univers à ouvrir." : universes[0].tagline + ".") + "</p>" +
+      '<div class="home-rows">' + universes.map(homeRow).join("") + "</div>" +
+      '<p class="home-guides"><a href="guides/">Découvrir la suite · les guides</a> ' +
+      '<a href="guides/confidentialite.html">Confidentialité</a></p>' +
+      '<p class="home-trust">Tes chiffres restent dans ton espace privé. STONE ne les conserve jamais.</p>' +
+      "</section>";
+  }
+
   function showHome() {
     if (!homeEl) {
       var byKey = {};
@@ -895,6 +914,7 @@
       homeEl.dataset.kind = "home";
       homeEl.dataset.mode = MODE_ACCUEIL;
       homeEl.innerHTML = MODE_ACCUEIL === "solo" ? soloHome(UNIVERSES[0]) :
+        MODE_ACCUEIL === "liste" ? listHome(UNIVERSES) :
         '<section><div class="mark" aria-hidden="true"><svg viewBox=\"0 0 24 24\" width=\"1em\" height=\"1em\" aria-hidden=\"true\"><path d=\"M12 2 L14.55 7.39 H9.45 Z\" fill=\"currentColor\"/><path d=\"M9.12 8.09 H14.89 L18.12 14.91 H5.88 Z\" fill=\"currentColor\"/><path d=\"M5.55 15.61 H18.45 L21 21 H3 Z\" fill=\"currentColor\"/></svg></div>' +
         '<p class="eyebrow">La suite STONE</p>' +
         "<h1>Ta pyramide patrimoniale</h1>" +
@@ -949,6 +969,7 @@
     activeKey = "";
     tagline.textContent = MODE_ACCUEIL === "solo"
       ? UNIVERSES[0].label + " · " + UNIVERSES[0].tagline
+      : MODE_ACCUEIL === "liste" ? "Tes univers STONE"
       : "Chaque tranche porte la suivante";
     Array.prototype.forEach.call(nav.querySelectorAll("button[data-universe]"), function (btn) {
       btn.classList.remove("active");
@@ -968,7 +989,7 @@
     else setTimeout(ensureWealthFrames, 0);
     /* Première ouverture : la visite démarre une fois la cinématique posée. Elle explique la pyramide,
        les trois univers et la barre : sur une coque à un seul univers, elle n'aurait rien à montrer. */
-    if (MODE_ACCUEIL !== "solo" && !tourSeen()) setTimeout(function () { tourStart(); }, 2300);
+    if (MODE_ACCUEIL === "pyramide" && !tourSeen()) setTimeout(function () { tourStart(); }, 2300);
     /* L'URL redevient celle du hall d'entrée : un rechargement ou un partage
        depuis l'accueil ne renvoie pas dans le dernier univers visité. */
     try {
@@ -1373,7 +1394,7 @@
   try { localStorage.removeItem("STONE_PWA_LAST_UNIVERSE::" + INSTANCE); } catch (e) {}
   document.getElementById("brandHomeButton").addEventListener("click", function () { showHome(); });
   /* Pas de visite guidée sur une coque à un seul univers : pas de bouton pour la rejouer non plus. */
-  if (MODE_ACCUEIL === "solo") document.getElementById("tourReplay").hidden = true;
+  if (MODE_ACCUEIL !== "pyramide") document.getElementById("tourReplay").hidden = true;
   document.getElementById("tourReplay").addEventListener("click", function () {
     closeSettings();
     showHome();
