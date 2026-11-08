@@ -3,7 +3,7 @@
    Ce fichier est PUBLIC. La regle n'est donc pas « aucune adresse », elle est
    « aucune adresse qui ouvre quelque chose sans authentification ».
 
-   Invest, Money et Estate sont des deploiements Apps Script qui exigent une
+   Invest et Money sont des deploiements Apps Script qui exigent une
    connexion Google : leur adresse est deja publique dans les deux autres coques
    et ne donne acces a rien sans le compte. Elles sont donc renseignees ici, et
    la coque personnelle s'ouvre sans reglage.
@@ -48,16 +48,9 @@ window.STONE_PWA_UNIVERSES = [
     msgPrefix: "STONE_STARTER_PWA",
     enabled: true
   },
-  {
-    key: "estate",
-    label: "Estate",
-    tagline: "Immobilier et foncier",
-    glyph: "<svg width='1.15em' height='1.15em' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round' style='vertical-align:-0.15em'><path d='M12 3 L15.5 10 H8.5 Z'/><path d='M10.9 10 V7.9 H13.1 V10'/></svg>",
-    accent: "#a88347",
-    url: "https://script.google.com/macros/s/AKfycbzKg44_NL6kzqDJByrnoTCnHLVnrvyv4ozO-qIt72rs8Muk2yS1a_lrRIT4IYq54ZNDiQ/exec",
-    msgPrefix: "STONE_ESTATE_PWA",
-    enabled: true
-  },
+  /* Estate retiré de la coque personnelle le 08/11/2026, à la demande de Stan :
+     « je n'en ai pas besoin maintenant ; on remplacera par Trade ».
+     La coque des amis (config.beta.js) n'est pas concernée. */
   {
     key: "trade",
     label: "Trade",
