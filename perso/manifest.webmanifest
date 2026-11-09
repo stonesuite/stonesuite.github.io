@@ -2,7 +2,7 @@
   "id": "./",
   "name": "STONE Personnel",
   "short_name": "STONE",
-  "description": "La suite STONE personnelle — Ledge, Invest et Trade (bientôt).",
+  "description": "La suite STONE personnelle : Ledge, Invest et Trade.",
   "lang": "fr",
   "dir": "ltr",
   "start_url": "./?source=pwa",

@@ -46,12 +46,10 @@ window.STONE_PWA_UNIVERSES = [
     tagline: "Préparation des ordres",
     glyph: "◧",
     accent: "#5b8def",
-    url: "",
+    /* Salle des gérants (09/11/2026) : projet Apps Script autonome « STONE Trade - Salle »,
+       accès « Moi uniquement » (connexion Google exigée), comme Invest perso. */
+    url: "https://script.google.com/macros/s/AKfycbwy-NTw8C1fxh7VBUPrFM0fBMhTRNgFAwFFNhxpB8X-h5u_9m_30eJr-wfk_wJdDzzruA/exec",
     msgPrefix: "STONE_TRADE_PWA",
-    enabled: false,
-    /* Écran « Bientôt » : sobre et vrai, sans capture ni guide (il n'y en a pas). */
-    preview: {
-      lead: "Trade : une équipe de gérants fictifs qui investissent chaque soir sur la BRVM, pour te comparer. Bientôt."
-    }
+    enabled: true
   }
 ];
