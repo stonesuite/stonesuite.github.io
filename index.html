@@ -558,8 +558,8 @@
       el.setAttribute("role", "alert");
       el.innerHTML =
         '<section><div class="mark" aria-hidden="true">' + u.glyph + "</div>" +
-        "<h1>STONE " + u.label + " n’a pas pu s’ouvrir</h1>" +
-        "<p>Première visite ? Google demande une autorisation qui ne peut pas s’afficher ici : " +
+        '<h1 data-err-title>STONE ' + u.label + ' n’a pas pu s’ouvrir</h1>' +
+        '<p data-err-text>Première visite ? Google demande une autorisation qui ne peut pas s’afficher ici : ' +
         "ouvre " + u.label + " une fois dans le navigateur, accepte, puis reviens réessayer.</p>" +
         '<p class="warn-hint">Google va d’abord afficher <b>« Cette application n’a pas été vérifiée »</b> : ' +
         'c’est normal pour un projet indépendant à ce stade, ce n’est pas un signe de danger. ' +
@@ -664,7 +664,14 @@
     }, FRAME_WAIT_HINT_MS);
     state.timeoutId = setTimeout(function () {
       if (state.loaded) return;
-      if (state.errorPanel) state.errorPanel.dataset.shown = "1";
+      if (state.errorPanel) {
+        /* 12/11/2026 : après le délai, la cause la plus probable est un démarrage à froid d'Apps Script (plus de deux minutes), pas une
+           autorisation manquante. Le texte le dit ; l'autorisation reste proposée par les boutons. */
+        var t = state.errorPanel.querySelector("[data-err-title]"), p = state.errorPanel.querySelector("[data-err-text]");
+        if (t) t.textContent = "STONE " + u.label + " démarre plus lentement que prévu";
+        if (p) p.textContent = "Le premier démarrage peut dépasser deux minutes. Réessaie dans un instant. Si Google t’a demandé une autorisation, ouvre " + u.label + " une fois dans le navigateur, accepte, puis reviens.";
+        state.errorPanel.dataset.shown = "1";
+      }
       syncVisibility();
     }, FRAME_READY_TIMEOUT_MS);
 
